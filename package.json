@@ -6,9 +6,17 @@
     "start": "next start"
   },
   "dependencies": {
+    "benchmark": "^2.1.4",
+    "dompurify": "^2.3.3",
+    "highlight.js": "^11.2.0",
+    "isomorphic-dompurify": "^0.15.0",
+    "lodash": "^4.17.21",
+    "marked": "^3.0.4",
     "mongodb": "^3.5.9",
     "next": "latest",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "sass": "^1.42.0",
+    "ua-parser-js": "^0.7.28"
   }
 }
