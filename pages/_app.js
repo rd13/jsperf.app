@@ -1,5 +1,6 @@
 import 'highlight.js/styles/github.css'
 import '../main.css'
+import '../styles/index.css'
 // import App from 'next/app'
 
 function MyApp({ Component, pageProps }) {

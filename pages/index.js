@@ -2,6 +2,8 @@ import Head from 'next/head'
 import { pagesCollection } from '../lib/mongodb'
 import Layout from '../components/Layout'
 import Link from 'next/link'
+import GitHubIcon from '../components/GitHubIcon'
+import buttonStyles from '../styles/buttons.module.css'
 
 const LinkWithLinkText = (props) => {
   console.log(props)
@@ -15,7 +17,7 @@ export default function Home(props) {
   const randomHref = `/${slug}` + (revision > 1 ? `/${revision}` : ``)
   return (
     <Layout>
-      <h1>jsPerf.app — JavaScript performance sandbox</h1>
+      <h1>jsPerf.app — JavaScript performance sandbox / jsperf.com mirror</h1>
       <p>This is a complete rewrite in homage to the once excellent jsperf.com with proper code sandboxing and hopefully a more modern maintainable codebase.</p>
 
       <p>Most jsperf.com URLs / tests are mirrored at the same path, e.g:</p>
@@ -31,7 +33,7 @@ export default function Home(props) {
       </pre>
 
       <h2>Create a test case</h2>
-      <button>Login with GitHub to Create Test Cases</button>
+      <button className={buttonStyles.default}><GitHubIcon fill="#000000" width={32} height={32} />Login with GitHub to Create Test Cases</button>
     </Layout>
   )
 }

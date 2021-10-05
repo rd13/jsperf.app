@@ -1,9 +1,10 @@
 import SandboxIframe from '../components/SandboxIframe'
 import PostMessageBroker from '../utils/postMessageBroker'
 import { useState, useEffect, useRef } from 'react'
-import styles from './TestRunner.module.scss'
+import styles from './TestRunner.module.css'
 import UserAgent from './userAgent'
 import Test from './Test'
+import buttonStyles from '../styles/buttons.module.css'
 
 export default function Tests(props) {
   const {id} = props
@@ -97,7 +98,7 @@ export default function Tests(props) {
           id="run" 
           type="button" 
           disabled={benchStatus === 'notready'}
-          className={styles.runButton} 
+          className={buttonStyles.default} 
           onClick={() => run()}>{runButtonText[benchStatus]||runButtonText['default']}</button>
         <iframe 
           src={sandboxUrl} 

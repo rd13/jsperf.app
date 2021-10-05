@@ -8,30 +8,9 @@ table, p, ul, h1, h2, h3, #error-info, form div, #faq, .bs-rt {
 	margin-bottom: 1em;
 }
 
-button, input, textarea, a, .bs-rt {
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px;
-}
-
-html, input, textarea, button {
-	font: 1em/1.5 sans-serif;
-}
-
-html {
-	background: #f5f5f5;
-	height: 100%;
-}
-
-body {
-	background: #fff;
-	border: solid #e5e5e5;
-	border-width: 0 1px;
-	width: 60em;
-	padding: 0 2.5em;
-	margin: 0 auto;
-	min-height: 100%;
-}
+/* button, input, textarea, a, .bs-rt { */
+/* 	border-radius: 4px; */
+/* } */
 
 a, .btn-link {
 	color: #357ab0;
@@ -64,13 +43,13 @@ table {
 	border-collapse: collapse;
 }
 
-thead th, button:hover, button:focus, .submit:hover, .submit:focus, a:hover, a:focus, .btn-link:hover, .btn-link:focus, #comments .meta a:hover, #comments .meta a:focus, li.current a:hover, li.current a:focus, form h3, #comments .owner .meta {
-	background: #1a6ab9;
+thead th {
+	background: #1f6feb;
 	color: #fff;
 }
 
 caption, #comments .meta {
-	background: #bcbcbc;
+	background: #dddddd;
 	color: #555;
 }
 
@@ -135,14 +114,14 @@ td.error {
 	font-weight: bold;
 }
 
-button, .submit {
-	padding: .35em .5em;
-	cursor: pointer;
-	color: #000;
-	border: 1px solid #999;
-	background: #dadada;
-	background-image: linear-gradient(to bottom, #ebebeb, #b8b8b8);
-}
+/* button, .submit { */
+/* 	padding: .35em .5em; */
+/* 	cursor: pointer; */
+/* 	color: #000; */
+/* 	border: 1px solid #999; */
+/* 	background: #dadada; */
+/* 	background-image: linear-gradient(to bottom, #ebebeb, #b8b8b8); */
+/* } */
 
 .login {
 	padding: .35em .5em;
@@ -162,9 +141,9 @@ a:hover span, a:focus span, #comments .owner .meta a {
 	float: right;
 }
 
-button:hover, button:focus, .submit:hover, .submit:focus {
-	border-color: #357ab0
-}
+/* button:hover, button:focus, .submit:hover, .submit:focus { */
+/* 	border-color: #357ab0 */
+/* } */
 
 #add-buttons button {
 	padding: .15em .4em;
@@ -563,37 +542,11 @@ footer h4 {
 	color: #606;
 }
 
-#carbonads {
-	float: right;
-	width: 130px;
-	font-size: 80%;
-}
-
-#carbonads a {
-	display: block;
-}
-
 /* < 1051px */
 @media (max-width: 1050px) {
 	table pre, table td.code {
 		width: 550px;
 	}
-}
-
-/* < 1041px */
-@media (max-width: 1040px) {
-	body {
-		margin: 0;
-		border: 0;
-	}
-
-	body, #comments .meta {
-		width: 100%;
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
-	}
-
 }
 
 /* < 801px */
