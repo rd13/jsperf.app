@@ -1,6 +1,12 @@
-import hljs from 'highlight.js'
+import hljs from 'highlight.js/lib/core'
 import DOMPurify from 'isomorphic-dompurify'
 import crypto from 'crypto'
+
+import javascript from 'highlight.js/lib/languages/javascript'
+hljs.registerLanguage('javascript', javascript);
+
+import xml from 'highlight.js/lib/languages/xml'
+hljs.registerLanguage('xml', xml);
 
 export const highlightSanitizedJS = js => {
   return DOMPurify.sanitize(hljs.highlight(js, {

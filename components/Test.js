@@ -1,4 +1,3 @@
-import hljs from 'highlight.js'
 import {highlightSanitizedJS} from '../utils/hljs'
 
 export default function Test(props) {
