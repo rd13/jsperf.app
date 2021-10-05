@@ -1,6 +1,6 @@
 import SandboxIframe from '../components/SandboxIframe'
 import PostMessageBroker from '../utils/postMessageBroker'
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import styles from './TestRunner.module.scss'
 import UserAgent from './userAgent'
 import Test from './Test'
@@ -75,7 +75,6 @@ export default function Tests(props) {
   const sandboxUrl = `http://localhost:3000/sandbox/${id}`
 
   const run = () => {
-
     broker.emit('run')
 
     setTests(tests => {

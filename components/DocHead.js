@@ -7,7 +7,6 @@ const DocHead = () => {
       <Head>
         <meta charSet="utf-8" />
 
-        <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#CF351C" />
       </Head>
     </>

@@ -1,8 +1,8 @@
 import { pagesCollection } from '../lib/mongodb'
 import TestRunner from '../components/TestRunner'
-import marked from 'marked'
-import DOMPurify from 'isomorphic-dompurify'
-import {highlightSanitizedHTML, highlightSanitizedJS} from '../utils/hljs'
+
+import Layout from '../components/Layout'
+
 import Revisions from '../components/sections/Revisions'
 import Info from '../components/sections/Info'
 import Setup from '../components/sections/Setup'
@@ -14,10 +14,9 @@ export default function Slug(props) {
   const {revisions} = props
 
   return (
-    <>
+    <Layout>
       <hgroup>
         <h1>{title}</h1>
-        <h2>JavaScript performance comparison</h2>
       </hgroup>
       <p className="meta">
         {revision > 1
@@ -55,7 +54,7 @@ export default function Slug(props) {
           <Revisions revisions={revisions} />
         </section>
       }
-    </>
+    </Layout>
   )
 }
 
@@ -92,8 +91,8 @@ export const getStaticProps = async ({params}) => {
 
   return { 
     props: { 
-      pageData: JSON.parse(JSON.stringify(pageData)), // wtf bro
-      revisions: JSON.parse(JSON.stringify(revisions)) // wtf bro
+      pageData: JSON.parse(JSON.stringify(pageData)),
+      revisions: JSON.parse(JSON.stringify(revisions))
     },
     revalidate: 60
   }
@@ -112,7 +111,7 @@ export async function getStaticPaths() {
         /**
          * Use base path where revision 1
          */
-        slug: page.revision === '1'
+        slug: page.revision === 1
           ? [page.slug]
           : [page.slug, `${page.revision}`]
       }
