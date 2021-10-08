@@ -3,6 +3,7 @@ import TestRunner from '../components/TestRunner'
 
 import Layout from '../components/Layout'
 
+import Meta from '../components/sections/Meta'
 import Revisions from '../components/sections/Revisions'
 import Info from '../components/sections/Info'
 import Setup from '../components/sections/Setup'
@@ -10,7 +11,7 @@ import Teardown from '../components/sections/Teardown'
 import PrepCode from '../components/sections/PrepCode'
 
 export default function Slug(props) {
-  const { _id, title, slug, revision, author, published, info, initHTML, setup, teardown, tests } = props.pageData
+  const { _id, title, slug, revision, authorName, published, info, initHTML, setup, teardown, tests } = props.pageData
   const {revisions} = props
 
   return (
@@ -18,14 +19,9 @@ export default function Slug(props) {
       <hgroup>
         <h1>{title}</h1>
       </hgroup>
-      <p className="meta">
-        {revision > 1
-            ? <span>Revision {revision} of this test case</span>
-            : <span>Test case</span>
-        }
-        <span> created by {author} </span>
-        <time dateTime={published} pubdate="true">{published}</time>
-      </p>
+      <section>
+        <Meta pageData={props.pageData} />
+      </section>
       {info &&
         <section>
           <Info info={info} />
@@ -80,7 +76,7 @@ export const getStaticProps = async ({params}) => {
 
   const revisions = await pages.find({
     slug
-  }, {projection: {slug: 1, revision: 1, published: 1} }).sort({revision: 1}).toArray()
+  }, {projection: {slug: 1, revision: 1, authorName: 1, published: 1} }).sort({revision: 1}).toArray()
 
   // console.log(revisions)
   if (!pageData) {

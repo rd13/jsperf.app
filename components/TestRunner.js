@@ -20,8 +20,8 @@ export default function Tests(props) {
   const [tests, setTests] = useState(props.tests)
 
   const runButtonText = {
-    'default'  : 'Run',
-    'ready'    : 'Run',
+    'default'  : 'Run tests',
+    'ready'    : 'Run tests',
     'complete' : 'Run again',
     'running'  : 'Stop running'
   }

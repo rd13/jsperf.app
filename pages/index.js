@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { pagesCollection } from '../lib/mongodb'
 import Layout from '../components/Layout'
 import Link from 'next/link'
+import { signIn } from "next-auth/react"
 import GitHubIcon from '../components/GitHubIcon'
 import buttonStyles from '../styles/buttons.module.css'
 
@@ -33,7 +34,7 @@ export default function Home(props) {
       </pre>
 
       <h2>Create a test case</h2>
-      <button className={buttonStyles.default}><GitHubIcon fill="#000000" width={32} height={32} />Login with GitHub to Create Test Cases</button>
+      <button className={buttonStyles.default} onClick={() => signIn("github")}><GitHubIcon fill="#000000" width={32} height={32} />Login with GitHub to Create Test Cases</button>
     </Layout>
   )
 }
