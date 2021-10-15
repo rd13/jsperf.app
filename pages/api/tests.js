@@ -41,12 +41,15 @@ async function addPost(req, res) {
       // Set this insert revision as an increment of the previous, or default 1
       payload.revision = lastInsert ? lastInsert.revision + 1 : 1
 
+      payload.published = new Date()
+
       console.log(payload)
 
       await pages.insertOne(payload)
 
       return res.json({
         message: 'Post added successfully',
+        created: { slug: payload.slug, revision: payload.revision },
         success: true,
       });
     } catch (error) {

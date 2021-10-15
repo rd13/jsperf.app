@@ -1,36 +1,36 @@
 import { pagesCollection } from '../../../lib/mongodb'
 import { useState, useEffect } from 'react'
+import Router from 'next/router'
+import Layout from '../../../components/Layout'
 import buttonStyles from '../../../styles/buttons.module.css'
 import formStyles from '../../../styles/forms.module.css'
 
-const TestCaseFieldset = (props) => {
-  const {index} = props
+const TestCaseFieldset = ({index, remove, test}) => {
+
   return (
     <fieldset name="testCase">
-      <h2>Code snippet {index + 1}</h2>
+      <h2>Code snippet {index + 1} {remove && <a href="" onClick={remove}>Remove</a>}</h2>
       <div>
         <label htmlFor="testTitle">Title</label>
-        <input type="text" name="testTitle" />
+        <input type="text" name="testTitle" required defaultValue={test && test.title} />
       </div>
       <div>
         <label htmlFor="async">Async</label>
-        <input type="checkbox" name="async" />
+        <input type="checkbox" name="async" defaultValue={test && test.async} />
       </div>
       <div>
         <label htmlFor="code" className="y-top">Description <span>(in case you feel further explanation is needed)</span><span>(Markdown syntax is allowed)</span> </label>
-        <textarea name="code" maxLength="16777215"></textarea>
+        <textarea name="code" maxLength="16777215" required defaultValue={test && test.code} />
       </div>
     </fieldset>
   )
 }
 
 export default function Edit(props) {
-  const { slug, revision, title } = props.pageData
+  const { slug, revision, title, tests } = props.pageData
 
-  const newTestCase = async event => {
+  const submitFormHandler = async event => {
     event.preventDefault()
-
-    const form = event.target
 
     // Pick fields referenced by their ID from the form to include in request payload
     // Uses IIFE to destructure event.target. event.target is the form.
@@ -50,12 +50,12 @@ export default function Edit(props) {
       initHTML: initHTML.value,
       setup: setup.value,
       teardown: teardown.value
-    }))(form)
+    }))( event.target )
 
-    // Select test case fieldset elements referenced by name="testCase"
-    const formTestCases = form.elements.testCase
+    // Get a list of test case fieldset elements referenced by name="testCase"
+    const formTestCases = event.target.elements.testCase
 
-    // Map each HTMLCollection and select elements to include in request payload by name="title/slug/etc"
+    // Select which element values to include in payload, reference by name=title,slug,async
     formData.tests = [...formTestCases].map(testCase => (
       {
         title: testCase.elements.testTitle.value,
@@ -66,39 +66,59 @@ export default function Edit(props) {
 
     console.log(formData)
 
-    // save the post
+    // Send payload to tests API
     const response = await fetch('/api/tests', {
       method: 'POST',
       body: JSON.stringify(formData),
     })
 
-    const data = await response.json();
-    console.log(data)
+    const {success, created} = await response.json();
+
+    if (success) {
+      // redirect to test page
+      Router.push(`/${created.slug}/${created.revision}`)
+    }
     // console.log(e.target.slug.value)
   }
 
   // The number of test cases to render in the form
-  const [noTestCases, setNoTestCases] = useState(2)
+  const [noTestCases, setNoTestCases] = useState(tests.length || 2)
 
   let testCaseFieldsets = []
 
+  let conditionalProps = {}
+
   for (let i = 0; i < noTestCases; i++)  {
-    testCaseFieldsets.push(<TestCaseFieldset key={i} index={i} />)
+    // If we are creating from an existing test
+    conditionalProps.test = tests[i] ? tests[i] : {}
+
+      console.log(i, tests[i])
+    console.log(testCaseFieldsets)
+
+    // Add a remove prop to the last test
+    if (i === noTestCases - 1 && i > 1) {
+      conditionalProps.remove = (event) => {
+        event.preventDefault()
+        setNoTestCases(noTestCases - 1)
+      }
+    }
+
+    testCaseFieldsets.push(<TestCaseFieldset key={i} index={i} {...conditionalProps} />)
   }
 
   return (
-    <>
+    <Layout>
       <h1>Edit: {slug} - {revision}</h1>
-      <form onSubmit={newTestCase} className={formStyles.editForm}>
+      <form onSubmit={submitFormHandler} className={formStyles.editForm}>
         <fieldset>
           <div className="w-full bg-blue text-white"><h3>Test case details</h3></div>
           <div>
             <label htmlFor="title">Title</label>
-            <input type="text" id="title" name="title" defaultValue={title} />
+            <input type="text" id="title" name="title" defaultValue={title} required />
           </div>
           <div>
             <label htmlFor="slug">Slug</label>
-            <input type="text" id="slug" name="slug" defaultValue={slug} />
+            <input type="text" id="slug" name="slug" defaultValue={slug} required />
             <small>https://jsperf.app/{slug}</small>
           </div>
           <div>
@@ -134,13 +154,12 @@ export default function Edit(props) {
           <button type="submit" className={buttonStyles.default}>Save test case</button>
         </div>
       </form>
-    </>
+    </Layout>
   )
 }
 
 export async function getStaticProps({params}) {
   const { slug, revision } = params
-  console.log(slug, revision)
 
   const pages = await pagesCollection()
 
