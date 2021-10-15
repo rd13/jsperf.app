@@ -23,21 +23,32 @@ export default async function handler(req, res) {
 
 // Adding a new post
 async function addPost(req, res) {
-  const schema = {
-    required: ['title', 'slug'],
-    properties: {
-      title: { bsonType: 'string' },
-      slug: { bsonType: 'string' }
-    }
-  }
     try {
-        const pages = await pagesCollection();
-        await pages.insertOne(JSON.parse(req.body));
+      const pages = await pagesCollection()
 
-        return res.json({
-            message: 'Post added successfully',
-            success: true,
-        });
+      const payload = JSON.parse(req.body)
+
+      const {slug} = payload
+
+      // Get the most recent revision for this slug
+      const lastInsert = await pages.findOne(
+        { slug },
+        {
+          sort: {revision: -1},
+          projection: {revision: 1}
+        })
+
+      // Set this insert revision as an increment of the previous, or default 1
+      payload.revision = lastInsert ? lastInsert.revision + 1 : 1
+
+      console.log(payload)
+
+      await pages.insertOne(payload)
+
+      return res.json({
+        message: 'Post added successfully',
+        success: true,
+      });
     } catch (error) {
         return res.json({
             message: new Error(error).message,

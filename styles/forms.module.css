@@ -1,0 +1,26 @@
+.editForm input[type=text] {
+  width: 30em;
+}
+
+.editForm h2 {
+  padding: 5px 0;
+  padding-left: calc(150px + 10px);
+}
+
+.editForm h3 {
+  padding: 5px 0;
+  padding-left: calc(150px + 10px);
+}
+
+.editForm small {
+  padding-left: calc(150px + 10px);
+}
+
+@media (max-width: 720px) {
+  .editForm h2 {
+    padding-left: 10px;
+  }
+  .editForm h3 {
+    padding-left: 10px;
+  }
+}

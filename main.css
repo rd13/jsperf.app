@@ -151,37 +151,6 @@ a:hover span, a:focus span, #comments .owner .meta a {
 	font-weight: bold;
 }
 
-form label {
-	float: left;
-	width: 14em;
-	cursor: pointer;
-	text-align: right;
-	margin-right: 1em;
-	padding: .4em;
-}
-
-label.inline {
-	float: none;
-	padding: 0;
-	margin: 0;
-}
-
-label[for="visible"], label[for$="][defer]"] {
-	position: relative;
-	top: -.37em;
-}
-
-label span {
-	display: block;
-	font-size: 90%;
-	color: #b4b4b4;
-}
-
-label em {
-	color: red;
-	font-style: normal;
-}
-
 .js #advanced {
 	display: none;
 }
@@ -208,23 +177,9 @@ textarea {
 	*width: 42.4em; /* IE < 8 */
 }
 
-input, textarea {
-	border: 1px solid #b4b4b4;
-	padding: .4em;
-}
-
-input[type="search"] {
-	-webkit-appearance: none;
-}
-
 #visible, #calibrate { /* checkboxes, for IE */
 	border: 0;
 	padding: 0;
-}
-
-form h2, form h3, form h4, p.error, .preview, #add-libraries, #add-buttons {
-	padding-left: 250px;
-	display: block;
 }
 
 hgroup h2, #controls, #firebug, #java {
@@ -265,11 +220,6 @@ h1, h2, h3, h4 {
 h1 {
 	padding-top: 1em;
 	font-size: 1.4em;
-}
-
-form h3 {
-	padding-top: .2em;
-	padding-bottom: .2em;
 }
 
 h1 em {

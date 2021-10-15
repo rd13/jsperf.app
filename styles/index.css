@@ -22,6 +22,41 @@ button {
   border: 0;
 }
 
+label {
+  margin: 5px 10px 5px 0;
+  width: 150px;
+  display: inline-block;
+  text-align: right;
+}
+
+input {
+  vertical-align: middle;
+  margin: 5px 10px 5px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.y-top {
+  vertical-align: top;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.w-md {
+  width: 20em;
+}
+
+.bg-blue {
+  background-image: linear-gradient(to bottom, #6ca5dd, #1a6ab9);
+  /* background-color: #1f6feb; */
+}
+
+.text-white {
+  color: #FFF;
+}
+
 /* < 1041px */
 @media (max-width: 1040px) {
 	body {
