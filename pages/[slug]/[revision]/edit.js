@@ -27,7 +27,7 @@ const TestCaseFieldset = ({index, remove, test}) => {
 }
 
 export default function Edit(props) {
-  const { slug, revision, title, tests } = props.pageData
+  const { slug, revision, title, tests, initHTML, setup, teardown } = props.pageData
 
   const submitFormHandler = async event => {
     event.preventDefault()
@@ -92,9 +92,6 @@ export default function Edit(props) {
     // If we are creating from an existing test
     conditionalProps.test = tests[i] ? tests[i] : {}
 
-      console.log(i, tests[i])
-    console.log(testCaseFieldsets)
-
     // Add a remove prop to the last test
     if (i === noTestCases - 1 && i > 1) {
       conditionalProps.remove = (event) => {
@@ -134,15 +131,15 @@ export default function Edit(props) {
           <div className="w-full bg-blue text-white"><h3>Preparation Code</h3></div>
           <div>
             <label htmlFor="initHTML" className="y-top">Preparation code HTML<span>(this will be inserted in the <code>{`<body>`}</code> of a valid HTML5 document in standards mode)<br />(useful when testing DOM operations or including libraries)</span></label>
-            <textarea name="initHTML" id="initHTML" maxLength="16777215"></textarea>
+            <textarea name="initHTML" id="initHTML" maxLength="16777215">{initHTML}</textarea>
           </div>
           <div>
             <label htmlFor="setup" className="y-top">Setup</label>
-            <textarea name="setup" id="setup" maxLength="16777215"></textarea>
+            <textarea name="setup" id="setup" maxLength="16777215">{setup}</textarea>
           </div>
           <div>
             <label htmlFor="teardown" className="y-top">Teardown</label>
-            <textarea name="teardown" id="teardown" maxLength="16777215"></textarea>
+            <textarea name="teardown" id="teardown" maxLength="16777215">{teardown}</textarea>
           </div>
         </fieldset>
         <fieldset>
@@ -166,6 +163,12 @@ export async function getStaticProps({params}) {
   const pageData = await pages.findOne({
     slug, revision: parseInt(revision) || 1
   }, {projection: { _id: 0 }})
+
+  if (!pageData) {
+    return {
+      notFound: true
+    }
+  }
 
   return {
     props: { 

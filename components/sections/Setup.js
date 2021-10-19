@@ -5,7 +5,7 @@ const Setup = (props) => {
   return (
     <>
       <h2>Setup</h2>
-      <pre>
+      <pre style={{maxHeight: '500px'}}>
         <code dangerouslySetInnerHTML={{__html: highlightSanitizedJS(setup)}} />
       </pre>
     </>

@@ -1,16 +1,16 @@
 import React from 'react'
 import DocHead from './DocHead'
+import Header from './Header'
+import Footer from './Footer'
 
 const Layout = (props) => {
   const {children} = props
   return (
     <>
       <DocHead {...props} />
+      <Header />
       { children }
-      <footer className="">
-        <a href="">Add Test</a>
-        <a href="https://github.com/rd13/jsperf.app">GitHub</a>
-      </footer>
+      <Footer />
     </>
   )
 }
