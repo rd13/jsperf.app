@@ -26,8 +26,42 @@ const TestCaseFieldset = ({index, remove, test}) => {
   )
 }
 
-export default function Edit(props) {
-  const { slug, revision, title, tests, initHTML, setup, teardown } = props.pageData
+export default function Edit({pageData}) {
+  // Default form values if none are provided via props.pageData
+  const formDefaults = Object.assign({}, {
+    slug: '',
+    title: '',
+    initHTML: '',
+    setup: '',
+    teardown: '',
+    tests: []
+  }, pageData)
+
+  const [slug, setSlug] = useState(formDefaults.slug)
+  const [title, setTitle] = useState(formDefaults.title)
+
+  // manualSlug is a state var so that that we stop auto generating a slug from the 
+  // title when a slug is manually entered
+  const [manualSlug, setManualSlug] = useState(false)
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value)
+  }
+
+  const handleSlugChange = (event) => {
+    setSlug(event.target.value)
+    setManualSlug(true)
+  }
+
+  useEffect(() => {
+    // Make the slug url friendly
+    const formattedSlug = title.toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+
+    // Only update if a slug has not been manually defined
+    !manualSlug && setSlug(formattedSlug)
+  }, [title, manualSlug, setSlug])
 
   const submitFormHandler = async event => {
     event.preventDefault()
@@ -82,7 +116,7 @@ export default function Edit(props) {
   }
 
   // The number of test cases to render in the form
-  const [noTestCases, setNoTestCases] = useState(tests.length || 2)
+  const [noTestCases, setNoTestCases] = useState(formDefaults.tests.length || 2)
 
   let testCaseFieldsets = []
 
@@ -90,7 +124,7 @@ export default function Edit(props) {
 
   for (let i = 0; i < noTestCases; i++)  {
     // If we are creating from an existing test
-    conditionalProps.test = tests[i] ? tests[i] : {}
+    conditionalProps.test = formDefaults.tests[i] ? formDefaults.tests[i] : {}
 
     // Add a remove prop to the last test
     if (i === noTestCases - 1 && i > 1) {
@@ -105,17 +139,17 @@ export default function Edit(props) {
 
   return (
     <Layout>
-      <h1>Edit: {slug} - {revision}</h1>
+      <h1>Edit: {formDefaults.slug} - {formDefaults.revision}</h1>
       <form onSubmit={submitFormHandler} className={formStyles.editForm}>
         <fieldset>
           <div className="w-full bg-blue text-white"><h3>Test case details</h3></div>
           <div>
             <label htmlFor="title">Title</label>
-            <input type="text" id="title" name="title" defaultValue={title} required />
+            <input type="text" id="title" name="title" value={title} onChange={handleTitleChange} required />
           </div>
           <div>
             <label htmlFor="slug">Slug</label>
-            <input type="text" id="slug" name="slug" defaultValue={slug} required />
+            <input type="text" id="slug" name="slug" value={slug} pattern="[A-Za-z0-9](?:-?[A-Za-z0-9])*" onChange={handleSlugChange} required />
             <small>https://jsperf.app/{slug}</small>
           </div>
           <div>
@@ -131,15 +165,15 @@ export default function Edit(props) {
           <div className="w-full bg-blue text-white"><h3>Preparation Code</h3></div>
           <div>
             <label htmlFor="initHTML" className="y-top">Preparation code HTML<span>(this will be inserted in the <code>{`<body>`}</code> of a valid HTML5 document in standards mode)<br />(useful when testing DOM operations or including libraries)</span></label>
-            <textarea name="initHTML" id="initHTML" maxLength="16777215">{initHTML}</textarea>
+            <textarea name="initHTML" id="initHTML" maxLength="16777215" defaultValue={formDefaults.initHTML}></textarea>
           </div>
           <div>
             <label htmlFor="setup" className="y-top">Setup</label>
-            <textarea name="setup" id="setup" maxLength="16777215">{setup}</textarea>
+            <textarea name="setup" id="setup" maxLength="16777215" defaultValue={formDefaults.setup}></textarea>
           </div>
           <div>
             <label htmlFor="teardown" className="y-top">Teardown</label>
-            <textarea name="teardown" id="teardown" maxLength="16777215">{teardown}</textarea>
+            <textarea name="teardown" id="teardown" maxLength="16777215" defaultValue={formDefaults.teardown}></textarea>
           </div>
         </fieldset>
         <fieldset>
