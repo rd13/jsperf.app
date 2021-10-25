@@ -9,6 +9,14 @@ import { SessionProvider } from "next-auth/react"
 
 function App({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter()
+
+  // Exclude sandbox from any additional scripts / providers
+  if (router.pathname === '/sandbox/[id]') {
+    return (
+      <Component {...pageProps} />
+    )
+  }
+
   useEffect(() => {
     const handleRouteChange = (url) => {
       gtag.pageview(url)

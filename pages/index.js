@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import Layout from '../components/Layout'
 import { signIn, useSession } from "next-auth/react"
 import GitHubIcon from '../components/GitHubIcon'
@@ -18,9 +17,9 @@ export default function Home(props) {
   return (
     <Layout>
       <h1>jsPerf.app — JavaScript performance sandbox &amp; jsperf.com mirror</h1>
-      <p>This is a complete rewrite in homage to the once excellent jsperf.com with proper code sandboxing and hopefully a more modern maintainable <a href="https://github.com/rd13/jsperf.app">codebase</a>.</p>
+      <p>This is a complete rewrite in homage to the once excellent jsperf.com now with proper code sandboxing and hopefully a more modern maintainable <a href="https://github.com/rd13/jsperf.app">codebase</a> whilst maintaining the familiar UI and asthetic.</p>
 
-      <p>Most jsperf.com URLs / tests are mirrored at the same path, e.g:</p>
+      <p><i>Most</i> jsperf.com URLs / tests are mirrored at the same path, e.g:</p>
 
       <pre>https://jsperf.com/js-template-engines-performance/32</pre>
 
@@ -30,12 +29,13 @@ export default function Home(props) {
         <a href="/js-template-engines-performance/32">https://jsperf.app/js-template-engines-performance/32</a>
       </pre>
 
+      <h2>Create a test case</h2>
+
       { session &&
           <EditForm />
       }
       { !session &&
           <>
-            <h2>Create a test case</h2>
             <button className={buttonStyles.default} onClick={() => signIn("github")}><GitHubIcon fill="#000000" width={32} height={32} />Login with GitHub to Create Test Cases</button>
           </>
       }

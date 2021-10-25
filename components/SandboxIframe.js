@@ -2,7 +2,7 @@
 
 export default function SandboxIframe(props) {
   const {id} = props
-  const sandboxUrl = `http://localhost:3000/sandbox/${id}`
+  const sandboxUrl = `/sandbox/${id}`
   return (
     <iframe src={sandboxUrl} sandbox="allow-scripts"></iframe>
   )
