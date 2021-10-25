@@ -3,6 +3,7 @@ import Layout from '../components/Layout'
 import { signIn, useSession } from "next-auth/react"
 import GitHubIcon from '../components/GitHubIcon'
 import buttonStyles from '../styles/buttons.module.css'
+import EditForm from '../components/forms/Edit'
 
 const LinkWithLinkText = (props) => {
   return (
@@ -29,8 +30,15 @@ export default function Home(props) {
         <a href="/js-template-engines-performance/32">https://jsperf.app/js-template-engines-performance/32</a>
       </pre>
 
-      <h2>Create a test case</h2>
-      <button className={buttonStyles.default} onClick={() => signIn("github")}><GitHubIcon fill="#000000" width={32} height={32} />Login with GitHub to Create Test Cases</button>
+      { session &&
+          <EditForm />
+      }
+      { !session &&
+          <>
+            <h2>Create a test case</h2>
+            <button className={buttonStyles.default} onClick={() => signIn("github")}><GitHubIcon fill="#000000" width={32} height={32} />Login with GitHub to Create Test Cases</button>
+          </>
+      }
     </Layout>
   )
 }
