@@ -1,6 +1,5 @@
 import hljs from 'highlight.js/lib/core'
 import DOMPurify from 'isomorphic-dompurify'
-import crypto from 'crypto'
 
 import javascript from 'highlight.js/lib/languages/javascript'
 hljs.registerLanguage('javascript', javascript);
@@ -15,7 +14,7 @@ export const highlightSanitizedJS = js => {
 }
 
 export const highlightSanitizedHTML = (html) => {
-  const token = crypto.randomBytes(20).toString('hex')
+  const token = '@jsperfAppToken'
 
   const reScripts = new RegExp('(<script[^>]*?>)([\\s\\S]*?)(</script>)', 'gi');
 
