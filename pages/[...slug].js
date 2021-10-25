@@ -47,7 +47,7 @@ export default function Slug(props) {
       </section>
       {revisions &&
         <section>
-          <Revisions revisions={revisions} />
+          <Revisions revisions={revisions} slug={slug} revision={revision} />
         </section>
       }
     </Layout>

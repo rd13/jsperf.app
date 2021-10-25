@@ -93,7 +93,7 @@ export default function Edit({pageData}) {
     formData.tests = [...formTestCases].map(testCase => (
       {
         title: testCase.elements.testTitle.value,
-        'async': testCase.elements.async.value,
+        'async': testCase.elements.async.checked,
         code: testCase.elements.code.value
       }
     ))
@@ -105,6 +105,7 @@ export default function Edit({pageData}) {
       method: 'POST',
       body: JSON.stringify(formData),
     })
+
 
     const {success, created} = await response.json();
 
@@ -139,7 +140,6 @@ export default function Edit({pageData}) {
 
   return (
     <Layout>
-      <h1>Edit: {formDefaults.slug} - {formDefaults.revision}</h1>
       <form onSubmit={submitFormHandler} className={formStyles.editForm}>
         <fieldset>
           <div className="w-full bg-blue text-white"><h3>Test case details</h3></div>

@@ -1,4 +1,4 @@
-import {pagesCollection} from '../../../lib/mongodb'
+import {pagesCollection} from '../../lib/mongodb'
 
 export default async function handler(req, res) {
   // switch the methods
@@ -46,8 +46,6 @@ async function addPost(req, res) {
     payload.revision = lastInsert ? lastInsert.revision + 1 : 1
 
     payload.published = new Date()
-
-    console.log(payload)
 
     await pages.insertOne(payload)
 
