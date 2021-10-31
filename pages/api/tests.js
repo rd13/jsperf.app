@@ -1,32 +1,7 @@
 import {pagesCollection} from '../../lib/mongodb'
 
-export default async function handler(req, res) {
-  // switch the methods
-  switch (req.method) {
-    case 'GET': {
-      return getPosts(req, res);
-    }
-
-    case 'POST': {
-      return addPost(req, res);
-    }
-
-    case 'PUT': {
-      return updatePost(req, res);
-    }
-
-    case 'DELETE': {
-      return deletePost(req, res);
-    }
-  }
-}
-
-function getPosts(req, res) {
-  return res.json({success: true})
-}
-
 // Adding a new post
-async function addPost(req, res) {
+const addPost = async (req, res) => {
   try {
     const pages = await pagesCollection()
 
@@ -38,8 +13,12 @@ async function addPost(req, res) {
     const lastInsert = await pages.findOne(
       { slug },
       {
-        sort: {revision: -1},
-        projection: {revision: 1}
+        sort: {
+          revision: -1
+        },
+        projection: {
+          revision: 1
+        }
       })
 
     // Set this insert revision as an increment of the previous, or default 1
@@ -61,3 +40,17 @@ async function addPost(req, res) {
     });
   }
 }
+
+const handler = async (req, res) => {
+  switch (req.method) {
+    case 'POST': {
+      return addPost(req, res);
+    }
+
+    case 'PUT': {
+      return updatePost(req, res);
+    }
+  }
+}
+
+export default handler

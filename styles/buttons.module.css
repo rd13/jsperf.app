@@ -3,10 +3,13 @@
   background-color: #ebebeb;
   color: #000000;
   padding: 5px;
-  align-items: center;
   border-radius: 4px;
   border: 1px solid #999;
   cursor: pointer;
+}
+
+.default > * {
+  vertical-align: middle;
 }
 
 .groupRight {

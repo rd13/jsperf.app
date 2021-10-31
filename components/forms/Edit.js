@@ -4,7 +4,6 @@ import buttonStyles from '../../styles/buttons.module.css'
 import formStyles from '../../styles/forms.module.css'
 
 const TestCaseFieldset = ({index, remove, test}) => {
-
   return (
     <fieldset name="testCase">
       <h2>Code snippet {index + 1} {remove && <a href="" onClick={remove}>Remove</a>}</h2>

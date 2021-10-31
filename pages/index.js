@@ -36,7 +36,7 @@ export default function Home(props) {
       }
       { !session &&
           <>
-            <button className={buttonStyles.default} onClick={() => signIn("github")}><GitHubIcon fill="#000000" width={32} height={32} />Login with GitHub to Create Test Cases</button>
+          <button className={buttonStyles.default} onClick={() => signIn("github")}><GitHubIcon fill="#000000" width={32} height={32} /><span>Login with GitHub to Create Test Cases</span></button>
           </>
       }
     </Layout>
