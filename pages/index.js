@@ -38,10 +38,3 @@ export default function Home(props) {
     </Layout>
   )
 }
-
-export async function getStaticProps(context) {
-  return {
-    props: { 
-    }
-  }
-}

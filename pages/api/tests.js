@@ -47,6 +47,11 @@ const addPost = async (req, res) => {
   }
 }
 
+const updatePost = async (req, res) => {
+  console.log('update post')
+
+}
+
 const handler = async (req, res) => {
   switch (req.method) {
     case 'POST': {
