@@ -1,7 +1,10 @@
 import {pagesCollection} from '../../lib/mongodb'
+import { getSession } from "next-auth/react"
 
 // Adding a new post
 const addPost = async (req, res) => {
+  const session = await getSession({ req })
+
   try {
     const pages = await pagesCollection()
 
@@ -25,6 +28,9 @@ const addPost = async (req, res) => {
     payload.revision = lastInsert ? lastInsert.revision + 1 : 1
 
     payload.published = new Date()
+
+    // Associate tests with github user
+    session?.user?.id && (payload.githubID = session.user.id)
 
     await pages.insertOne(payload)
 

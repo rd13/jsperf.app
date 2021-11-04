@@ -5,11 +5,14 @@ export default function Header() {
 
   return (
     <header>
-      { session &&
-        <>
-          <span>Logged in as: {session.user.name}</span>
-          <button onClick={() => signOut()}>Sign out</button>
-        </>
+      { 
+        /*
+        session &&
+          <>
+            <span>Logged in as: {session.user.name}</span>
+            <button onClick={() => signOut()}>Sign out</button>
+          </>
+        */
       }
     </header>
   )

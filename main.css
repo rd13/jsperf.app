@@ -238,32 +238,33 @@ li.current a {
 footer {
 	display: block;
 	margin-top: 2em;
-	border-top: 2px solid #c4c4c4;
-	font-size: 0.9em;
+	border-top: 1px solid #c4c4c4;
 	overflow: hidden;
 }
 
 footer ul {
+  display: flex;
 	list-style: none;
 	padding: 0;
   margin: 0;
 }
 
 footer > ul > li {
-	float: left;
-	width: 15%;
+  margin: 0 10px;
+  line-height: 50px;
+  height: 50px;
+}
+
+footer > ul > li.right {
+  margin-left: auto;
 }
 
 footer > ul > li:first-child {
-	width: 55%;
+  margin-left: 0;
 }
 
-footer ul ul li {
-    margin-bottom: 0.1em;
-}
-
-footer h4 {
-    margin-bottom: 0.2em;
+footer > ul > li:last-child {
+  margin-right: 0;
 }
 
 #add-test {

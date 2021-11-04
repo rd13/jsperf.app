@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
+import { useSession } from "next-auth/react"
 import buttonStyles from '../../styles/buttons.module.css'
 import formStyles from '../../styles/forms.module.css'
 
@@ -24,6 +25,8 @@ const TestCaseFieldset = ({index, remove, test}) => {
 }
 
 export default function EditForm({pageData}) {
+  const { data: session } = useSession()
+
   // Default form values if none are provided via props.pageData
   const formDefaults = Object.assign({}, {
     slug: '',
@@ -97,9 +100,12 @@ export default function EditForm({pageData}) {
 
     console.log(formData)
 
+    const isOwner = pageData?.githubID === session?.user?.id
+
     // Send payload to tests API
+    // Switch method between edit / create
     const response = await fetch('/api/tests', {
-      method: 'POST',
+      method: isOwner ? 'PUT' : 'POST',
       body: JSON.stringify(formData),
     })
 
@@ -110,7 +116,6 @@ export default function EditForm({pageData}) {
       // redirect to test page
       Router.push(`/${created.slug}/${created.revision}`)
     }
-    // console.log(e.target.slug.value)
   }
 
   // The number of test cases to render in the form

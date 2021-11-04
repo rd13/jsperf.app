@@ -1,4 +1,5 @@
 import {datetimeLong} from '../../utils/Date'
+import Link from 'next/link'
 
 const Revisions = (props) => {
   const {revisions, slug, revision} = props
@@ -11,7 +12,9 @@ const Revisions = (props) => {
           const {revision, slug, authorName, published} = pageData
           return (
             <li key={index}>
-              <a href={revision === 1 ? `/${slug}` : `/${slug}/${revision}`}>Revision {revision}</a>: published {authorName && <span>by {authorName} </span>}on <time dateTime={published}>
+              <Link href={revision === 1 ? `/${slug}` : `/${slug}/${revision}`}>
+                <a>Revision {revision}</a>
+              </Link>: published {authorName && <span>by {authorName} </span>}on <time dateTime={published}>
                 {datetimeLong(published)}
               </time>
             </li>
