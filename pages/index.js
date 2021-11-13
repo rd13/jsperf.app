@@ -13,7 +13,7 @@ export default function Home(props) {
       <h1>jsPerf.app — Online JavaScript performance benchmarking &amp; jsperf.com mirror</h1>
       <p>This is a complete rewrite in homage to the once excellent jsperf.com now with proper code sandboxing and hopefully a more modern maintainable <a href="https://github.com/rd13/jsperf.app">codebase</a>.</p>
 
-      <p><i>Most</i> jsperf.com URLs / tests are mirrored at the same path, e.g:</p>
+      <p><i>Most</i> jsperf.com URLs are mirrored at the same path, e.g:</p>
 
       <pre>https://jsperf.com/js-template-engines-performance/32</pre>
 

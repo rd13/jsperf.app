@@ -91,11 +91,21 @@ export default function UI(props) {
     })
 
     broker.register('run', () => { 
-      console.log('calling ui run')
-      ui.run({
-        'async': true,
-        'queued': true
-      }) 
+      const stopped = !ui.running
+
+      ui.abort()
+      ui.length = 0
+
+      if (stopped) {
+        ui.push.apply(ui, uiBenchmarks.filter((bench) => {
+          return !bench.error && bench.reset()
+        }))
+
+        ui.run({
+          'async': true,
+          'queued': true
+        }) 
+      }
     })
   }, [])
 
