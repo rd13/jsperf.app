@@ -1,0 +1,32 @@
+.footer {
+	display: block;
+	margin-top: 2em;
+	border-top: 1px solid #c4c4c4;
+	overflow: hidden;
+}
+
+.footer ul {
+  display: flex;
+	list-style: none;
+	padding: 0;
+  margin: 0;
+}
+
+.footer > ul > li {
+  margin: 0 10px;
+  line-height: 50px;
+  height: 50px;
+}
+
+.footer > ul > li.right {
+}
+
+.footer > ul > li:first-child {
+  margin-left: 0;
+}
+
+.footer > ul > li:last-child {
+  margin-right: 0;
+  margin-left: auto;
+}
+

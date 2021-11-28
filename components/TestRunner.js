@@ -73,7 +73,7 @@ export default function Tests(props) {
     })
   }, [])
 
-  const sandboxUrl = `http://localhost:3000/sandbox/${id}`
+  const sandboxUrl = `/sandbox/${id}`
 
   const run = () => {
     broker.emit('run')
@@ -108,7 +108,7 @@ export default function Tests(props) {
       </div>
       <table id="test-table">
         <caption>Testing in <UserAgent /></caption>
-        <thead>
+        <thead className="bg-blue text-white">
           <tr>
             <th colSpan="2">Test</th>
             <th title="Operations per second (higher is better)">Ops/sec</th>

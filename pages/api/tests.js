@@ -48,8 +48,59 @@ const addPost = async (req, res) => {
 }
 
 const updatePost = async (req, res) => {
-  console.log('update post')
+  const session = await getSession({ req })
 
+  try {
+    const pages = await pagesCollection()
+
+    const payload = JSON.parse(req.body)
+
+    const {slug, revision} = payload
+
+    // Get the page we wish to update
+    const page = await pages.findOne(
+      { slug, revision },
+      {
+        projection: {
+          revision: 1,
+          githubID: 1,
+          _id: 1
+        }
+      })
+
+    if (!page) {
+      throw new Error('Trying to update a page that does not exist.')
+    }
+
+    if (page.githubID !== session?.user?.id) {
+      throw new Error('Does not have the authority to update this page.')
+    }
+
+    // Ensure we don't allow these fields to be updated
+    delete payload._id
+    delete payload.slug
+    delete payload.revision
+    delete payload.githubID
+
+    await pages.updateOne({
+      '_id': page._id
+    }, {
+      $set: {
+        ...payload
+      }
+    }).then(obj => {
+      res.json({
+        message: 'Updated page successfully',
+        success: true
+      })
+    })
+
+  } catch (error) {
+    return res.json({
+      message: new Error(error).message,
+      success: false,
+    });
+  }
 }
 
 const handler = async (req, res) => {
