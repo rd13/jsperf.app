@@ -13,7 +13,7 @@ const addPost = async (req, res) => {
     const {slug} = payload
 
     // Get the most recent revision for this slug
-    const lastInsert = await pages.findOne(
+    await pages.findOne(
       { slug },
       {
         sort: {
@@ -22,28 +22,30 @@ const addPost = async (req, res) => {
         projection: {
           revision: 1
         }
+      }).then(doc => {
+        // Set this insert revision as an increment of the previous, or default 1
+        payload.revision = doc ? doc.revision + 1 : 1
       })
-
-    // Set this insert revision as an increment of the previous, or default 1
-    payload.revision = lastInsert ? lastInsert.revision + 1 : 1
 
     payload.published = new Date()
 
     // Associate tests with github user
     session?.user?.id && (payload.githubID = session.user.id)
 
-    await pages.insertOne(payload)
-
-    return res.json({
-      message: 'Post added successfully',
-      created: { slug: payload.slug, revision: payload.revision },
-      success: true,
-    });
+    await pages.insertOne(payload).then(doc => {
+      console.log(doc)
+      const {slug, revision} = doc
+      res.json({
+        message: 'Post added successfully',
+        success: true,
+        data: { slug, revision },
+      })
+    })
   } catch (error) {
     return res.json({
       message: new Error(error).message,
       success: false,
-    });
+    })
   }
 }
 
@@ -76,7 +78,7 @@ const updatePost = async (req, res) => {
       throw new Error('Does not have the authority to update this page.')
     }
 
-    // Ensure we don't allow these fields to be updated
+    // Remove these fields from the update
     delete payload._id
     delete payload.slug
     delete payload.revision
@@ -91,7 +93,8 @@ const updatePost = async (req, res) => {
     }).then(obj => {
       res.json({
         message: 'Updated page successfully',
-        success: true
+        success: true,
+        data: { slug, revision },
       })
     })
 

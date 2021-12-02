@@ -31,6 +31,7 @@ export default function EditForm({pageData}) {
   const formDefaults = Object.assign({}, {
     slug: '',
     title: '',
+    visible: false,
     initHTML: '',
     setup: '',
     teardown: '',
@@ -98,23 +99,29 @@ export default function EditForm({pageData}) {
       }
     ))
 
-    console.log(formData)
-
+    // We are either creating or updating an existing document so switch between POST / PUT methods.
     const isOwner = pageData?.githubID === session?.user?.id
 
-    // Send payload to tests API
-    // Switch method between edit / create
+    // Editing an existing document
+    if (isOwner) {
+      formData.revision = pageData.revision
+    }
+
+    console.log(formData)
+
+    // Send form data to tests API
     const response = await fetch('/api/tests', {
       method: isOwner ? 'PUT' : 'POST',
       body: JSON.stringify(formData),
     })
 
 
-    const {success, created} = await response.json();
+    const {success, message, data} = await response.json();
+    console.log(success, message, data)
 
     if (success) {
       // redirect to test page
-      Router.push(`/${created.slug}/${created.revision}`)
+      Router.push(`/${data.slug}/${data.revision}`)
     }
   }
 
@@ -155,7 +162,7 @@ export default function EditForm({pageData}) {
         </div>
         <div>
           <label htmlFor="visible">Published</label>
-          <input type="checkbox" name="visible" id="visible" />(uncheck if you want to fiddle around before making the page public)
+          <input type="checkbox" name="visible" id="visible" defaultChecked={formDefaults.visible} />(uncheck if you want to fiddle around before making the page public)
         </div>
         <div>
           <label htmlFor="info" className="y-top">Description <span>(in case you feel further explanation is needed)</span><span>(Markdown syntax is allowed)</span> </label>

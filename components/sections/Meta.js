@@ -1,12 +1,17 @@
 import { datetimeLong } from '../../utils/Date'
 import { useSession } from "next-auth/react"
+import { useState } from 'react'
+import { useRouter } from 'next/router'
+import styles from './Meta.module.css'
 
 const Meta = (props) => {
-  const {slug, revision, authorName, published, visible, githubID} = props.pageData
+  const {slug, revision, authorName, published, githubID} = props.pageData
+
+  const [visible, setVisible] = useState(props.pageData?.visible)
 
   const { data: session, status } = useSession()
 
-  const isOwner = session && session.user.id === githubID
+  const isOwner = session?.user?.id === githubID
 
   const publish = async () => {
     const response = await fetch('/api/tests', {
@@ -17,10 +22,14 @@ const Meta = (props) => {
       }),
     })
 
-    const json  = await response.json()
+    const json = await response.json()
 
-    console.log(json)
+    if (json.success) {
+      setVisible(true)
+    }
   }
+
+  const { asPath } = useRouter()
 
   return (
     <>
@@ -30,12 +39,15 @@ const Meta = (props) => {
       }
       { authorName && <span> by {authorName} </span>}
       on <time dateTime={published} pubdate="true">{datetimeLong(published)}</time>
+      { isOwner && visible &&
+          <span>Published</span>
+      }
       { isOwner && !visible &&
-          <button onClick={publish}>Not published yet!</button> 
+          <button onClick={publish} className={styles.unpublishedLink}>Not published yet!</button> 
       }
       {
         isOwner &&
-          <button>Edit</button>
+          <a href={`${asPath}/edit`}>Edit</a>
       }
     </>
   )
