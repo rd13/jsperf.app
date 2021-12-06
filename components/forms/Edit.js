@@ -150,7 +150,7 @@ export default function EditForm({pageData}) {
   return (
     <form onSubmit={submitFormHandler} className={formStyles.editForm}>
       <fieldset>
-        <div className="w-full bg-blue text-white"><h3>Test case details</h3></div>
+        <div className="w-full bg-jsp-blue text-white"><h3>Test case details</h3></div>
         <div>
           <label htmlFor="title">Title</label>
           <input type="text" id="title" name="title" value={title} onChange={handleTitleChange} required />
@@ -170,7 +170,7 @@ export default function EditForm({pageData}) {
         </div>
       </fieldset>
       <fieldset>
-        <div className="w-full bg-blue text-white"><h3>Preparation Code</h3></div>
+        <div className="w-full bg-jsp-blue text-white"><h3>Preparation Code</h3></div>
         <div>
           <label htmlFor="initHTML" className="y-top">Preparation code HTML<span>(this will be inserted in the <code>{`<body>`}</code> of a valid HTML5 document in standards mode)<br />(useful when testing DOM operations or including libraries)</span></label>
           <textarea name="initHTML" id="initHTML" maxLength="16777215" defaultValue={formDefaults.initHTML}></textarea>
@@ -185,7 +185,7 @@ export default function EditForm({pageData}) {
         </div>
       </fieldset>
       <fieldset>
-        <div className="w-full bg-blue text-white"><h3>Test cases</h3></div>
+        <div className="w-full bg-jsp-blue text-white"><h3>Test cases</h3></div>
         {testCaseFieldsets}
       </fieldset>
       <div className={buttonStyles.groupRight}>

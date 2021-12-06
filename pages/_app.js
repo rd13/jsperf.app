@@ -1,6 +1,5 @@
 import 'highlight.js/styles/github.css'
-import '../main.css'
-import '../styles/index.css'
+import '../styles/globals.css'
 import * as gtag from '../lib/gtag'
 import { useEffect } from 'react'
 import Script from 'next/script'
