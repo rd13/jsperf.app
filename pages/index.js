@@ -16,13 +16,13 @@ export default function Home(props) {
           This is a complete rewrite in homage to the once excellent jsperf.com now with hopefully a more modern &amp; maintainable <a href="https://github.com/rd13/jsperf.app">codebase</a>.
         </p>
 
-        <p>
+        <p className="my-4">
           <i>Most</i> jsperf.com URLs are mirrored at the same path, e.g:
         </p>
 
         <pre>https://jsperf.com/js-template-engines-performance/32</pre>
 
-        <p>Can be accessed at:</p>
+        <p className="my-4">Can be accessed at:</p>
 
         <pre>
           <Link href="/js-template-engines-performance/32">

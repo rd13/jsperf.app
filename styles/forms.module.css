@@ -1,26 +1,27 @@
-.editForm input[type=text] {
-  width: 30em;
+.editForm fieldset {
+  @apply flex flex-col w-full;
 }
 
-.editForm h2 {
-  padding: 5px 0;
-  padding-left: calc(150px + 10px);
+.editForm fieldset > div {
+  @apply md:flex md:items-center my-5;
 }
 
 .editForm h3 {
-  padding: 5px 0;
-  padding-left: calc(150px + 10px);
+  @apply w-full text-white font-bold px-5 py-1;
 }
 
-.editForm small {
-  padding-left: calc(150px + 10px);
+.editForm input[type=text] {
+  @apply border h-10;
+  @apply w-full md:w-1/2;
 }
 
-@media (max-width: 720px) {
-  .editForm h2 {
-    padding-left: 10px;
-  }
-  .editForm h3 {
-    padding-left: 10px;
-  }
+.editForm label {
+  @apply text-gray-600 font-bold;
+  @apply block mb-1 md:mb-0 mx-5;
+  @apply md:w-1/4;
+}
+
+.editForm textarea {
+  @apply border;
+  @apply w-full md:w-1/2;
 }

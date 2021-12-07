@@ -17,8 +17,8 @@ const TestCaseFieldset = ({index, remove, test}) => {
         <input type="checkbox" name="async" defaultValue={test && test.async} />
       </div>
       <div>
-        <label htmlFor="code" className="y-top">Description <span>(in case you feel further explanation is needed)</span><span>(Markdown syntax is allowed)</span> </label>
-        <textarea name="code" maxLength="16777215" required defaultValue={test && test.code} />
+        <label htmlFor="code" className="self-start">Description <span>(in case you feel further explanation is needed)</span><span>(Markdown syntax is allowed)</span> </label>
+        <textarea name="code" rows="5" maxLength="16777215" required defaultValue={test && test.code} />
       </div>
     </fieldset>
   )
@@ -148,11 +148,13 @@ export default function EditForm({pageData}) {
   }
 
   return (
-    <form onSubmit={submitFormHandler} className={formStyles.editForm}>
+    <form onSubmit={submitFormHandler} className={`${formStyles.editForm} w-full`}>
       <fieldset>
-        <div className="w-full bg-jsp-blue text-white"><h3>Test case details</h3></div>
+        <h3 className="bg-jsp-blue">Test case details</h3>
         <div>
-          <label htmlFor="title">Title</label>
+          <label htmlFor="title">
+            Title
+          </label>
           <input type="text" id="title" name="title" value={title} onChange={handleTitleChange} required />
         </div>
         <div>
@@ -165,27 +167,27 @@ export default function EditForm({pageData}) {
           <input type="checkbox" name="visible" id="visible" defaultChecked={formDefaults.visible} />(uncheck if you want to fiddle around before making the page public)
         </div>
         <div>
-          <label htmlFor="info" className="y-top">Description <span>(in case you feel further explanation is needed)</span><span>(Markdown syntax is allowed)</span> </label>
-          <textarea name="info" id="info" maxLength="16777215"></textarea>
+          <label htmlFor="info" className="self-start">Description <span>(in case you feel further explanation is needed)</span><span>(Markdown syntax is allowed)</span> </label>
+          <textarea name="info" id="info" rows="5" maxLength="16777215"></textarea>
         </div>
       </fieldset>
       <fieldset>
-        <div className="w-full bg-jsp-blue text-white"><h3>Preparation Code</h3></div>
+        <h3 className="bg-jsp-blue">Preparation Code</h3>
         <div>
-          <label htmlFor="initHTML" className="y-top">Preparation code HTML<span>(this will be inserted in the <code>{`<body>`}</code> of a valid HTML5 document in standards mode)<br />(useful when testing DOM operations or including libraries)</span></label>
-          <textarea name="initHTML" id="initHTML" maxLength="16777215" defaultValue={formDefaults.initHTML}></textarea>
+          <label htmlFor="initHTML" className="self-start">Preparation HTML<span>(this will be inserted in the <code>{`<body>`}</code> of a valid HTML5 document in standards mode)<br />(useful when testing DOM operations or including libraries)</span></label>
+          <textarea name="initHTML" id="initHTML" rows="8" maxLength="16777215" defaultValue={formDefaults.initHTML}></textarea>
         </div>
         <div>
-          <label htmlFor="setup" className="y-top">Setup</label>
-          <textarea name="setup" id="setup" maxLength="16777215" defaultValue={formDefaults.setup}></textarea>
+          <label htmlFor="setup" className="self-start">Setup</label>
+          <textarea name="setup" id="setup" rows="5" maxLength="16777215" defaultValue={formDefaults.setup}></textarea>
         </div>
         <div>
-          <label htmlFor="teardown" className="y-top">Teardown</label>
-          <textarea name="teardown" id="teardown" maxLength="16777215" defaultValue={formDefaults.teardown}></textarea>
+          <label htmlFor="teardown" className="self-start">Teardown</label>
+          <textarea name="teardown" id="teardown" rows="5" maxLength="16777215" defaultValue={formDefaults.teardown}></textarea>
         </div>
       </fieldset>
       <fieldset>
-        <div className="w-full bg-jsp-blue text-white"><h3>Test cases</h3></div>
+        <h3 className="bg-jsp-blue">Test cases</h3>
         {testCaseFieldsets}
       </fieldset>
       <div className={buttonStyles.groupRight}>
