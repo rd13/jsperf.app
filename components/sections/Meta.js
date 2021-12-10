@@ -13,7 +13,8 @@ const Meta = (props) => {
 
   const isOwner = session?.user?.id === githubID
 
-  const publish = async () => {
+  const publish = async (event) => {
+    event.preventDefault();
     const response = await fetch('/api/tests', {
       method: 'PUT',
       body: JSON.stringify({
@@ -32,24 +33,23 @@ const Meta = (props) => {
   const { asPath } = useRouter()
 
   return (
-    <>
+    <h2 className="text-xl">
       {revision > 1
           ? <span>Revision {revision} of this benchmark created </span>
           : <span>Benchmark created </span>
       }
       { authorName && <span> by {authorName} </span>}
       on <time dateTime={published} pubdate="true">{datetimeLong(published)}</time>
-      { isOwner && visible &&
-          <span>Published</span>
-      }
       { isOwner && !visible &&
-          <button onClick={publish} className={styles.unpublishedLink}>Not published yet!</button> 
+          <a onClick={publish} href="#" className={styles.unpublishedButton}>Not published yet!</a> 
       }
       {
         isOwner &&
-          <a href={`${asPath}/edit`}>Edit</a>
+          <>
+            <span> - </span><a href={`${asPath}/edit`}>Edit</a>
+          </>
       }
-    </>
+    </h2>
   )
 }
 

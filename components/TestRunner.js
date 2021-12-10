@@ -91,9 +91,9 @@ export default function Tests(props) {
 
   return (
     <>
-      <h2>Test runner</h2>
-      <p id="status">{statusMessage}</p>
-      <div id="controls" className="show">
+      <h2 className="font-semibold">Test runner</h2>
+      <div id="controls" className="flex my-5 items-center">
+        <p id="status" className="flex-1">{statusMessage}</p>
         <button 
           id="run" 
           type="button" 
@@ -104,13 +104,13 @@ export default function Tests(props) {
           src={sandboxUrl} 
           ref={windowRef} 
           sandbox="allow-scripts" 
-          className={styles.sandboxIframe}></iframe>
+          className="hidden"></iframe>
       </div>
-      <table id="test-table">
-        <caption>Testing in <UserAgent /></caption>
-        <thead className="bg-blue text-white">
+      <table id="test-table" className="w-full">
+        <caption className="from-gray-200 to-gray-400 bg-gradient-to-b text-lg">Testing in <UserAgent /></caption>
+        <thead className="bg-jsp-blue text-white">
           <tr>
-            <th colSpan="2">Test</th>
+            <th colSpan="2" className="py-1">Test</th>
             <th title="Operations per second (higher is better)">Ops/sec</th>
           </tr>
         </thead>

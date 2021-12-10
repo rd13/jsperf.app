@@ -19,6 +19,7 @@
   @apply text-gray-600 font-bold;
   @apply block mb-1 md:mb-0 mx-5;
   @apply md:w-1/4;
+  @apply text-right;
 }
 
 .editForm textarea {

@@ -17,11 +17,12 @@ export default function Slug(props) {
   return (
     <Layout>
       <hgroup>
-        <h1>{title}</h1>
+        <h1 className="text-2xl py-10 font-bold">{title}</h1>
       </hgroup>
       <section>
         <Meta pageData={props.pageData} />
       </section>
+      <hr className="my-5" />
       {info &&
         <section>
           <Info info={info} />
@@ -45,11 +46,10 @@ export default function Slug(props) {
       <section>
         <TestRunner id={_id} tests={tests} />
       </section>
-      {revisions &&
-        <section>
-          <Revisions revisions={revisions} slug={slug} revision={revision} />
-        </section>
-      }
+      <hr className="my-5" />
+      <section>
+        <Revisions revisions={revisions} slug={slug} revision={revision} />
+      </section>
     </Layout>
   )
 }
