@@ -91,7 +91,7 @@ export default function Tests(props) {
 
   return (
     <>
-      <h2 className="font-semibold">Test runner</h2>
+      <h2 className="font-bold my-5">Test runner</h2>
       <div id="controls" className="flex my-5 items-center">
         <p id="status" className="flex-1">{statusMessage}</p>
         <button 

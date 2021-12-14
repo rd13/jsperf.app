@@ -6,13 +6,11 @@ export default function Header() {
   return (
     <header>
       { 
-        /*
         session &&
           <>
-            <span>Logged in as: {session.user.name}</span>
+            <i>Logged in as: {session.user.profile.login}</i>
             <button onClick={() => signOut()}>Sign out</button>
           </>
-        */
       }
     </header>
   )

@@ -29,6 +29,7 @@ export default NextAuth({
         if (emails?.length > 0) {
           user.email = emails.sort((a, b) => b.primary - a.primary)[0].email
         }
+        user.profile = profile
         return true
       }
     },
