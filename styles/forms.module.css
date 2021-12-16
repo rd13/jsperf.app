@@ -4,6 +4,7 @@
 
 .editForm fieldset > div {
   @apply md:flex md:items-center my-5;
+  @apply flex-wrap;
 }
 
 .editForm h3 {
@@ -12,6 +13,9 @@
 
 .editForm input[type=text] {
   @apply border h-10;
+}
+
+.editForm fieldset > div > input[type=text] {
   @apply w-full md:w-1/2;
 }
 

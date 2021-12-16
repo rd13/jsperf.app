@@ -10,7 +10,7 @@ export default function Home(props) {
 
   return (
     <Layout>
-      <h1 className="py-10 text-xl"><span className="text-2xl font-bold">jsPerf.app</span> — Online JavaScript performance playground &amp; jsperf.com mirror</h1>
+      <h1 className="py-5 text-xl"><span className="text-2xl font-bold">jsPerf.app</span> — Online JavaScript performance playground &amp; jsperf.com mirror</h1>
       <div>
         <p>
           This is a complete rewrite in homage to the once excellent jsperf.com now with hopefully a more modern &amp; maintainable <a href="https://github.com/rd13/jsperf.app">codebase</a>.

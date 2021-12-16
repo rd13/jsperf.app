@@ -115,7 +115,6 @@ export default function EditForm({pageData}) {
       body: JSON.stringify(formData),
     })
 
-
     const {success, message, data} = await response.json();
     console.log(success, message, data)
 
@@ -159,12 +158,14 @@ export default function EditForm({pageData}) {
         </div>
         <div>
           <label htmlFor="slug">Slug</label>
-          <input type="text" id="slug" name="slug" value={slug} pattern="[A-Za-z0-9](?:-?[A-Za-z0-9])*" onChange={handleSlugChange} required />
-          <small>https://jsperf.app/{slug}</small>
+          <div className="w-1/2">
+            <input type="text" id="slug" name="slug" value={slug} pattern="[A-Za-z0-9](?:-?[A-Za-z0-9])*" onChange={handleSlugChange} required className="w-full" />
+            <p className="w-full"><small>https://jsperf.app/{slug}</small></p>
+        </div>
         </div>
         <div>
           <label htmlFor="visible">Published</label>
-          <input type="checkbox" name="visible" id="visible" defaultChecked={formDefaults.visible} />(uncheck if you want to fiddle around before making the page public)
+          <input type="checkbox" name="visible" id="visible" defaultChecked={formDefaults.visible} className="mr-2" />(uncheck if you want to fiddle around before making the page public)
         </div>
         <div>
           <label htmlFor="info" className="self-start">Description <span>(in case you feel further explanation is needed)</span><span>(Markdown syntax is allowed)</span> </label>

@@ -3,13 +3,15 @@ import { signOut, useSession } from "next-auth/react"
 export default function Header() {
   const { data: session, status } = useSession()
 
+  const { login } = session?.user?.profile || {}
+
   return (
     <header>
       { 
         session &&
           <>
-            <i>Logged in as: {session.user.profile.login}</i>
-            <button onClick={() => signOut()}>Sign out</button>
+            <i className="block text-right">Logged in as: { login }</i>
+            {/*<button onClick={() => signOut()}>Sign out</button>*/}
           </>
       }
     </header>

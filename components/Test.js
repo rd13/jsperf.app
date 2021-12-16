@@ -10,9 +10,9 @@ export default function Test(props) {
     completed: (<div>completed</div>),
     finished: (
       <>
-        {hz}
-        <small>&plusmn;{rme}%</small>
-        <span>{fastest ? 'fastest' : `${percent}% slower`}</span>
+        <p>{hz}</p>
+        <small className="block">&plusmn;{rme}%</small>
+        <p>{fastest ? 'fastest' : `${percent}% slower`}</p>
       </>
     )
   }
@@ -27,7 +27,7 @@ export default function Test(props) {
             {__html: highlightSanitizedJS(code)}} />
         </pre>
       </td>
-      <td className={`results ${fastest && 'fastest'} ${slowest && 'slowest'} text-center`}>{result[status]||result.default}</td>
+      <td className={`${fastest && 'bg-jsp-green'} ${slowest && 'bg-jsp-pink'} text-center w-[100px] p-2`}>{result[status] || result.default}</td>
     </tr>
   )
 }
