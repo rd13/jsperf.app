@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import lodash from 'lodash'
-import Benchmark from 'Benchmark'
+import Benchmark from 'benchmark'
 import PostMessageBroker from '../utils/postMessageBroker'
 import {getRanked} from '../utils/ArrayUtils'
 
