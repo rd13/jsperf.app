@@ -1,7 +1,14 @@
 {
+  "name": "jsperf.app",
+  "version": "1.0.0",
+  "description": "jsperf.app",
+  "repository": "https://github.com/rd13/jsperf.app",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start"
   },
   "dependencies": {
