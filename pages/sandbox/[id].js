@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb'
 import dynamic from 'next/dynamic'
 import Script from 'next/script'
 import { useState, useEffect } from 'react'
-import UI from '../../components/Benchmark'
+import UI from '../../components/UI'
 
 export default function Sandbox(props) {
   const [ready, setReady] = useState(false);
