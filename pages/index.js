@@ -8,6 +8,8 @@ import Link from 'next/link'
 export default function Home(props) {
   const { data: session, status } = useSession()
 
+  return null
+
   return (
     <Layout>
       <h1 className="py-5 text-xl"><span className="text-2xl font-bold">jsPerf.app</span> — Online JavaScript performance playground &amp; jsperf.com mirror</h1>
