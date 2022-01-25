@@ -1,11 +1,22 @@
 import {pagesCollection} from '../../lib/mongodb'
 import { getSession } from "next-auth/react"
 
-// Adding a new post
-const addPost = async (req, res) => {
-  const session = await getSession({ req })
-
+/**
+ * Adds a new page.
+ *
+ * A page includes a page title, slug, and an array of tests.
+ *
+ * @param {} req The request object.
+ * @param {} res The response object.
+ */
+const addPage = async (req, res) => {
   try {
+    const session = await getSession({ req })
+
+    if (!session) {
+      throw new Error('User session required')
+    }
+
     const pages = await pagesCollection()
 
     const payload = JSON.parse(req.body)
@@ -32,8 +43,9 @@ const addPost = async (req, res) => {
     // Associate tests with github user
     session?.user?.id && (payload.githubID = session.user.id)
 
-    await pages.insertOne(payload).then(doc => {
-      console.log(doc)
+    await pages.insertOne(payload).then(({ops}) => {
+      // http://mongodb.github.io/node-mongodb-native/3.1/api/Collection.html#%7EinsertOneWriteOpResult
+      const [doc] = ops
       const {slug, revision} = doc
       res.json({
         message: 'Post added successfully',
@@ -49,10 +61,16 @@ const addPost = async (req, res) => {
   }
 }
 
-const updatePost = async (req, res) => {
-  const session = await getSession({ req })
-
+/**
+ * Updates a page.
+ *
+ * @param {} req The request object.
+ * @param {} res The response object.
+ */
+const updatePage = async (req, res) => {
   try {
+    const session = await getSession({ req })
+
     const pages = await pagesCollection()
 
     const payload = JSON.parse(req.body)
@@ -71,7 +89,7 @@ const updatePost = async (req, res) => {
       })
 
     if (!page) {
-      throw new Error('Trying to update a page that does not exist.')
+      throw new Error('Page does not exist.')
     }
 
     if (page.githubID !== session?.user?.id) {
@@ -90,7 +108,7 @@ const updatePost = async (req, res) => {
       $set: {
         ...payload
       }
-    }).then(obj => {
+    }).then(() => {
       res.json({
         message: 'Updated page successfully',
         success: true,
@@ -102,20 +120,20 @@ const updatePost = async (req, res) => {
     return res.json({
       message: new Error(error).message,
       success: false,
-    });
+    })
   }
 }
 
-const handler = async (req, res) => {
-  switch (req.method) {
-    case 'POST': {
-      return addPost(req, res);
-    }
+export default function handler(req, res) {
+  const { method } = req
 
-    case 'PUT': {
-      return updatePost(req, res);
-    }
+  switch (method) {
+    case 'POST':
+      return addPage(req, res)
+    case 'PUT':
+      return updatePage(req, res)
+    default:
+      res.setHeader('Allow', ['POST', 'PUT'])
+      res.status(405).end(`Method ${method} Not Allowed`)
   }
 }
-
-export default handler

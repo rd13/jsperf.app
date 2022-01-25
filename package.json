@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "autoprefixer": "^10.4.0",
     "benchmark": "^2.1.4",
     "highlight.js": "^11.2.0",
     "isomorphic-dompurify": "^0.15.0",
@@ -14,8 +15,10 @@
     "mongodb": "^3.5.9",
     "next": "latest",
     "next-auth": "^4.0.0-beta.4",
+    "postcss": "^8.4.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "tailwindcss": "^2.2.19",
     "ua-parser-js": "^0.7.28"
   }
 }

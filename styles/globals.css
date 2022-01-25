@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+a {
+  @apply underline;
+	color: #357ab0;
+}
+
+a:hover {
+  @apply no-underline;
+}
+
+@layer utilities {
+  .bg-jsp-pink {
+    background: pink;
+  }
+
+  .bg-jsp-green {
+    background: #9cee82;
+  }
+
+  .bg-jsp-blue {
+    background-image: linear-gradient(to bottom, #6ca5dd, #1a6ab9);
+  }
+}
+
+

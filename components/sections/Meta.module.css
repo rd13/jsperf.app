@@ -1,7 +1,5 @@
-.publishedLink {
-  color: green;
-}
-
-.unpublishedLink {
-  color: red;
+.unpublishedButton {
+  @apply border border-red-400;
+  @apply bg-red-100;
+  @apply p-2 mx-2;
 }
