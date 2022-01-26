@@ -90,7 +90,7 @@ export const getStaticProps = async ({params}) => {
       pageData: JSON.parse(JSON.stringify(pageData)),
       revisions: JSON.parse(JSON.stringify(revisions))
     },
-    revalidate: 60
+    revalidate: false
   }
 }
 
