@@ -11,8 +11,19 @@ import Teardown from '../../../components/sections/Teardown'
 import PrepCode from '../../../components/sections/PrepCode'
 
 export default function Preview(props) {
-  const { _id, title, slug, revision, authorName, published, info, initHTML, setup, teardown, tests } = props.pageData
-  const {revisions} = props
+  const { 
+    _id, 
+    authorName, 
+    info, 
+    initHTML, 
+    published, 
+    revision, 
+    setup, 
+    slug, 
+    teardown, 
+    tests,
+    title, 
+  } = props.pageData
 
   return (
     <Layout>
