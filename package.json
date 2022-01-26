@@ -7,9 +7,9 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "next dev",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "next start"
   },
   "dependencies": {
     "autoprefixer": "^10.4.0",
