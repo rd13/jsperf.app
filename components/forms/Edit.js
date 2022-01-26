@@ -99,7 +99,6 @@ export default function EditForm({pageData}) {
       }
     ))
 
-    // We are either creating or updating an existing document so switch between POST / PUT methods.
     const isOwner = pageData?.githubID === session?.user?.id
 
     // Editing an existing document
@@ -116,11 +115,17 @@ export default function EditForm({pageData}) {
     })
 
     const {success, message, data} = await response.json();
+
     console.log(success, message, data)
 
     if (success) {
-      // redirect to test page
-      Router.push(`/${data.slug}/${data.revision}`)
+      if (formData.visible) {
+        // redirect to static page
+        Router.push(`/${data.slug}/${data.revision}`)
+      } else {
+        // redirect to SSR preview page
+        Router.push(`/${data.slug}/${data.revision}/preview`)
+      }
     }
   }
 
