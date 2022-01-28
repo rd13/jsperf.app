@@ -69,7 +69,7 @@ export async function getServerSideProps({params}) {
 
   const pageData = await pages.findOne({
     slug, revision: parseInt(revision) || 1
-  }, {projection: { _id: 0 }})
+  })
 
   if (!pageData) {
     return {
