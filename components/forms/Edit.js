@@ -109,7 +109,7 @@ export default function EditForm({pageData}) {
     console.log(formData)
 
     // Send form data to tests API
-    const response = await fetch('/api/tests', {
+    const response = await fetch('/api/page', {
       method: isOwner ? 'PUT' : 'POST',
       body: JSON.stringify(formData),
     })

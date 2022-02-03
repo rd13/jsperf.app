@@ -15,7 +15,7 @@ const Meta = (props) => {
 
   const publish = async (event) => {
     event.preventDefault();
-    const response = await fetch('/api/tests', {
+    const response = await fetch('/api/page', {
       method: 'PUT',
       body: JSON.stringify({
         slug, revision,
