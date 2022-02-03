@@ -13,6 +13,7 @@ export const getServerSideProps = async ({res, params}) => {
   const result = await pages.aggregate([
     {
       '$match': {
+        'visible': true,
         '$expr': {
           '$eq': [
             {'$year': '$published'},
@@ -26,6 +27,7 @@ export const getServerSideProps = async ({res, params}) => {
         'slug': 1, 
         'revision': 1, 
         'published': 1,
+        'visible': 1,
         'year': {
           '$year': '$published'
         }
