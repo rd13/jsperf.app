@@ -11,7 +11,20 @@ import Teardown from '../components/sections/Teardown'
 import PrepCode from '../components/sections/PrepCode'
 
 export default function Slug(props) {
-  const { _id, title, slug, revision, authorName, published, info, initHTML, setup, teardown, tests } = props.pageData
+  const { 
+    _id, 
+    authorName, 
+    info, 
+    initHTML, 
+    published, 
+    revision, 
+    setup, 
+    slug, 
+    teardown, 
+    tests,
+    title, 
+  } = props.pageData
+
   const {revisions} = props
 
   return (
@@ -90,7 +103,7 @@ export const getStaticProps = async ({params}) => {
       pageData: JSON.parse(JSON.stringify(pageData)),
       revisions: JSON.parse(JSON.stringify(revisions))
     },
-    revalidate: 60
+    revalidate: false
   }
 }
 
