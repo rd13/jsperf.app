@@ -8,6 +8,11 @@ export const getServerSideProps = async ({res}) => {
 
   const result = await pages.aggregate([
     {
+      '$match': {
+        'visible': true
+      }
+    },
+    {
       '$group': {
         '_id': {
           '$year': '$published'
