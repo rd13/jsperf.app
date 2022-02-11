@@ -10,13 +10,14 @@ export default NextAuth({
   ],
 
   session: {
-    jwt: true,
+    strategy: 'jwt',
     maxAge: 90 * 24 * 60 * 60, // 90 days
   },
 
   jwt: {
-    secret: process.env.SECRET,
   },
+
+  secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
     signIn: async ({account, user, profile}) => {
