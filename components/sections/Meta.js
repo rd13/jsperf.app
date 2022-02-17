@@ -1,7 +1,6 @@
 import { datetimeLong } from '../../utils/Date'
 import { useSession } from "next-auth/react"
 import { useState } from 'react'
-import { useRouter } from 'next/router'
 import styles from './Meta.module.css'
 
 const Meta = (props) => {
@@ -30,8 +29,6 @@ const Meta = (props) => {
     }
   }
 
-  const { asPath } = useRouter()
-
   return (
     <h2 className="text-xl">
       {revision > 1
@@ -46,7 +43,7 @@ const Meta = (props) => {
       {
         isOwner &&
           <>
-            <span> - </span><a href={`${asPath}/edit`}>Edit</a>
+          <span> - </span><a href={`/${slug}/${revision}/edit`}>Edit</a>
           </>
       }
     </h2>

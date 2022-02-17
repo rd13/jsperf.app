@@ -34,15 +34,18 @@ const addPage = async (req, res) => {
           revision: 1
         }
       }).then(doc => {
-        // Set this insert revision as an increment of the previous, or default 1
+        // If the slug exists then the revision number is an increment of the
+        // last revision, otherwise 1.
         payload.revision = doc ? doc.revision + 1 : 1
       })
 
     payload.published = new Date()
 
-    // Associate tests with github user
+    // Associate with github user
     session?.user?.id && (payload.githubID = session.user.id)
 
+    // Do the insert
+    // Will throw an error if schema validation fails
     await pages.insertOne(payload).then(({ops}) => {
       // http://mongodb.github.io/node-mongodb-native/3.1/api/Collection.html#%7EinsertOneWriteOpResult
       const [doc] = ops
@@ -92,6 +95,7 @@ const updatePage = async (req, res) => {
       throw new Error('Page does not exist.')
     }
 
+    // Only the original owner of this page can update it
     if (page.githubID !== session?.user?.id) {
       throw new Error('Does not have the authority to update this page.')
     }
