@@ -5,7 +5,7 @@ const Info = (props) => {
   const {info} = props
   return (
     <>
-      <h2>Info</h2>
+      <h2 className="font-bold my-5">Description</h2>
       <div dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked(info))}} />
     </>
   )

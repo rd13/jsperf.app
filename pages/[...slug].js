@@ -91,7 +91,6 @@ export const getStaticProps = async ({params}) => {
     slug
   }, {projection: {slug: 1, revision: 1, authorName: 1, published: 1} }).sort({revision: 1}).toArray()
 
-  // console.log(revisions)
   if (!pageData) {
     return {
       notFound: true

@@ -1,3 +1,4 @@
+import Router from 'next/router'
 import { datetimeLong } from '../../utils/Date'
 import { useSession } from "next-auth/react"
 import { useState } from 'react'
@@ -22,10 +23,11 @@ const Meta = (props) => {
       }),
     })
 
-    const json = await response.json()
+    const {success} = await response.json()
 
-    if (json.success) {
-      setVisible(true)
+    if (success) {
+      // setVisible(true)
+      Router.push(`/${slug}/${revision}`)
     }
   }
 

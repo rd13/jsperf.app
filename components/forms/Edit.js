@@ -29,40 +29,15 @@ export default function EditForm({pageData}) {
 
   // Default form values if none are provided via props.pageData
   const formDefaults = Object.assign({}, {
-    slug: '',
     title: '',
+    info: '',
+    slug: '',
     visible: false,
     initHTML: '',
     setup: '',
     teardown: '',
     tests: []
   }, pageData)
-
-  const [slug, setSlug] = useState(formDefaults.slug)
-  const [title, setTitle] = useState(formDefaults.title)
-
-  // manualSlug is a state var so that that we stop auto generating a slug from the 
-  // title when a slug is manually entered
-  const [manualSlug, setManualSlug] = useState(false)
-
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value)
-  }
-
-  const handleSlugChange = (event) => {
-    setSlug(event.target.value)
-    setManualSlug(true)
-  }
-
-  useEffect(() => {
-    // Make the slug url friendly
-    const formattedSlug = title.toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-
-    // Only update if a slug has not been manually defined
-    !manualSlug && setSlug(formattedSlug)
-  }, [title, manualSlug, setSlug])
 
   const submitFormHandler = async event => {
     event.preventDefault()
@@ -71,7 +46,6 @@ export default function EditForm({pageData}) {
     // Uses IIFE to destructure event.target. event.target is the form.
     const formData = (({
       title, 
-      slug,
       visible,
       info,
       initHTML,
@@ -79,13 +53,14 @@ export default function EditForm({pageData}) {
       teardown
     }) => ({
       title: title.value, 
-      slug: slug.value,
       visible: visible.checked,
       info: info.value,
       initHTML: initHTML.value,
       setup: setup.value,
       teardown: teardown.value
     }))( event.target )
+
+    formData.slug = formDefaults.slug
 
     // Get a list of test case fieldset elements referenced by name="testCase"
     const formTestCases = event.target.elements.testCase
@@ -107,6 +82,8 @@ export default function EditForm({pageData}) {
     }
 
     console.log(formData)
+    // If in preview mode we can PUT method to update the preview,
+    // otherwise POST to create new
 
     // Send form data to tests API
     const response = await fetch('/api/page', {
@@ -119,13 +96,7 @@ export default function EditForm({pageData}) {
     console.log(success, message, data)
 
     if (success) {
-      if (formData.visible) {
-        // redirect to static page
-        Router.push(`/${data.slug}/${data.revision}`)
-      } else {
-        // redirect to SSR preview page
-        Router.push(`/${data.slug}/${data.revision}/preview`)
-      }
+      Router.push(`/${data.slug}/${data.revision}`)
     }
   }
 
@@ -159,14 +130,7 @@ export default function EditForm({pageData}) {
           <label htmlFor="title">
             Title
           </label>
-          <input type="text" id="title" name="title" value={title} onChange={handleTitleChange} required />
-        </div>
-        <div>
-          <label htmlFor="slug">Slug</label>
-          <div className="w-1/2">
-            <input type="text" id="slug" name="slug" value={slug} pattern="[A-Za-z0-9](?:-?[A-Za-z0-9])*" onChange={handleSlugChange} required className="w-full" />
-            <p className="w-full"><small>https://jsperf.app/{slug}</small></p>
-        </div>
+          <input type="text" id="title" name="title" defaultValue={formDefaults.title} required />
         </div>
         <div>
           <label htmlFor="visible">Published</label>
@@ -174,7 +138,7 @@ export default function EditForm({pageData}) {
         </div>
         <div>
           <label htmlFor="info" className="self-start">Description <span>(in case you feel further explanation is needed)</span><span>(Markdown syntax is allowed)</span> </label>
-          <textarea name="info" id="info" rows="5" maxLength="16777215"></textarea>
+          <textarea name="info" id="info" rows="5" maxLength="16777215" defaultValue={formDefaults.info}></textarea>
         </div>
       </fieldset>
       <fieldset>

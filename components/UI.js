@@ -4,7 +4,7 @@ import Benchmark from 'benchmark'
 import PostMessageBroker from '../utils/postMessageBroker'
 import {getRanked} from '../utils/ArrayUtils'
 
-export default function UI(props) {
+export default (props) => {
   const {pageData: {tests, initHTML, setup, teardown}} = props
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function UI(props) {
 
       uiBenchmarks.push(event.target)
 
-      event.target.on('start cycle complete', _.throttle(function(event) {
+      event.target.on('start cycle complete', _.throttle((event) => {
         if (this.running) {
           status = 'running'
         } else if (this.cycles) {
@@ -58,7 +58,7 @@ export default function UI(props) {
     // Component has been mounted and Benchmark / associated libs are ready
     broker.emit('ready', {})
 
-    ui.on('complete', function() {
+    ui.on('complete', () => {
       const ranked = getRanked(uiBenchmarks)
       const fastest = ranked[0]
       const slowest = [...ranked].pop()
