@@ -172,17 +172,13 @@ const updatePage = async (req, res) => {
       const protocol = req.headers['x-forwarded-proto'] || 'http'
       const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
 
-      const revalidated = await revalidatePath(baseUrl, `/${slug}/${revision}`)
+      // const revalidated = await revalidatePath(baseUrl, `/${slug}/${revision}`)
 
-      if (revalidated) {
-        res.json({
-          message: 'Updated page successfully',
-          success: true,
-          data: { slug, revision },
-        })
-      } else {
-        throw new Error('Could not invalidate path')
-      }
+      res.json({
+        message: 'Updated page successfully',
+        success: true,
+        data: { slug, revision },
+      })
     })
 
   } catch (error) {

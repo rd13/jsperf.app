@@ -96,7 +96,13 @@ export default function EditForm({pageData}) {
     console.log(success, message, data)
 
     if (success) {
-      Router.push(`/${data.slug}/${data.revision}`)
+      if (formData.visible) {
+        // redirect to static page
+        Router.push(`/${data.slug}/${data.revision}`)
+      } else {
+        // redirect to SSR preview page
+        Router.push(`/${data.slug}/${data.revision}/preview`)
+      }
     }
   }
 
