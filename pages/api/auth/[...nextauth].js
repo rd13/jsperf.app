@@ -48,5 +48,5 @@ export default NextAuth({
 
   theme: 'light',
 
-  debug: false,
+  debug: true,
 })

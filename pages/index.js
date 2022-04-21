@@ -41,7 +41,7 @@ export default function Home(props) {
         }
 
         { !session &&
-            <button className="bg-gray-100 hover:bg-gray-200 text-gray-darkest font-bold py-2 px-4 rounded inline-flex items-center border border-gray-400" onClick={() => signIn()}>
+            <button className="bg-gray-100 hover:bg-gray-200 text-gray-darkest font-bold py-2 px-4 rounded inline-flex items-center border border-gray-400" onClick={() => signIn("github")}>
               <GitHubIcon fill="#000000" width={32} height={32} className="mr-2" />
               <span>Login with GitHub to Create Test Cases</span>
             </button>
