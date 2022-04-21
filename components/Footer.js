@@ -13,6 +13,7 @@ export default function Footer() {
             <ul className="flex items-center space-x-4">
               <li><a href="/">Add Test</a></li>
               <li><a href="https://github.com/rd13/jsperf.app">GitHub</a></li>
+              <li><button onClick={() => signOut()}>Sign out</button></li>
             </ul>
           </div>
         </div>
