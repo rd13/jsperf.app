@@ -10,6 +10,7 @@ export default function Home(props) {
   const { data: session, status } = useSession()
   const router = useRouter()
 
+
   if (router.query.debug) {
     return (
       <Layout>
