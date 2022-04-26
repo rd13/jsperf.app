@@ -40,12 +40,9 @@ const Meta = (props) => {
       { authorName && <span> by {authorName} </span>}
       on <time dateTime={published} pubdate="true">{datetimeLong(published)}</time>
       { isOwner && !visible &&
-          <a onClick={publish} href="#" className={styles.unpublishedButton}>Not published yet!</a> 
-      }
-      {
-        isOwner &&
           <>
-          <span> - </span><a href={`/${slug}/${revision}/edit`}>Edit</a>
+            <a onClick={publish} href="#" className={styles.unpublishedButton}>Not published yet!</a> 
+            <span> - </span><a href={`/${slug}/${revision}/edit`}>Edit</a>
           </>
       }
     </h2>

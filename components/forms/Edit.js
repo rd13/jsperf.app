@@ -72,20 +72,22 @@ export default function EditForm({pageData}) {
       }
     ))
 
+    // If this revision is already visible then PUT a new revision
+
     const isOwner = pageData?.githubID === session?.user?.id
+    const isPublished = !!pageData?.visible
 
     // Editing an existing document
     if (isOwner) {
       formData.revision = pageData.revision
     }
 
-    console.log(formData)
     // If in preview mode we can PUT method to update the preview,
     // otherwise POST to create new
 
     // Send form data to tests API
     const response = await fetch('/api/page', {
-      method: isOwner ? 'PUT' : 'POST',
+      method: (isPublished || !pageData) ? 'POST' : 'PUT',
       body: JSON.stringify(formData),
     })
 
