@@ -46,14 +46,12 @@ export default function EditForm({pageData}) {
     // Uses IIFE to destructure event.target. event.target is the form.
     const formData = (({
       title, 
-      visible,
       info,
       initHTML,
       setup,
       teardown
     }) => ({
       title: title.value, 
-      visible: visible.checked,
       info: info.value,
       initHTML: initHTML.value,
       setup: setup.value,
@@ -96,13 +94,8 @@ export default function EditForm({pageData}) {
     console.log(success, message, data)
 
     if (success) {
-      if (formData.visible) {
-        // redirect to static page
-        Router.push(`/${data.slug}/${data.revision}`)
-      } else {
-        // redirect to SSR preview page
-        Router.push(`/${data.slug}/${data.revision}/preview`)
-      }
+      // redirect to SSR preview page
+      Router.push(`/${data.slug}/${data.revision}/preview`)
     }
   }
 
@@ -137,10 +130,6 @@ export default function EditForm({pageData}) {
             Title
           </label>
           <input type="text" id="title" name="title" defaultValue={formDefaults.title} required />
-        </div>
-        <div>
-          <label htmlFor="visible">Published</label>
-          <input type="checkbox" name="visible" id="visible" defaultChecked={formDefaults.visible} className="mr-2" />(uncheck if you want to fiddle around before making the page public)
         </div>
         <div>
           <label htmlFor="info" className="self-start">Description <span>(in case you feel further explanation is needed)</span><span>(Markdown syntax is allowed)</span> </label>
