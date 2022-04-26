@@ -21,7 +21,7 @@ export default (props) => {
 
       uiBenchmarks.push(event.target)
 
-      event.target.on('start cycle complete', _.throttle((event) => {
+      event.target.on('start cycle complete', _.throttle(function(event) {
         if (this.running) {
           status = 'running'
         } else if (this.cycles) {
