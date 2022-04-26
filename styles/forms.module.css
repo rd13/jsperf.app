@@ -13,6 +13,7 @@
 
 .editForm input[type=text] {
   @apply border h-10;
+  @apply px-2;
 }
 
 .editForm fieldset > div > input[type=text] {
@@ -29,4 +30,5 @@
 .editForm textarea {
   @apply border;
   @apply w-full md:w-1/2;
+  @apply p-2;
 }

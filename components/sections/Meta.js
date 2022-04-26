@@ -1,7 +1,7 @@
+import Router from 'next/router'
 import { datetimeLong } from '../../utils/Date'
 import { useSession } from "next-auth/react"
 import { useState } from 'react'
-import { useRouter } from 'next/router'
 import styles from './Meta.module.css'
 
 const Meta = (props) => {
@@ -23,14 +23,13 @@ const Meta = (props) => {
       }),
     })
 
-    const json = await response.json()
+    const {success} = await response.json()
 
-    if (json.success) {
-      setVisible(true)
+    if (success) {
+      // setVisible(true)
+      Router.push(`/${slug}/${revision}`)
     }
   }
-
-  const { asPath } = useRouter()
 
   return (
     <h2 className="text-xl">
@@ -46,7 +45,7 @@ const Meta = (props) => {
       {
         isOwner &&
           <>
-            <span> - </span><a href={`${asPath}/edit`}>Edit</a>
+          <span> - </span><a href={`/${slug}/${revision}/edit`}>Edit</a>
           </>
       }
     </h2>

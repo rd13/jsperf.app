@@ -1,5 +1,50 @@
-import {pagesCollection} from '../../lib/mongodb'
+import { pagesCollection } from '../../lib/mongodb'
 import { getSession } from "next-auth/react"
+import { shortcode } from "../../utils/Url"
+
+/**
+ *
+ * Function to ensure we are using a slug that doesn't already exist
+ *
+ */
+const generateSlugId = async (length = 6, attempts = 10) => {
+  const pages = await pagesCollection()
+
+  return new Promise((resolve, reject) => {
+    const testSlug = (async (attempt = 0) => {
+
+      if (attempt >= attempts) {
+        reject(new Error('Too many attempts'))
+        return
+      }
+
+      const slug = shortcode(length + attempt)
+      
+      const result = await pages.findOne({
+        slug
+      }, (err, result) => {
+        if (err) {
+          reject(err)
+        } else if (result) {
+          testSlug(attempt++)
+        } else {
+          resolve(slug)
+        }
+      })
+    })()
+  })
+}
+
+const revalidatePath = async (baseUrl, path) => {
+  const response = await fetch(baseUrl + '/api/revalidate?' + new URLSearchParams({
+    secret: process.env.REVALIDATE_SECRET,
+    path
+  }))
+
+  const {revalidated} = await response.json()
+
+  return revalidated
+}
 
 /**
  * Adds a new page.
@@ -14,14 +59,21 @@ const addPage = async (req, res) => {
     const session = await getSession({ req })
 
     if (!session) {
-      throw new Error('User session required')
+      throw new Error('User is not authenticated.')
     }
 
     const pages = await pagesCollection()
 
     const payload = JSON.parse(req.body)
-
-    const {slug} = payload
+    
+    // Could be a revision of an existing page.
+    // In which case use the same slug.
+    let slug = payload.slug
+    if (!slug) {
+      slug = await generateSlugId()
+      payload.slug = slug
+      console.log('NEW SLUG: ', slug)
+    }
 
     // Get the most recent revision for this slug
     await pages.findOne(
@@ -34,25 +86,29 @@ const addPage = async (req, res) => {
           revision: 1
         }
       }).then(doc => {
-        // Set this insert revision as an increment of the previous, or default 1
+        // If the slug exists then the revision number is an increment of the
+        // last revision, otherwise 1.
         payload.revision = doc ? doc.revision + 1 : 1
       })
 
     payload.published = new Date()
 
-    // Associate tests with github user
-    session?.user?.id && (payload.githubID = session.user.id)
+    // Set the github user ID
+    session.user?.id && (payload.githubID = session.user.id)
 
-    await pages.insertOne(payload).then(({ops}) => {
-      // http://mongodb.github.io/node-mongodb-native/3.1/api/Collection.html#%7EinsertOneWriteOpResult
-      const [doc] = ops
-      const {slug, revision} = doc
-      res.json({
-        message: 'Post added successfully',
-        success: true,
-        data: { slug, revision },
+    // Do the insert
+    // Will throw an error if schema validation fails
+    await pages.insertOne(payload)
+      .then(({ops}) => {
+        // http://mongodb.github.io/node-mongodb-native/3.1/api/Collection.html#%7EinsertOneWriteOpResult
+        const [doc] = ops
+        const {slug, revision} = doc
+        res.json({
+          message: 'Post added successfully',
+          success: true,
+          data: { slug, revision },
+        })
       })
-    })
   } catch (error) {
     return res.json({
       message: new Error(error).message,
@@ -92,6 +148,7 @@ const updatePage = async (req, res) => {
       throw new Error('Page does not exist.')
     }
 
+    // Only the original owner of this page can update it
     if (page.githubID !== session?.user?.id) {
       throw new Error('Does not have the authority to update this page.')
     }
@@ -108,7 +165,15 @@ const updatePage = async (req, res) => {
       $set: {
         ...payload
       }
-    }).then(() => {
+    }).then(async () => {
+
+      // Invalidate cache
+      // We need to specify absolute URL because node/server/fetch
+      const protocol = req.headers['x-forwarded-proto'] || 'http'
+      const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+
+      // const revalidated = await revalidatePath(baseUrl, `/${slug}/${revision}`)
+
       res.json({
         message: 'Updated page successfully',
         success: true,
@@ -124,7 +189,7 @@ const updatePage = async (req, res) => {
   }
 }
 
-export default function handler(req, res) {
+export default (req, res) => {
   const { method } = req
 
   switch (method) {

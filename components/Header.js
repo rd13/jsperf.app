@@ -9,10 +9,7 @@ export default function Header() {
     <header>
       { 
         session &&
-          <>
-            <i className="block text-right">Logged in as: { login }</i>
-            {/*<button onClick={() => signOut()}>Sign out</button>*/}
-          </>
+          <i className="block text-right">Logged in as: { login }</i>
       }
     </header>
   )
