@@ -1,3 +1,5 @@
+import Head from 'next/head'
+
 import { pagesCollection } from '../lib/mongodb'
 import TestRunner from '../components/TestRunner'
 
@@ -28,42 +30,47 @@ export default function Slug(props) {
   const {revisions} = props
 
   return (
-    <Layout>
-      <hgroup>
-        <h1 className="text-2xl py-10 font-bold">{title}</h1>
-      </hgroup>
-      <section>
-        <Meta pageData={props.pageData} />
-      </section>
-      <hr className="my-5" />
-      {info &&
+    <>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <Layout>
+        <hgroup>
+          <h1 className="text-2xl py-10 font-bold">{title}</h1>
+        </hgroup>
         <section>
-          <Info info={info} />
+          <Meta pageData={props.pageData} />
         </section>
-      }
-      {initHTML &&
+        <hr className="my-5" />
+        {info &&
+          <section>
+            <Info info={info} />
+          </section>
+        }
+        {initHTML &&
+          <section>
+            <PrepCode prepCode={initHTML} />
+          </section>
+        }
+        {setup &&
+          <section>
+            <Setup setup={setup} />
+          </section>
+        }
+        {teardown &&
+          <section>
+            <Teardown teardown={teardown} />
+          </section>
+        }
         <section>
-          <PrepCode prepCode={initHTML} />
+          <TestRunner id={_id} tests={tests} />
         </section>
-      }
-      {setup &&
+        <hr className="my-5" />
         <section>
-          <Setup setup={setup} />
+          <Revisions revisions={revisions} slug={slug} revision={revision} />
         </section>
-      }
-      {teardown &&
-        <section>
-          <Teardown teardown={teardown} />
-        </section>
-      }
-      <section>
-        <TestRunner id={_id} tests={tests} />
-      </section>
-      <hr className="my-5" />
-      <section>
-        <Revisions revisions={revisions} slug={slug} revision={revision} />
-      </section>
-    </Layout>
+      </Layout>
+    </>
   )
 }
 
