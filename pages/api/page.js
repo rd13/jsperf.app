@@ -1,5 +1,4 @@
 import { pagesCollection } from '../../lib/mongodb'
-import { writeCollection } from '../../lib/mongodb'
 import { getSession } from "next-auth/react"
 import { shortcode } from "../../utils/Url"
 
@@ -73,7 +72,6 @@ const addPage = async (req, res) => {
     if (!slug) {
       slug = await generateSlugId()
       payload.slug = slug
-      console.log('NEW SLUG: ', slug)
     }
 
     // Get the most recent revision for this slug
@@ -97,11 +95,9 @@ const addPage = async (req, res) => {
     // Set the github user ID
     session.user?.id && (payload.githubID = session.user.id)
 
-    const pagesWrite = await writeCollection()
-
     // Do the insert
     // Will throw an error if schema validation fails
-    await pagesWrite.insertOne(payload)
+    await pages.insertOne(payload)
       .then(({ops}) => {
         // http://mongodb.github.io/node-mongodb-native/3.1/api/Collection.html#%7EinsertOneWriteOpResult
         const [doc] = ops
@@ -151,6 +147,10 @@ const updatePage = async (req, res) => {
       throw new Error('Page does not exist.')
     }
 
+    if (page.mirror) {
+      throw new Error('Protect imported perfs')
+    }
+
     // Only the original owner of this page can update it
     if (page.githubID !== session?.user?.id) {
       throw new Error('Does not have the authority to update this page.')
@@ -162,9 +162,7 @@ const updatePage = async (req, res) => {
     delete payload.revision
     delete payload.githubID
 
-    const pagesWrite = await writeCollection()
-
-    await pagesWrite.updateOne({
+    await pages.updateOne({
       '_id': page._id
     }, {
       $set: {
