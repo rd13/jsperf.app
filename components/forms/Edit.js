@@ -72,8 +72,6 @@ export default function EditForm({pageData}) {
       }
     ))
 
-    // If this revision is already visible then PUT a new revision
-
     const isOwner = pageData?.githubID === session?.user?.id
     const isPublished = !!pageData?.visible
 
@@ -81,9 +79,6 @@ export default function EditForm({pageData}) {
     if (isOwner) {
       formData.revision = pageData.revision
     }
-
-    // If in preview mode we can PUT method to update the preview,
-    // otherwise POST to create new
 
     // Send form data to tests API
     const response = await fetch('/api/page', {

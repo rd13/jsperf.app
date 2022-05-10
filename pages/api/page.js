@@ -1,4 +1,5 @@
 import { pagesCollection } from '../../lib/mongodb'
+import { writeCollection } from '../../lib/mongodb'
 import { getSession } from "next-auth/react"
 import { shortcode } from "../../utils/Url"
 
@@ -96,9 +97,11 @@ const addPage = async (req, res) => {
     // Set the github user ID
     session.user?.id && (payload.githubID = session.user.id)
 
+    const pagesWrite = await writeCollection()
+
     // Do the insert
     // Will throw an error if schema validation fails
-    await pages.insertOne(payload)
+    await pagesWrite.insertOne(payload)
       .then(({ops}) => {
         // http://mongodb.github.io/node-mongodb-native/3.1/api/Collection.html#%7EinsertOneWriteOpResult
         const [doc] = ops
@@ -159,7 +162,9 @@ const updatePage = async (req, res) => {
     delete payload.revision
     delete payload.githubID
 
-    await pages.updateOne({
+    const pagesWrite = await writeCollection()
+
+    await pagesWrite.updateOne({
       '_id': page._id
     }, {
       $set: {
