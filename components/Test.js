@@ -18,7 +18,7 @@ export default function Test(props) {
   }
   return (
     <tr className="">
-      <th className="py-5 bg-gray-200">
+      <th className="py-5 px-2 bg-gray-200">
         {title}
       </th>
       <td className="code px-2 w-full">
