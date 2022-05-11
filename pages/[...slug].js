@@ -116,10 +116,12 @@ export const getStaticProps = async ({params}) => {
 export async function getStaticPaths() {
   const pages = await pagesCollection()
 
-  // Create a materialised view so that we don't have to run
-  // a separate query to fetch revisions. This will hopefully speed up
-  // build.
-  // Can't do this due to space limit in atlas.
+  // This statically generates at random 50% of all paths due to the
+  // 45 minute build time constraint on Vercel.
+  //
+  // A better solution could be to generate a materialised view that
+  // includes nested revisions which would speed up getStaticProps.
+  // This takes up too much space on Atlas free tier presently:
   // await db.pages_master.aggregate([
   //   {
   //     $graphLookup: {
@@ -131,19 +133,27 @@ export async function getStaticPaths() {
   //     }
   //   }, {
   //     $merge: {
-  //       into: 'mat_view2'
+  //       into: 'materialised_pages'
   //     }
   //   }
   // ])
+
   const docCount = await pages.countDocuments()
 
   const pagesQuery = await pages.aggregate([
-    { 
-      $sample: { 
-        size: Math.abs(Math.floor(docCount / 2)) 
-      }
+    {
+      $project: { 
+        slug: 1, revision: 1, _id: 0, 
+        size: { 
+          $bsonSize: "$$ROOT" 
+        } 
+      } 
     }, {
-      $project: { slug: 1, revision: 1, _id: 0 } 
+      $match: { size: { $lt: 2000000 } }
+    }, {
+      $sample: { 
+        size: Math.abs(Math.floor(docCount / 4)) 
+      }
     }
   ]).toArray()
 
