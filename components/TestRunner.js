@@ -37,7 +37,10 @@ export default function Tests(props) {
 
     _broker.register('cycle', event => {
       const {id, name, count, size, status} = event.data
-      setStatusMessage(`${name} × ${count} (${size} sample${size === 1 ? '' : 's'})`)
+
+      if (!['finished', 'completed'].includes(status)) {
+        setStatusMessage(`${name} × ${count} (${size} sample${size === 1 ? '' : 's'})`)
+      }
 
       // Note to self: treat state arrays as immutable, instead provide setState with a function to update
       // This is probably not optimal. Instead only update test status on status transition.
