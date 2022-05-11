@@ -116,9 +116,36 @@ export const getStaticProps = async ({params}) => {
 export async function getStaticPaths() {
   const pages = await pagesCollection()
 
-  const pagesQuery = await pages.find({}, {
-    projection: { slug: 1, revision: 1, _id: 0 }
-  }).toArray()
+  // Create a materialised view so that we don't have to run
+  // a separate query to fetch revisions. This will hopefully speed up
+  // build.
+  // Can't do this due to space limit in atlas.
+  // await db.pages_master.aggregate([
+  //   {
+  //     $graphLookup: {
+  //       from: 'pages_master',
+  //       startWith: "$slug",
+  //       connectFromField: 'slug',
+  //       connectToField: 'slug',
+  //       as: 'revisions'
+  //     }
+  //   }, {
+  //     $merge: {
+  //       into: 'mat_view2'
+  //     }
+  //   }
+  // ])
+  const docCount = await pages.countDocuments()
+
+  const pagesQuery = await pages.aggregate([
+    { 
+      $sample: { 
+        size: Math.abs(Math.floor(docCount / 2)) 
+      }
+    }, {
+      $project: { slug: 1, revision: 1, _id: 0 } 
+    }
+  ]).toArray()
 
   const paths = pagesQuery.map(page => {
     return {
@@ -132,12 +159,6 @@ export async function getStaticPaths() {
       }
     }
   })
-
-  // const paths = [{
-  //   params: {
-  //     slug: ['some-cool-test', '2']
-  //   }
-  // }]
 
   return {
     paths,
