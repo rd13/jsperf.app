@@ -111,7 +111,7 @@ export default function Tests(props) {
         <thead className="bg-jsp-blue text-white">
           <tr>
             <th colSpan="2" className="py-1">Test</th>
-            <th title="Operations per second (higher is better)">Ops/sec</th>
+            <th title="Operations per second (higher is better)" className="px-2">Ops/sec</th>
           </tr>
         </thead>
         <tbody>

@@ -21,8 +21,8 @@ export default function Test(props) {
       <th className="py-5 bg-gray-200">
         {title}
       </th>
-      <td className="code px-2">
-        <pre>
+      <td className="code px-2 w-full">
+        <pre className="w-full whitespace-pre-wrap break-words">
           <code dangerouslySetInnerHTML={
             {__html: highlightSanitizedJS(code)}} />
         </pre>

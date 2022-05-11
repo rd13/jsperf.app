@@ -12,9 +12,9 @@ const Revisions = (props) => {
           const {revision, slug, authorName, published} = pageData
           return (
             <li key={index}>
-              <Link href={revision === 1 ? `/${slug}` : `/${slug}/${revision}`}>
-                <a>Revision {revision}</a>
-              </Link>: published {authorName && <span>by {authorName} </span>}on <time dateTime={published}>
+              <a href={revision === 1 ? `/${slug}` : `/${slug}/${revision}`}>
+                Revision {revision}
+              </a>: published {authorName && <span>by {authorName} </span>}on <time dateTime={published}>
                 {datetimeLong(published)}
               </time>
             </li>
