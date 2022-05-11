@@ -6,8 +6,6 @@ const DocHead = () => {
     <>
       <Head>
         <meta charSet="utf-8" />
-
-        <meta name="theme-color" content="#CF351C" />
       </Head>
     </>
   )

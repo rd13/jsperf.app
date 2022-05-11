@@ -5,6 +5,7 @@ import Layout from '../../../components/Layout'
 export default function Edit({pageData}) {
   return (
     <Layout>
+      <div className="py-2"></div>
       <EditForm pageData={pageData} />
     </Layout>
   )

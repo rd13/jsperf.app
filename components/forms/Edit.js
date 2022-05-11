@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
-import { useSession } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
+import GitHubIcon from '../GitHubIcon'
 import buttonStyles from '../../styles/buttons.module.css'
 import formStyles from '../../styles/forms.module.css'
 
@@ -154,7 +155,15 @@ export default function EditForm({pageData}) {
       </fieldset>
       <div className={buttonStyles.groupRight}>
         <button type="button" className={buttonStyles.default} onClick={() => setNoTestCases(noTestCases + 1)}>Add code snippet</button>
-        <button type="submit" className={buttonStyles.default}>Save test case</button>
+        { session &&
+          <button type="submit" className={buttonStyles.default}>Save test case</button>
+        }
+        { !session && 
+          <button className="bg-gray-100 hover:bg-gray-200 text-gray-darkest font-bold py-2 px-4 rounded inline-flex items-center border border-gray-400" onClick={() => signIn("github")}>
+            <GitHubIcon fill="#000000" width={32} height={32} className="mr-2" />
+            <span>Login with GitHub to Save Test Cases</span>
+          </button>
+        }
       </div>
     </form>
   )
