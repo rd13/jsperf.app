@@ -46,24 +46,23 @@ export const getStaticProps = async ({params}) => {
 }
 
 export async function getStaticPaths() {
-  const pages = await pagesCollection()
-
-  const pagesQuery = await pages.find({}, {
-    projection: { _id: 1 }
-  }).toArray()
-
-  const paths = pagesQuery.map(page => {
-    const id = page._id.toString()
-    return {
-      params: {
-        id
-      }
-    }
-  })
+  // const pages = await pagesCollection()
+  //
+  // const pagesQuery = await pages.find({}, {
+  //   projection: { _id: 1 }
+  // }).toArray()
+  //
+  // const paths = pagesQuery.map(page => {
+  //   const id = page._id.toString()
+  //   return {
+  //     params: {
+  //       id
+  //     }
+  //   }
+  // })
 
   return {
-    paths,
-    // fallback: 'blocking'
-    fallback: true
+    paths: [],
+    fallback: 'blocking'
   };
 }
