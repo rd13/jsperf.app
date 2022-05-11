@@ -109,7 +109,7 @@ export const getStaticProps = async ({params}) => {
       pageData: JSON.parse(JSON.stringify(pageData)),
       revisions: JSON.parse(JSON.stringify(revisions))
     },
-    revalidate: false
+    revalidate: 60 * 60 * 24 // 1 day in seconds
   }
 }
 
@@ -138,40 +138,37 @@ export async function getStaticPaths() {
   //   }
   // ])
 
-  const docCount = await pages.countDocuments()
-
-  const pagesQuery = await pages.aggregate([
-    {
-      $project: { 
-        slug: 1, revision: 1, _id: 0, 
-        size: { 
-          $bsonSize: "$$ROOT" 
-        } 
-      } 
-    }, {
-      $match: { size: { $lt: 2000000 } }
-    }, {
-      $sample: { 
-        size: Math.abs(Math.floor(docCount / 4)) 
-      }
-    }
-  ]).toArray()
-
-  const paths = pagesQuery.map(page => {
-    return {
-      params: {
-        /**
-         * Use base path where revision 1
-         */
-        slug: page.revision === 1
-          ? [page.slug]
-          : [page.slug, `${page.revision}`]
-      }
-    }
-  })
+  // const docCount = await pages.countDocuments()
+  //
+  // const pagesQuery = await pages.aggregate([
+  //   {
+  //     $project: { 
+  //       slug: 1, revision: 1, _id: 0, 
+  //       size: { 
+  //         $bsonSize: "$$ROOT" 
+  //       } 
+  //     } 
+  //   }, {
+  //     $match: { size: { $lt: 2000000 } }
+  //   }, {
+  //     $sample: { 
+  //       size: Math.abs(Math.floor(docCount / 4)) 
+  //     }
+  //   }
+  // ]).toArray()
+  //
+  // const paths = pagesQuery.map(page => {
+  //   return {
+  //     params: {
+  //       slug: page.revision === 1
+  //         ? [page.slug]
+  //         : [page.slug, `${page.revision}`]
+  //     }
+  //   }
+  // })
 
   return {
-    paths,
+    paths: [],
     fallback: 'blocking'
   };
 }
