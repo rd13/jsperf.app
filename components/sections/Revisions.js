@@ -6,7 +6,7 @@ const Revisions = (props) => {
   return (
     <>
     <h2 className="font-semibold">Revisions</h2>
-    <p className="my-5">You can <a href={`/${slug}/${revision}/edit`}>edit these tests or add even more tests to this page</a> by appending /edit to the URL.</p>
+    <p className="my-5">You can <a href={`/${slug}/${revision}/edit`}>edit these tests or add more tests to this page</a> by appending /edit to the URL.</p>
       <ul>
         {revisions.map((pageData, index) => {
           const {revision, slug, authorName, published} = pageData
