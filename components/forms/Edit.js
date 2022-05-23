@@ -8,9 +8,11 @@ import formStyles from '../../styles/forms.module.css'
 const TestCaseFieldset = ({index, remove, test}) => {
   return (
     <fieldset name="testCase">
-      <h2>Code snippet {index + 1} {remove && <a href="" onClick={remove}>Remove</a>}</h2>
       <div>
-        <label htmlFor="testTitle">Title</label>
+        <h2 className="text-gray-400 mx-5 w-full md:w-1/4 text-right">Code snippet #{index + 1} {remove && <a href="" onClick={remove}>Remove</a>}</h2>
+      </div>
+      <div>
+        <label htmlFor="testTitle">Title <span className="text-red-600">*</span></label>
         <input type="text" name="testTitle" required defaultValue={test && test.title} />
       </div>
       <div>
@@ -18,7 +20,7 @@ const TestCaseFieldset = ({index, remove, test}) => {
         <input type="checkbox" name="async" defaultValue={test && test.async} />
       </div>
       <div>
-        <label htmlFor="code" className="self-start">Description <span>(in case you feel further explanation is needed)</span><span>(Markdown syntax is allowed)</span> </label>
+        <label htmlFor="code" className="self-start">Code <span className="text-red-600">*</span></label>
         <textarea name="code" rows="5" maxLength="16777215" required defaultValue={test && test.code} />
       </div>
     </fieldset>
@@ -125,19 +127,19 @@ export default function EditForm({pageData}) {
         <h3 className="bg-jsp-blue">Test case details</h3>
         <div>
           <label htmlFor="title">
-            Title
+            Title <span className="text-red-600">*</span>
           </label>
           <input type="text" id="title" name="title" defaultValue={formDefaults.title} required />
         </div>
         <div>
-          <label htmlFor="info" className="self-start">Description <span>(in case you feel further explanation is needed)</span><span>(Markdown syntax is allowed)</span> </label>
+          <label htmlFor="info" className="self-start">Description <br /><span className="text-gray-300 font-normal">(Markdown syntax is allowed)</span> </label>
           <textarea name="info" id="info" rows="5" maxLength="16777215" defaultValue={formDefaults.info}></textarea>
         </div>
       </fieldset>
       <fieldset>
         <h3 className="bg-jsp-blue">Preparation Code</h3>
         <div>
-          <label htmlFor="initHTML" className="self-start">Preparation HTML<span>(this will be inserted in the <code>{`<body>`}</code> of a valid HTML5 document in standards mode)<br />(useful when testing DOM operations or including libraries)</span></label>
+          <label htmlFor="initHTML" className="self-start">Preparation HTML <br /><span className="text-gray-300 font-normal">(this will be inserted in the <code>{`<body>`}</code> of a valid HTML5 document in standards mode)<br />(useful when testing DOM operations or including libraries)</span></label>
           <textarea name="initHTML" id="initHTML" rows="8" maxLength="16777215" defaultValue={formDefaults.initHTML}></textarea>
         </div>
         <div>
