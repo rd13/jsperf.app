@@ -9,8 +9,13 @@ import Info from '../../../components/sections/Info'
 import Setup from '../../../components/sections/Setup'
 import Teardown from '../../../components/sections/Teardown'
 import PrepCode from '../../../components/sections/PrepCode'
+import GitHubIcon from '../../../components/GitHubIcon'
+import buttonStyles from '../../../styles/buttons.module.css'
+import { signIn, useSession } from "next-auth/react"
+import UUID from '../../../components/UUID'
 
 export default function Preview(props) {
+  const { data: session, status } = useSession()
   const { 
     _id, 
     authorName, 
@@ -23,7 +28,32 @@ export default function Preview(props) {
     teardown, 
     tests,
     title, 
+    uuid,
   } = props.pageData
+
+  // Can publish 
+  const canPublish = !!session && session?.user?.id === githubID && !visible
+  const canEdit = !!session && session?.user?.id === githubID || uuid === UUID()
+
+  console.log('publish', canPublish, 'edit', canEdit)
+
+  const publish = async (event) => {
+    event.preventDefault();
+    const response = await fetch('/api/page', {
+      method: 'PUT',
+      body: JSON.stringify({
+        slug, revision,
+        visible: true
+      }),
+    })
+
+    const {success} = await response.json()
+
+    if (success) {
+      // setVisible(true)
+      Router.push(`/${slug}/${revision}`)
+    }
+  }
 
   return (
     <Layout>
@@ -58,6 +88,22 @@ export default function Preview(props) {
         <TestRunner id={_id} tests={tests} />
       </section>
       <hr className="my-5" />
+      <div className="flex justify-end">
+        { canEdit &&
+            <>
+              <a href={`/${slug}/${revision}/edit`} className={buttonStyles.default}>Edit Tests</a><span className="inline-flex items-center px-2"> - or - </span>
+            </>
+        }
+        { !session &&
+            <button className="bg-gray-100 hover:bg-gray-200 text-gray-darkest font-bold py-1 px-2 rounded inline-flex items-center border border-gray-400" type="button" onClick={() => signIn("github")}>
+              <GitHubIcon fill="#000000" width={32} height={32} className="mr-2" />
+              <span>Login with GitHub to Publish</span>
+            </button>
+        }
+        { canPublish &&
+            <a onClick={publish} href="#" className={styles.unpublishedButton}>Not published yet!</a> 
+        }
+      </div>
     </Layout>
   )
 }

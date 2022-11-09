@@ -58,14 +58,14 @@ const addPage = async (req, res) => {
   try {
     const session = await getSession({ req })
 
-    if (!session) {
-      throw new Error('User is not authenticated.')
-    }
+    // if (!session) {
+    //   throw new Error('User is not authenticated.')
+    // }
 
     const pages = await pagesCollection()
 
     const payload = JSON.parse(req.body)
-    
+
     // Could be a revision of an existing page.
     // In which case use the same slug.
     let slug = payload.slug
@@ -92,8 +92,12 @@ const addPage = async (req, res) => {
 
     payload.published = new Date()
 
-    // Set the github user ID
-    session.user?.id && (payload.githubID = session.user.id)
+    // Set the github user ID if authenticated
+    if (session?.user?.id) {
+      payload.githubID = session.user.id
+    }
+
+    // If the user is not logged on 
 
     // Do the insert
     // Will throw an error if schema validation fails
@@ -131,6 +135,7 @@ const updatePage = async (req, res) => {
     const payload = JSON.parse(req.body)
 
     const {slug, revision} = payload
+    console.log(payload)
 
     // Get the page we wish to update
     const page = await pages.findOne(
