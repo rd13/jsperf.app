@@ -134,7 +134,7 @@ const updatePage = async (req, res) => {
 
     const payload = JSON.parse(req.body)
 
-    const {slug, revision} = payload
+    const {slug, revision, uuid} = payload
     console.log(payload)
 
     // Get the page we wish to update
@@ -144,6 +144,7 @@ const updatePage = async (req, res) => {
         projection: {
           revision: 1,
           githubID: 1,
+          uuid: 1,
           _id: 1
         }
       })
@@ -156,9 +157,16 @@ const updatePage = async (req, res) => {
       throw new Error('Protect imported perfs')
     }
 
+    // must be logged in to publish
+    // if (!session) {
+    //   throw new Error('Does not have the authority to update this page.')
+    // }
+
     // Only the original owner of this page can update it
-    if (page.githubID !== session?.user?.id) {
-      throw new Error('Does not have the authority to update this page.')
+    if (page.githubID && page.githubID !== session?.user?.id) {
+      throw new Error('Does not have the authority to update this page, githubID missmatch.')
+    } else if (page.uuid !== uuid) {
+      throw new Error('Does not have the authority to update this page, uuid missmatch.')
     }
 
     // Remove these fields from the update

@@ -1,4 +1,6 @@
 import { pagesCollection } from '../../../lib/mongodb'
+import Router from 'next/router'
+import { signIn, useSession } from "next-auth/react"
 
 import TestRunner from '../../../components/TestRunner'
 
@@ -11,7 +13,7 @@ import Teardown from '../../../components/sections/Teardown'
 import PrepCode from '../../../components/sections/PrepCode'
 import GitHubIcon from '../../../components/GitHubIcon'
 import buttonStyles from '../../../styles/buttons.module.css'
-import { signIn, useSession } from "next-auth/react"
+import styles from '../../../components/sections/Meta.module.css'
 import UUID from '../../../components/UUID'
 
 export default function Preview(props) {
@@ -29,11 +31,16 @@ export default function Preview(props) {
     tests,
     title, 
     uuid,
+    visible,
+    githubID,
   } = props.pageData
 
+  // TODO: 403 if no access
+  const userID = UUID()
+
   // Can publish 
-  const canPublish = !!session && session?.user?.id === githubID && !visible
-  const canEdit = !!session && session?.user?.id === githubID || uuid === UUID()
+  const canPublish = !visible && (!!session && session?.user?.id === githubID || !!session && uuid === userID)
+  const canEdit = !!session && session?.user?.id === githubID || uuid === userID
 
   console.log('publish', canPublish, 'edit', canEdit)
 
@@ -42,15 +49,15 @@ export default function Preview(props) {
     const response = await fetch('/api/page', {
       method: 'PUT',
       body: JSON.stringify({
-        slug, revision,
+        slug, revision, uuid,
         visible: true
       }),
     })
 
-    const {success} = await response.json()
+    const r = await response.json()
+    console.log(r)
 
-    if (success) {
-      // setVisible(true)
+    if (r.success) {
       Router.push(`/${slug}/${revision}`)
     }
   }
@@ -58,7 +65,7 @@ export default function Preview(props) {
   return (
     <Layout>
       <hgroup>
-        <h1 className="text-2xl py-10 font-bold">{title}</h1>
+        <h1 className="text-2xl py-6 font-bold">{title}</h1>
       </hgroup>
       <section>
         <Meta pageData={props.pageData} />
@@ -101,7 +108,7 @@ export default function Preview(props) {
             </button>
         }
         { canPublish &&
-            <a onClick={publish} href="#" className={styles.unpublishedButton}>Not published yet!</a> 
+            <a onClick={publish} href="#" className={styles.unpublishedButton}>Publish</a> 
         }
       </div>
     </Layout>

@@ -32,6 +32,7 @@ export default function EditForm({pageData}) {
   const { data: session } = useSession()
   const uuid = UUID()
 
+  console.log(pageData)
   // Default form values if none are provided via props.pageData
   const formDefaults = Object.assign({}, {
     title: '',
@@ -80,8 +81,13 @@ export default function EditForm({pageData}) {
     // const isOwner = session && pageData?.githubID === session?.user?.id
     const isPublished = !!pageData?.visible
 
+
+
+
     // Editing an existing document
-    formData.revision = pageData.revision
+    if (pageData?.revision) {
+      formData.revision = pageData.revision
+    }
 
     // Include UUID in payload
     formData.uuid = uuid
