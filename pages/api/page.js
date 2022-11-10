@@ -97,9 +97,6 @@ const addPage = async (req, res) => {
       payload.githubID = session.user.id
     }
 
-    // If the user is not logged on 
-
-    // Do the insert
     // Will throw an error if schema validation fails
     await pages.insertOne(payload)
       .then(({ops}) => {
@@ -156,11 +153,6 @@ const updatePage = async (req, res) => {
     if (page.mirror) {
       throw new Error('Protect imported perfs')
     }
-
-    // must be logged in to publish
-    // if (!session) {
-    //   throw new Error('Does not have the authority to update this page.')
-    // }
 
     // Only the original owner of this page can update it
     if (page.githubID && page.githubID !== session?.user?.id) {

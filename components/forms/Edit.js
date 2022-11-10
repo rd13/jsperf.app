@@ -165,12 +165,6 @@ export default function EditForm({pageData}) {
           <button type="button" className="underline hover:no-underline" onClick={() => setNoTestCases(noTestCases + 1)}>Add code snippet</button>
         </div>
         <button type="submit" className={buttonStyles.default}>Save test case</button>
-        {/* { !session &&  */}
-        {/*   <button className="bg-gray-100 hover:bg-gray-200 text-gray-darkest font-bold py-2 px-4 rounded inline-flex items-center border border-gray-400" type="button" onClick={() => signIn("github")}> */}
-        {/*     <GitHubIcon fill="#000000" width={32} height={32} className="mr-2" /> */}
-        {/*     <span>Login with GitHub to Save Test Cases</span> */}
-        {/*   </button> */}
-        {/* } */}
       </div>
     </form>
   )

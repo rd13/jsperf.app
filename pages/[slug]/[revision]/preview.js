@@ -42,8 +42,6 @@ export default function Preview(props) {
   const canPublish = !visible && (!!session && session?.user?.id === githubID || !!session && uuid === userID)
   const canEdit = !!session && session?.user?.id === githubID || uuid === userID
 
-  console.log('publish', canPublish, 'edit', canEdit)
-
   const publish = async (event) => {
     event.preventDefault();
     const response = await fetch('/api/page', {
@@ -54,10 +52,9 @@ export default function Preview(props) {
       }),
     })
 
-    const r = await response.json()
-    console.log(r)
+    const {success} = await response.json()
 
-    if (r.success) {
+    if (success) {
       Router.push(`/${slug}/${revision}`)
     }
   }
