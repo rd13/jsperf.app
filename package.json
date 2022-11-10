@@ -1,6 +1,6 @@
 {
   "name": "jsperf.app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "jsperf.app",
   "repository": "https://github.com/rd13/jsperf.app",
   "main": "index.js",
