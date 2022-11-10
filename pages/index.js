@@ -23,7 +23,7 @@ export default function Home(props) {
         </p>
 
         <p className="my-4">
-          <i>Most</i> jsperf.com URLs are mirrored at the same path, e.g:
+          jsperf.com URLs are mirrored at the same path, e.g:
         </p>
 
         <pre>https://jsperf.com/negative-modulo/2</pre>
