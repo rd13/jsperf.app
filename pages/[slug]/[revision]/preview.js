@@ -1,4 +1,6 @@
 import { pagesCollection } from '../../../lib/mongodb'
+import Router from 'next/router'
+import { signIn, useSession } from "next-auth/react"
 
 import TestRunner from '../../../components/TestRunner'
 
@@ -9,8 +11,13 @@ import Info from '../../../components/sections/Info'
 import Setup from '../../../components/sections/Setup'
 import Teardown from '../../../components/sections/Teardown'
 import PrepCode from '../../../components/sections/PrepCode'
+import GitHubIcon from '../../../components/GitHubIcon'
+import buttonStyles from '../../../styles/buttons.module.css'
+import styles from '../../../components/sections/Meta.module.css'
+import UUID from '../../../components/UUID'
 
 export default function Preview(props) {
+  const { data: session, status } = useSession()
   const { 
     _id, 
     authorName, 
@@ -23,12 +30,39 @@ export default function Preview(props) {
     teardown, 
     tests,
     title, 
+    uuid,
+    visible,
+    githubID,
   } = props.pageData
+
+  // TODO: 403 if no access
+  const userID = UUID()
+
+  // Can publish 
+  const canPublish = !visible && (!!session && session?.user?.id === githubID || !!session && uuid === userID)
+  const canEdit = !!session && session?.user?.id === githubID || uuid === userID
+
+  const publish = async (event) => {
+    event.preventDefault();
+    const response = await fetch('/api/page', {
+      method: 'PUT',
+      body: JSON.stringify({
+        slug, revision, uuid,
+        visible: true
+      }),
+    })
+
+    const {success} = await response.json()
+
+    if (success) {
+      Router.push(`/${slug}/${revision}`)
+    }
+  }
 
   return (
     <Layout>
       <hgroup>
-        <h1 className="text-2xl py-10 font-bold">{title}</h1>
+        <h1 className="text-2xl py-6 font-bold">{title}</h1>
       </hgroup>
       <section>
         <Meta pageData={props.pageData} />
@@ -58,6 +92,22 @@ export default function Preview(props) {
         <TestRunner id={_id} tests={tests} />
       </section>
       <hr className="my-5" />
+      <div className="flex justify-end">
+        { canEdit &&
+            <>
+              <a href={`/${slug}/${revision}/edit`} className={buttonStyles.default}>Edit Tests</a><span className="inline-flex items-center px-2"> - or - </span>
+            </>
+        }
+        { !session &&
+            <button className="bg-gray-100 hover:bg-gray-200 text-gray-darkest font-bold py-1 px-2 rounded inline-flex items-center border border-gray-400" type="button" onClick={() => signIn("github")}>
+              <GitHubIcon fill="#000000" width={32} height={32} className="mr-2" />
+              <span>Login with GitHub to Publish</span>
+            </button>
+        }
+        { canPublish &&
+            <a onClick={publish} href="#" className={styles.unpublishedButton}>Publish</a> 
+        }
+      </div>
     </Layout>
   )
 }

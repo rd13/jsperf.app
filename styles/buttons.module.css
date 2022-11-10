@@ -1,10 +1,11 @@
 .default {
-  /* background-color: #1f6feb; */
-  background-color: #ebebeb;
+  @apply no-underline;
+  @apply bg-gray-100 hover:bg-gray-200;
+  @apply border border-gray-400;
+  @apply font-bold;
+  @apply py-2 px-2;
+  @apply rounded;
   color: #000000;
-  padding: 5px;
-  border-radius: 4px;
-  border: 1px solid #999;
   cursor: pointer;
 }
 

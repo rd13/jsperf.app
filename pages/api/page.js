@@ -58,14 +58,14 @@ const addPage = async (req, res) => {
   try {
     const session = await getSession({ req })
 
-    if (!session) {
-      throw new Error('User is not authenticated.')
-    }
+    // if (!session) {
+    //   throw new Error('User is not authenticated.')
+    // }
 
     const pages = await pagesCollection()
 
     const payload = JSON.parse(req.body)
-    
+
     // Could be a revision of an existing page.
     // In which case use the same slug.
     let slug = payload.slug
@@ -92,10 +92,11 @@ const addPage = async (req, res) => {
 
     payload.published = new Date()
 
-    // Set the github user ID
-    session.user?.id && (payload.githubID = session.user.id)
+    // Set the github user ID if authenticated
+    if (session?.user?.id) {
+      payload.githubID = session.user.id
+    }
 
-    // Do the insert
     // Will throw an error if schema validation fails
     await pages.insertOne(payload)
       .then(({ops}) => {
@@ -130,7 +131,8 @@ const updatePage = async (req, res) => {
 
     const payload = JSON.parse(req.body)
 
-    const {slug, revision} = payload
+    const {slug, revision, uuid} = payload
+    console.log(payload)
 
     // Get the page we wish to update
     const page = await pages.findOne(
@@ -139,6 +141,7 @@ const updatePage = async (req, res) => {
         projection: {
           revision: 1,
           githubID: 1,
+          uuid: 1,
           _id: 1
         }
       })
@@ -152,8 +155,10 @@ const updatePage = async (req, res) => {
     }
 
     // Only the original owner of this page can update it
-    if (page.githubID !== session?.user?.id) {
-      throw new Error('Does not have the authority to update this page.')
+    if (page.githubID && page.githubID !== session?.user?.id) {
+      throw new Error('Does not have the authority to update this page, githubID missmatch.')
+    } else if (page.uuid !== uuid) {
+      throw new Error('Does not have the authority to update this page, uuid missmatch.')
     }
 
     // Remove these fields from the update

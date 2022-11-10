@@ -4,6 +4,7 @@ import { signIn, useSession } from "next-auth/react"
 import GitHubIcon from '../GitHubIcon'
 import buttonStyles from '../../styles/buttons.module.css'
 import formStyles from '../../styles/forms.module.css'
+import UUID from '../UUID'
 
 const TestCaseFieldset = ({index, remove, test}) => {
   return (
@@ -29,6 +30,7 @@ const TestCaseFieldset = ({index, remove, test}) => {
 
 export default function EditForm({pageData}) {
   const { data: session } = useSession()
+  const uuid = UUID()
 
   // Default form values if none are provided via props.pageData
   const formDefaults = Object.assign({}, {
@@ -75,13 +77,16 @@ export default function EditForm({pageData}) {
       }
     ))
 
-    const isOwner = pageData?.githubID === session?.user?.id
+    // const isOwner = session && pageData?.githubID === session?.user?.id
     const isPublished = !!pageData?.visible
 
     // Editing an existing document
-    if (isOwner) {
+    if (pageData?.revision) {
       formData.revision = pageData.revision
     }
+
+    // Include UUID in payload
+    formData.uuid = uuid
 
     // Send form data to tests API
     const response = await fetch('/api/page', {
@@ -159,15 +164,7 @@ export default function EditForm({pageData}) {
         <div className="flex-1">
           <button type="button" className="underline hover:no-underline" onClick={() => setNoTestCases(noTestCases + 1)}>Add code snippet</button>
         </div>
-        { session &&
-          <button type="submit" className={buttonStyles.default}>Save test case</button>
-        }
-        { !session && 
-          <button className="bg-gray-100 hover:bg-gray-200 text-gray-darkest font-bold py-2 px-4 rounded inline-flex items-center border border-gray-400" type="button" onClick={() => signIn("github")}>
-            <GitHubIcon fill="#000000" width={32} height={32} className="mr-2" />
-            <span>Login with GitHub to Save Test Cases</span>
-          </button>
-        }
+        <button type="submit" className={buttonStyles.default}>Save test case</button>
       </div>
     </form>
   )

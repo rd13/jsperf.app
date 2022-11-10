@@ -95,10 +95,10 @@ export const getStaticProps = async ({params}) => {
   })
 
   const revisions = await pages.find({
-    slug
+    slug, visible: true
   }, {projection: {slug: 1, revision: 1, authorName: 1, published: 1} }).sort({revision: 1}).toArray()
 
-  if (!pageData) {
+  if (!pageData || !pageData.visible) {
     return {
       notFound: true
     }
