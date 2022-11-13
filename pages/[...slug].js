@@ -41,7 +41,7 @@ export default function Slug(props) {
       </Head>
       <Layout>
         <hgroup>
-          <h1 className="text-2xl py-10 font-bold">{title}</h1>
+          <h1 className="text-2xl py-6 font-bold">{title}</h1>
         </hgroup>
         <section>
           <Meta pageData={props.pageData} />

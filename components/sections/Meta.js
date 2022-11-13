@@ -7,7 +7,7 @@ const Meta = (props) => {
 
   return (
     <>
-      <h2 className="text-xl">
+      <h2 className="text-md">
         {revision > 1
             ? <span>Revision {revision} of this benchmark created </span>
             : <span>Benchmark created </span>
