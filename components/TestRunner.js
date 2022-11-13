@@ -110,7 +110,7 @@ export default function Tests(props) {
           className="hidden"></iframe>
       </div>
       <table id="test-table" className="w-full border-collapse">
-        <caption className="from-gray-200 to-gray-400 bg-gradient-to-b text-lg">Testing in <UserAgent /></caption>
+        <caption className="bg-gray-200 font-bold text-md text-gray-800">Testing in <UserAgent /></caption>
         <thead className="bg-blue-500 text-white">
           <tr>
             <th colSpan="2" className="py-1">Test</th>
