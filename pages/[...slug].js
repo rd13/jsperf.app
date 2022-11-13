@@ -33,6 +33,11 @@ export default function Slug(props) {
     <>
       <Head>
         <title>{title}</title>
+        <meta
+          name="description"
+          content={`${title} - Online Javascript Benchmark`}
+          key="desc"
+        />
       </Head>
       <Layout>
         <hgroup>

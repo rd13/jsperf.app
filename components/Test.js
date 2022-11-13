@@ -18,16 +18,16 @@ export default function Test(props) {
   }
   return (
     <tr className="">
-      <td className="py-5 px-2 bg-gray-200 w-1/6">
+      <td className="py-5 px-2 bg-gray-200 w-1/6 border border-slate-300">
         {title}
       </td>
-      <td className="code px-2">
+      <td className="code px-2 border border-slate-300">
         <pre className="w-full whitespace-pre-wrap break-words">
           <code dangerouslySetInnerHTML={
             {__html: highlightSanitizedJS(code)}} />
         </pre>
       </td>
-      <td className={`${status === 'finished' && fastest && 'bg-jsp-green'} ${status === 'finished' && slowest && 'bg-jsp-pink'} text-center w-[100px] p-2`}>{result[status] || result.default}</td>
+      <td className={`${status === 'finished' && fastest && 'bg-jsp-green'} ${status === 'finished' && slowest && 'bg-jsp-pink'} text-center w-[100px] p-2 border border-slate-300`}>{result[status] || result.default}</td>
     </tr>
   )
 }

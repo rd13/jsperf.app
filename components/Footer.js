@@ -11,10 +11,10 @@ export default function Footer() {
         <nav className="container flex px-2 py-4">
           <div className="w-auto block flex-grow">
             <Link href="/">
-              <a className="block mt-4 lg:inline-block lg:mt-0 mr-4">Add Test</a>
+              <a className="block mt-4 lg:inline-block lg:mt-0 mr-4 no-underline">New Benchmark</a>
             </Link>
             <Link href="https://github.com/rd13/jsperf.app">
-              <a className="block mt-4 lg:inline-block lg:mt-0 mr-4">GitHub</a>
+              <a className="block mt-4 lg:inline-block lg:mt-0 mr-4 no-underline">GitHub</a>
             </Link>
           </div>
           <div>

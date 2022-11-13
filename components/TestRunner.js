@@ -109,7 +109,7 @@ export default function Tests(props) {
           sandbox="allow-scripts" 
           className="hidden"></iframe>
       </div>
-      <table id="test-table" className="w-full">
+      <table id="test-table" className="w-full border-collapse">
         <caption className="from-gray-200 to-gray-400 bg-gradient-to-b text-lg">Testing in <UserAgent /></caption>
         <thead className="bg-jsp-blue text-white">
           <tr>
