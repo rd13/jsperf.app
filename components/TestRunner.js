@@ -111,7 +111,7 @@ export default function Tests(props) {
       </div>
       <table id="test-table" className="w-full border-collapse">
         <caption className="from-gray-200 to-gray-400 bg-gradient-to-b text-lg">Testing in <UserAgent /></caption>
-        <thead className="bg-jsp-blue text-white">
+        <thead className="bg-blue-500 text-white">
           <tr>
             <th colSpan="2" className="py-1">Test</th>
             <th title="Operations per second (higher is better)" className="px-2">Ops/sec</th>

@@ -129,7 +129,7 @@ export default function EditForm({pageData}) {
   return (
     <form onSubmit={submitFormHandler} className={`${formStyles.editForm} w-full`}>
       <fieldset>
-        <h3 className="bg-jsp-blue">Test case details</h3>
+        <h3 className="bg-blue-500">Test case details</h3>
         <div>
           <label htmlFor="title">
             Title <span className="text-red-600">*</span>
@@ -142,7 +142,7 @@ export default function EditForm({pageData}) {
         </div>
       </fieldset>
       <fieldset>
-        <h3 className="bg-jsp-blue">Preparation Code</h3>
+        <h3 className="bg-blue-500">Preparation Code</h3>
         <div>
           <label htmlFor="initHTML" className="self-start">Preparation HTML <br /><span className="text-gray-300 font-normal">(this will be inserted in the <code>{`<body>`}</code> of a valid HTML5 document in standards mode)<br />(useful when testing DOM operations or including libraries)</span></label>
           <textarea name="initHTML" id="initHTML" rows="8" maxLength="16777215" defaultValue={formDefaults.initHTML}></textarea>
@@ -157,7 +157,7 @@ export default function EditForm({pageData}) {
         </div>
       </fieldset>
       <fieldset>
-        <h3 className="bg-jsp-blue">Test cases</h3>
+        <h3 className="bg-blue-500">Test cases</h3>
         {testCaseFieldsets}
       </fieldset>
       <div className="flex my-5 items-center">

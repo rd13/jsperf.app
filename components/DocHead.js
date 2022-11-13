@@ -6,7 +6,7 @@ const DocHead = () => {
     <>
       <Head>
         <meta charSet="utf-8" />
-        <meta http-equiv ="Content-Language" content="en" />
+        <meta httpEquiv="Content-Language" content="en" />
       </Head>
     </>
   )
