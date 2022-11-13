@@ -28,7 +28,7 @@ export const getStaticProps = async () => {
 
   const pages = await pagesCollection()
 
-  const entries = await pages.aggregate(
+  const entries = await pages.aggregate([
     { 
       $match : {visible: true}
     },
@@ -65,6 +65,10 @@ export const getStaticProps = async () => {
     },
     {
       $limit: 100
+    }
+  ],
+    {
+      allowDiskUse: true
     }
   ).toArray();
 
