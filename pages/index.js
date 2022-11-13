@@ -13,7 +13,12 @@ export default function Home(props) {
   return (
     <>
     <Head>
-      <title>jsPerf.app - Online JavaScript performance playground &amp; jsperf.com mirror</title>
+      <title>jsPerf - Online JavaScript performance benchmark</title>
+      <meta
+        name="description"
+        content="jsPerf.app is an online JavaScript performance benchmark test runner and jsperf.com mirror"
+        key="desc"
+      />
     </Head>
     <Layout>
       <h1 className="py-5 text-xl"><span className="text-2xl font-bold">jsPerf.app</span> — Online JavaScript performance playground &amp; jsperf.com mirror</h1>
