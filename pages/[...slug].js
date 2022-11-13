@@ -25,6 +25,7 @@ export default function Slug(props) {
     teardown, 
     tests,
     title, 
+    mirror,
   } = props.pageData
 
   const {revisions} = props
@@ -35,7 +36,7 @@ export default function Slug(props) {
         <title>{title}</title>
         <meta
           name="description"
-          content={`${title} - Online Javascript Benchmark`}
+          content={`${title} - Online Javascript Benchmark${mirror ? ' - jsPerf.com mirror' : ''}`}
           key="desc"
         />
       </Head>
