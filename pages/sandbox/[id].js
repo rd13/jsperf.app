@@ -1,3 +1,5 @@
+import Head from 'next/head'
+
 import { pagesCollection } from '../../lib/mongodb'
 import { ObjectId } from 'mongodb'
 import dynamic from 'next/dynamic'
@@ -15,7 +17,16 @@ export default function Sandbox(props) {
   }, []);
 
   return (
-    <UI pageData={pageData} />
+    <>
+      <Head>
+        <meta 
+          key="robots" 
+          name="robots" 
+          content="noindex,follow" 
+        />
+      </Head>
+      <UI pageData={pageData} />
+    </>
   )
 }
 
