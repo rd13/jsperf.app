@@ -1,5 +1,5 @@
 Sitemap: https://jsperf.app/sitemap.xml
 
 User-agent: *
-Disallow: /edit$
-Disallow: /preview$
+Disallow: */edit$
+Disallow: */preview$
