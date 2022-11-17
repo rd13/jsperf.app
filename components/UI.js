@@ -90,7 +90,15 @@ export default (props) => {
       })
     })
 
-    broker.register('run', () => { 
+    broker.register('run', ({data: { options }}) => { 
+      // options can override each benchmark defaults, e.g. maxTime
+      if (options) {
+        for (let benchmark of uiBenchmarks) {
+          Object.assign(benchmark.options, options)
+          benchmark.reset()
+        }
+      }
+
       const stopped = !ui.running
 
       ui.abort()

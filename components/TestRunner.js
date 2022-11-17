@@ -78,8 +78,8 @@ export default function Tests(props) {
 
   const sandboxUrl = `/sandbox/${id}`
 
-  const run = () => {
-    broker.emit('run')
+  const run = (options) => {
+    broker.emit('run', {options})
 
     setTests(tests => {
       // Transition all tests status to pending
@@ -101,8 +101,11 @@ export default function Tests(props) {
           id="run" 
           type="button" 
           disabled={benchStatus === 'notready'}
-          className={buttonStyles.default} 
-          onClick={() => run()}>{runButtonText[benchStatus]||runButtonText['default']}</button>
+          className={`${buttonStyles.default} mx-2`} 
+        onClick={() => run({maxTime: 5})}>{runButtonText[benchStatus]||runButtonText['default']}</button>
+        <button
+        className={buttonStyles.default}
+        onClick={() => run({maxTime: 0.5})}>Quick Run</button>
         <iframe 
           src={sandboxUrl} 
           ref={windowRef} 
