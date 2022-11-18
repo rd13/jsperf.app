@@ -20,10 +20,10 @@ export default function Tests(props) {
   const [tests, setTests] = useState(props.tests)
 
   const runButtonText = {
-    'default'  : 'Run tests',
-    'ready'    : 'Run tests',
-    'complete' : 'Run again',
-    'running'  : 'Stop running'
+    'default'  : 'Run',
+    'ready'    : 'Run',
+    'complete' : 'Run',
+    'running'  : 'Stop'
   }
 
   // This is a ref to the sandbox iframe window used for communication
@@ -97,15 +97,27 @@ export default function Tests(props) {
       <h2 className="font-bold my-5">Test runner</h2>
       <div id="controls" className="flex my-5 items-center">
         <p id="status" className="flex-1">{statusMessage}</p>
-        <button 
-          id="run" 
-          type="button" 
-          disabled={benchStatus === 'notready'}
-          className={`${buttonStyles.default} mx-2`} 
-        onClick={() => run({maxTime: 5})}>{runButtonText[benchStatus]||runButtonText['default']}</button>
-        <button
-        className={buttonStyles.default}
-        onClick={() => run({maxTime: 0.5})}>Quick Run</button>
+        { ['ready', 'complete'].includes(benchStatus) &&
+          <>
+            <button 
+              id="run" 
+              type="button" 
+              disabled={benchStatus === 'notready'}
+              className={`${buttonStyles.default} mx-2`} 
+              onClick={() => run({maxTime: 5})}>{runButtonText[benchStatus]||runButtonText['default']}</button>
+            <button
+              type="button" 
+              disabled={benchStatus === 'notready'}
+              className={buttonStyles.default}
+              onClick={() => run({maxTime: 0.5})}>Quick Run</button>
+            </>
+        }
+        { benchStatus === 'running' &&
+          <button 
+            type="button"
+            className={buttonStyles.default}
+            onClick={() => run()}>Stop</button>
+        }
         <iframe 
           src={sandboxUrl} 
           ref={windowRef} 
