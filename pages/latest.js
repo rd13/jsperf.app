@@ -32,7 +32,7 @@ export const getStaticProps = async () => {
     { 
       $match : {
         visible: true,
-        published: { $gt: new Date("2018-01-01T00:00:00Z") }
+        published: { $gt: new Date("2016-01-01T00:00:00Z") }
       }
     },
     {
@@ -67,7 +67,7 @@ export const getStaticProps = async () => {
       }
     },
     {
-      $limit: 100
+      $limit: 1000
     }
   ],
     {
