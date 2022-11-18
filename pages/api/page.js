@@ -99,15 +99,18 @@ const addPage = async (req, res) => {
 
     // Will throw an error if schema validation fails
     await pages.insertOne(payload)
-      .then(({ops}) => {
-        // http://mongodb.github.io/node-mongodb-native/3.1/api/Collection.html#%7EinsertOneWriteOpResult
-        const [doc] = ops
-        const {slug, revision} = doc
-        res.json({
-          message: 'Post added successfully',
-          success: true,
-          data: { slug, revision },
-        })
+      .then(({acknowledged, insertedId}) => {
+        // Mongo 4.x no longer returns the inserted document
+        // it will return {acknowledged, insertedId}
+        if (acknowledged && insertedId) {
+          res.json({
+            message: 'Post added successfully',
+            success: true,
+            data: { slug: payload.slug, revision: payload.revision },
+          })
+        } else {
+          throw new Error('Mongo couldn\'t insertOne')
+        }
       })
   } catch (error) {
     return res.json({
