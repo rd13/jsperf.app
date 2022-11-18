@@ -30,7 +30,10 @@ export const getStaticProps = async () => {
 
   const entries = await pages.aggregate([
     { 
-      $match : {visible: true}
+      $match : {
+        visible: true,
+        published: { $gt: new Date("2018-01-01T00:00:00Z") }
+      }
     },
     {
       $sort: {
