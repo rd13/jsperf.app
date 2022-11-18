@@ -33,13 +33,13 @@ export const getStaticProps = async () => {
       $match : {visible: true}
     },
     {
-      $project: {
-        title: 1, slug: 1, revision: 1, published: 1, tests: 1
+      $sort: {
+        published: -1
       }
     },
     {
-      $sort: {
-        published: -1
+      $project: {
+        title: 1, slug: 1, revision: 1, published: 1, tests: 1
       }
     },
     { 
