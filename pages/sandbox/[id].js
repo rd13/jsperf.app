@@ -34,13 +34,19 @@ export const getStaticProps = async ({params}) => {
   const {id} = params
   let pageData
 
-  try {
-    const _id = ObjectId(id)
+  if (id !== 'edit') {
 
-    const pages = await pagesCollection()
+    try {
+      const _id = ObjectId(id)
 
-    pageData = await pages.findOne(_id)
-  } catch (e) {
+      const pages = await pagesCollection()
+
+      pageData = await pages.findOne(_id)
+    } catch (e) {
+    }
+
+  } else {
+    pageData = { title: 'edit_form' }
   }
 
   if (!pageData) {

@@ -4,7 +4,10 @@ import { signIn, useSession } from "next-auth/react"
 import GitHubIcon from '../GitHubIcon'
 import buttonStyles from '../../styles/buttons.module.css'
 import formStyles from '../../styles/forms.module.css'
+import accordianStyles from '../../styles/accordian.module.css'
+import TestRunner from '../TestRunner'
 import UUID from '../UUID'
+import {Accordian, AccordianItem} from './Accordian'
 
 const TestCaseFieldset = ({index, remove, test}) => {
   return (
@@ -51,13 +54,11 @@ export default function EditForm({pageData}) {
     // Uses IIFE to destructure event.target. event.target is the form.
     const formData = (({
       title, 
-      info,
       initHTML,
       setup,
       teardown
     }) => ({
       title: title.value, 
-      info: info.value,
       initHTML: initHTML.value,
       setup: setup.value,
       teardown: teardown.value
@@ -107,6 +108,8 @@ export default function EditForm({pageData}) {
   // The number of test cases to render in the form
   const [noTestCases, setNoTestCases] = useState(formDefaults.tests.length || 2)
 
+  const [tests, setTests] = useState(pageData.tests)
+
   let testCaseFieldsets = []
 
   let conditionalProps = {}
@@ -128,34 +131,37 @@ export default function EditForm({pageData}) {
 
   return (
     <form onSubmit={submitFormHandler} className={`${formStyles.editForm} w-full`}>
+
       <fieldset>
-        <h3 className="bg-blue-500">Test case details</h3>
         <div>
-          <label htmlFor="title">
-            Title <span className="text-red-600">*</span>
-          </label>
-          <input type="text" id="title" name="title" defaultValue={formDefaults.title} required />
-        </div>
-        <div>
-          <label htmlFor="info" className="self-start">Description <br /><span className="text-gray-300 font-normal">(Markdown syntax is allowed)</span> </label>
-          <textarea name="info" id="info" rows="5" maxLength="16777215" defaultValue={formDefaults.info}></textarea>
+          <input type="text" id="title" name="title" defaultValue={formDefaults.title} placeholder="Title (optional)" className="w-full text-2xl" />
         </div>
       </fieldset>
-      <fieldset>
-        <h3 className="bg-blue-500">Preparation Code</h3>
-        <div>
+
+      {/* Begin Section Benchmark Setup */}
+      <h3 className="bg-blue-500">Benchmark Setup</h3>
+      <Accordian>
+        <AccordianItem title="HTML">
           <label htmlFor="initHTML" className="self-start">Preparation HTML <br /><span className="text-gray-300 font-normal">(this will be inserted in the <code>{`<body>`}</code> of a valid HTML5 document in standards mode)<br />(useful when testing DOM operations or including libraries)</span></label>
-          <textarea name="initHTML" id="initHTML" rows="8" maxLength="16777215" defaultValue={formDefaults.initHTML}></textarea>
-        </div>
-        <div>
-          <label htmlFor="setup" className="self-start">Setup</label>
+            <textarea name="initHTML" id="initHTML" rows="8" maxLength="16777215" defaultValue={formDefaults.initHTML}></textarea>
+        </AccordianItem>
+
+        <AccordianItem title="Setup" open>
+          <label htmlFor="setup" className="self-start">Setup block <br /><span className="text-gray-300 font-normal">(run before every test, include vars and functions to be used in your tests)</span></label>
           <textarea name="setup" id="setup" rows="5" maxLength="16777215" defaultValue={formDefaults.setup}></textarea>
-        </div>
-        <div>
+        </AccordianItem>
+
+        <AccordianItem title="Teardown">
           <label htmlFor="teardown" className="self-start">Teardown</label>
           <textarea name="teardown" id="teardown" rows="5" maxLength="16777215" defaultValue={formDefaults.teardown}></textarea>
-        </div>
-      </fieldset>
+        </AccordianItem>
+      </Accordian>
+      {/* End Section Benchmark Setup */}
+
+      <section>
+        <TestRunner tests={tests} onTestChange={setTests} id="edit" editable={true} />
+      </section>
+
       <fieldset>
         <h3 className="bg-blue-500">Test cases</h3>
         {testCaseFieldsets}

@@ -71,12 +71,13 @@ export default function Preview(props) {
         />
       </Head>
       <Layout>
-        <hgroup>
-          <h1 className="text-2xl py-6 font-bold">{title}</h1>
+        <hgroup className="py-5">
+          {/* <h1 className="text-2xl py-6 font-bold">{title}</h1> */}
+          <input type="text" className="w-full text-2xl border border-gray-300 p-2" placeholder="Title (optional)" />
         </hgroup>
-        <section>
-          <Meta pageData={props.pageData} />
-        </section>
+        {/* <section> */}
+        {/*   <Meta pageData={props.pageData} /> */}
+        {/* </section> */}
         <hr className="my-5" />
         {info &&
           <section>

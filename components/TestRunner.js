@@ -3,11 +3,11 @@ import PostMessageBroker from '../utils/postMessageBroker'
 import { useState, useEffect, useRef } from 'react'
 import styles from './TestRunner.module.css'
 import UserAgent from './UserAgent'
-import Test from './Test'
+import {Test, TestEditable} from './Test'
 import buttonStyles from '../styles/buttons.module.css'
 
 export default function Tests(props) {
-  const {id} = props
+  const {editable, onTestChange} = props
 
   // A textual status message
   const [statusMessage, setStatusMessage] = useState('')
@@ -17,7 +17,11 @@ export default function Tests(props) {
 
   const [broker, setBroker] = useState(null)
 
-  const [tests, setTests] = useState(props.tests)
+  // Default tests, could be predefined if editing or empty [{id:0},{id:1}]
+  const [tests, setTests] = useState(
+    (props.tests && props.tests.map((test, id) => Object.assign(test, {id})))
+    || [{id:0},{id:1}]
+  )
 
   const runButtonText = {
     'default'  : 'Run',
@@ -76,10 +80,10 @@ export default function Tests(props) {
     })
   }, [])
 
-  const sandboxUrl = `/sandbox/${id}`
+  const sandboxUrl = `/sandbox/${props.id}`
 
   const run = (options) => {
-    broker.emit('run', {options})
+    broker.emit('run', {options, tests})
 
     setTests(tests => {
       // Transition all tests status to pending
@@ -90,6 +94,14 @@ export default function Tests(props) {
     })
 
     setBenchStatus('running')
+  }
+
+  const addTest = () => {
+    setTests(tests => {
+      return [...tests, {
+        title: '', code: '', 'async': false
+      }]
+    })
   }
 
   return (
@@ -133,10 +145,21 @@ export default function Tests(props) {
           </tr>
         </thead>
         <tbody>
-          {tests.map((test, i) => 
-            <Test key={i} test={test} />
+          {tests.map((test, index) => 
+            (
+              editable 
+              ? <TestEditable key={test.id} test={{...test, index}} onTestChange={onTestChange} />
+              : <Test key={index} test={{...test, index}} />
+            )
           )}
         </tbody>
+        { editable &&
+          <tfoot>
+            <tr>
+              <td><button onClick={addTest}>Add another test</button></td>
+            </tr>
+          </tfoot>
+        }
       </table>
     </>
   )
