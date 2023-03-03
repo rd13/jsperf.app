@@ -21,27 +21,6 @@ export default function Home(props) {
       />
     </Head>
     <Layout>
-      <h1 className="py-5 text-xl"><span className="text-2xl font-bold">jsPerf.app</span> — Online JavaScript performance playground &amp; jsperf.com mirror</h1>
-      <div>
-        <p>
-          This is a complete rewrite in homage to the once excellent jsperf.com now with hopefully a more modern &amp; maintainable <a href="https://github.com/rd13/jsperf.app">codebase</a>.
-        </p>
-
-        <p className="my-4">
-          jsperf.com URLs are mirrored at the same path, e.g:
-        </p>
-
-        <pre>https://jsperf.com/negative-modulo/2</pre>
-
-        <p className="my-4">Can be accessed at:</p>
-
-        <pre>
-          <Link href="/negative-modulo/2">
-            <a>https://jsperf.app/negative-modulo/2</a>
-          </Link>
-        </pre>
-      </div>
-
       <h2 className="font-semibold py-5">Create a test case</h2>
       <EditForm />
     </Layout>
