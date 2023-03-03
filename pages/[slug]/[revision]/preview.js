@@ -41,8 +41,9 @@ export default function Preview(props) {
   const userID = UUID()
 
   // Can publish 
-  const canPublish = !visible && (!!session && session?.user?.id === githubID || !!session && uuid === userID)
-  const canEdit = !!session && session?.user?.id === githubID || uuid === userID
+  const canPublish = !visible && (session?.user?.id === githubID || uuid === userID)
+
+  const canEdit = session?.user?.id === githubID || uuid === userID
 
   const publish = async (event) => {
     event.preventDefault();
@@ -108,15 +109,15 @@ export default function Preview(props) {
                 <a href={`/${slug}/${revision}/edit`} className={buttonStyles.default}>Edit Tests</a><span className="inline-flex items-center px-2"> - or - </span>
               </>
           }
-          { !session &&
-              <button className="bg-gray-100 hover:bg-gray-200 text-gray-darkest font-bold py-1 px-2 rounded inline-flex items-center border border-gray-400" type="button" onClick={() => signIn("github")}>
-                <GitHubIcon fill="#000000" width={32} height={32} className="mr-2" />
-                <span>Login with GitHub to Publish</span>
-              </button>
-          }
           { canPublish &&
               <a onClick={publish} href="#" className={styles.unpublishedButton}>Publish</a> 
           }
+          {/* { !session && */}
+          {/*     <button className="bg-gray-100 hover:bg-gray-200 text-gray-darkest font-bold py-1 px-2 rounded inline-flex items-center border border-gray-400" type="button" onClick={() => signIn("github")}> */}
+          {/*       <GitHubIcon fill="#000000" width={32} height={32} className="mr-2" /> */}
+          {/*       <span>Login with GitHub to Publish</span> */}
+          {/*     </button> */}
+          {/* } */}
         </div>
       </Layout>
     </>
