@@ -20,8 +20,8 @@ export default function Home(props) {
         key="desc"
       />
     </Head>
-    <Layout>
-      <h2 className="font-semibold py-5">Create a test case</h2>
+    <Layout navState={{ about: true }}>
+      <h2 className="font-semibold py-2">Create a test case</h2>
       <EditForm />
     </Layout>
     </>
