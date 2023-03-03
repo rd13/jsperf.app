@@ -43,6 +43,14 @@ export default function Header(props) {
             </button>
           </div>
           }
+          {
+          session &&
+          <div>
+            <button href="#" className="flex items-center inline-block text-sm px-4 py-2 hover:text-blue-500 hover:bg-white mt-4 lg:mt-0">
+              <span>{ login }</span>
+            </button>
+          </div>
+          }
           <div>
             <button href="#" className="flex items-center inline-block text-sm px-4 py-2 hover:text-blue-500 hover:bg-white mt-4 lg:mt-0" onClick={() => ToggleNavState('about')}>
               <span>About</span>
@@ -52,10 +60,6 @@ export default function Header(props) {
           </div>
         </div>
       </nav>
-      { 
-        session &&
-          <i className="block text-right">Logged in as: { login }</i>
-      }
       <section id="about" className={`${navState.about ? 'p-5 visible' : 'h-0 invisible'} border-solid border-2 border-gray-300`}>
         <p>
           jsPerf.app is an online JavaScript performance playground &amp; jsperf.com mirror. It is a complete rewrite in homage to the once excellent jsperf.com now with hopefully a more modern &amp; maintainable <a href="https://github.com/rd13/jsperf.app">codebase</a>.
