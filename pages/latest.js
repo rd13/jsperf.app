@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { pagesCollection } from '../lib/mongodb'
 import Layout from '../components/Layout'
+import {datetimeLong} from '../utils/Date'
 
 export default function Latest(props) {
   const {entries} = props
@@ -8,13 +9,16 @@ export default function Latest(props) {
     <Layout>
       <h2 className="font-bold my-5">Latest</h2>
         <ul>
-          {entries.map(({title, slug, revision, tests, revisionCount}, index) => {
+          {entries.map(({title, slug, revision, tests, published, revisionCount}, index) => {
               return (
                 <li key={index}>
                   <Link href={`/${slug}/${revision}`}>
                     <a>{title}</a>
                   </Link>
-                  <span> {tests.length} tests, {revisionCount} revision{`${revisionCount > 1 ? 's' : ''}`}</span>
+                  <span> Published on <time dateTime={published}>
+                    {datetimeLong(published)}
+                  </time></span>
+                  <span> [{tests.length} tests, {revisionCount} revision{`${revisionCount > 1 ? 's' : ''}`}]</span>
                 </li>
               )
             }
@@ -33,11 +37,6 @@ export const getStaticProps = async () => {
       $match : {
         visible: true,
         published: { $gt: new Date("2016-01-01T00:00:00Z") }
-      }
-    },
-    {
-      $sort: {
-        published: -1
       }
     },
     {
@@ -64,6 +63,11 @@ export const getStaticProps = async () => {
             { revisionCount: "$revisionCount"}
           ]
         }
+      }
+    },
+    {
+      $sort: {
+        published: -1
       }
     },
     {

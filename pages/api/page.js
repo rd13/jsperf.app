@@ -135,7 +135,6 @@ const updatePage = async (req, res) => {
     const payload = JSON.parse(req.body)
 
     const {slug, revision, uuid} = payload
-    console.log(payload)
 
     // Get the page we wish to update
     const page = await pages.findOne(
@@ -157,11 +156,21 @@ const updatePage = async (req, res) => {
       throw new Error('Protect imported perfs')
     }
 
-    // Only the original owner of this page can update it
-    if (page.githubID && page.githubID !== session?.user?.id) {
-      throw new Error('Does not have the authority to update this page, githubID missmatch.')
-    } else if (page.uuid !== uuid) {
-      throw new Error('Does not have the authority to update this page, uuid missmatch.')
+    // Only the original creator of this page can update it
+    let allowedToEdit = false
+
+    if (page.githubID && session?.user?.id) {
+      if (page.githubID === session?.user?.id) {
+        allowedToEdit = true
+      }
+    }
+
+    if (page.uuid === uuid) {
+      allowedToEdit = true
+    }
+
+    if (!allowedToEdit) {
+      throw new Error('Does not have the authority to update this page.')
     }
 
     // Remove these fields from the update
@@ -169,6 +178,10 @@ const updatePage = async (req, res) => {
     delete payload.slug
     delete payload.revision
     delete payload.githubID
+
+    if (session?.user?.id) {
+      payload.githubID = session?.user?.id
+    }
 
     await pages.updateOne({
       '_id': page._id
