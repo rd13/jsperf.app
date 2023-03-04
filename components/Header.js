@@ -37,7 +37,7 @@ export default function Header(props) {
           </div>
           { !session &&
           <div>
-            <button href="#" className="flex items-center inline-block text-sm px-4 py-2 hover:text-blue-500 hover:bg-white mt-4 lg:mt-0" onClick={() => signIn("github")}>
+            <button className="flex items-center inline-block text-sm px-4 py-2 hover:text-blue-500 hover:bg-white mt-4 lg:mt-0" onClick={() => signIn("github")}>
               <span>Sign In</span>
             </button>
           </div>
@@ -45,9 +45,9 @@ export default function Header(props) {
           {
           session &&
           <div>
-            <button href="#" className="flex items-center inline-block text-sm px-4 py-2 hover:text-blue-500 hover:bg-white mt-4 lg:mt-0">
+            <a href={`/u/${session?.user?.id}`} className="no-underline text-black flex items-center inline-block text-sm px-4 py-2 hover:text-blue-500 hover:bg-white mt-4 lg:mt-0">
               <span>{ login }</span>
-            </button>
+            </a>
           </div>
           }
           <div>
