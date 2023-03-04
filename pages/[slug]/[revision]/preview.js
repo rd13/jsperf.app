@@ -41,9 +41,18 @@ export default function Preview(props) {
   const userID = UUID()
 
   // Can publish 
-  const canPublish = !visible && (session?.user?.id === githubID || uuid === userID)
+  let canEdit = false
 
-  const canEdit = session?.user?.id === githubID || uuid === userID
+  if (!visible) {
+    if (githubID && session?.user?.id) {
+      if (session?.user?.id === githubID) {
+        canEdit = true
+      }
+    } 
+    if (uuid === userID) {
+      canEdit = true
+    }
+  }
 
   const publish = async (event) => {
     event.preventDefault();
@@ -107,10 +116,8 @@ export default function Preview(props) {
           { canEdit &&
               <>
                 <a href={`/${slug}/${revision}/edit`} className={buttonStyles.default}>Edit Tests</a><span className="inline-flex items-center px-2"> - or - </span>
+                <a onClick={publish} href="#" className={styles.unpublishedButton}>Publish</a> 
               </>
-          }
-          { canPublish &&
-              <a onClick={publish} href="#" className={styles.unpublishedButton}>Publish</a> 
           }
           {/* { !session && */}
           {/*     <button className="bg-gray-100 hover:bg-gray-200 text-gray-darkest font-bold py-1 px-2 rounded inline-flex items-center border border-gray-400" type="button" onClick={() => signIn("github")}> */}

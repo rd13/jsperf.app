@@ -5,7 +5,6 @@ import Link from 'next/link'
 export default function Header(props) {
   const { data: session, status } = useSession()
   const { navState: navStateInitial } = props
-  console.log(navStateInitial)
 
   const [navState, setNavState] = useState({ "about": false, ...navStateInitial});
 
