@@ -1,5 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react"
 import { useState } from 'react'
+import GitHubIcon from './GitHubIcon'
 import Link from 'next/link'
 
 export default function Header(props) {
@@ -37,8 +38,9 @@ export default function Header(props) {
           </div>
           { !session &&
           <div>
-            <button className="flex items-center inline-block text-sm px-4 py-2 hover:text-blue-500 hover:bg-white mt-4 lg:mt-0" onClick={() => signIn("github")}>
+            <button className="flex items-center inline-block text-sm px-4 py-2 hover:fill-blue-500 hover:text-blue-500 lg:mt-0" onClick={() => signIn("github")}>
               <span>Sign In</span>
+              <GitHubIcon fill="#000000" width={16} height={16} className="ml-2 fill-inherit" />
             </button>
           </div>
           }

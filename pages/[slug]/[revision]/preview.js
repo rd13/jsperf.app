@@ -13,7 +13,6 @@ import Info from '../../../components/sections/Info'
 import Setup from '../../../components/sections/Setup'
 import Teardown from '../../../components/sections/Teardown'
 import PrepCode from '../../../components/sections/PrepCode'
-import GitHubIcon from '../../../components/GitHubIcon'
 import buttonStyles from '../../../styles/buttons.module.css'
 import styles from '../../../components/sections/Meta.module.css'
 import UUID from '../../../components/UUID'
@@ -119,12 +118,6 @@ export default function Preview(props) {
                 <a onClick={publish} href="#" className={styles.unpublishedButton}>Publish</a> 
               </>
           }
-          {/* { !session && */}
-          {/*     <button className="bg-gray-100 hover:bg-gray-200 text-gray-darkest font-bold py-1 px-2 rounded inline-flex items-center border border-gray-400" type="button" onClick={() => signIn("github")}> */}
-          {/*       <GitHubIcon fill="#000000" width={32} height={32} className="mr-2" /> */}
-          {/*       <span>Login with GitHub to Publish</span> */}
-          {/*     </button> */}
-          {/* } */}
         </div>
       </Layout>
     </>

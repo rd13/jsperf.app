@@ -3,9 +3,6 @@ import Head from 'next/head'
 import Layout from '../../components/Layout'
 import Link from 'next/link'
 import { pagesCollection } from '../../lib/mongodb'
-import dynamic from 'next/dynamic'
-import Script from 'next/script'
-import { useState, useEffect } from 'react'
 import {datetimeLong} from '../../utils/Date'
 
 export default function User(props) {
@@ -83,10 +80,7 @@ export const getStaticProps = async ({params}) => {
   } catch (e) {
   }
 
-  // console.log(pageData)
-
   const published = pageData.filter(p => p.visible)
-  // const unpublished = pageData.filter(p => !p.visible)
 
   return {
     props: {
