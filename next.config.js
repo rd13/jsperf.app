@@ -6,4 +6,5 @@ module.exports = {
     ]
     return config
   },
+  transpilePackages: ['codejar']
 }
