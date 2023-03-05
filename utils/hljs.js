@@ -36,3 +36,5 @@ export const highlightSanitizedHTML = (html) => {
 
   return DOMPurify.sanitize(highlighted)
 }
+
+export default hljs

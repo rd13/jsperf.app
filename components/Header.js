@@ -1,11 +1,25 @@
 import { signIn, signOut, useSession } from "next-auth/react"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import GitHubIcon from './GitHubIcon'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
+// import {CodeJar} from 'codejar'
+
+import Editor from './Editor'
 
 export default function Header(props) {
   const { data: session, status } = useSession()
   const { navState: navStateInitial } = props
+
+  // const CodeJar = dynamic(() => import('codejar'), { ssr: false })
+
+  // const cj = () => <CodeJar />
+  // useEffect(() => {
+  //   import('codejar').then(({CodeJar}) => {
+  //
+  //   console.log(CodeJar)
+  //   })
+  // }, []);
 
   const [navState, setNavState] = useState({ "about": false, ...navStateInitial});
 
@@ -18,6 +32,7 @@ export default function Header(props) {
 
   return (
     <header>
+      <Editor code="const a = 1234;" />
       <nav className="flex items-center justify-between flex-wrap py-2">
         <div className="flex items-center flex-shrink-0 mr-6">
           <a href="/" className="no-underline text-black">
@@ -76,7 +91,7 @@ export default function Header(props) {
 
         <pre className="bg-gray-100 inline-block">
           <Link href="/negative-modulo/2">
-            <a>https://jsperf.app/negative-modulo/2</a>
+            https://jsperf.app/negative-modulo/2
           </Link>
         </pre>
       </section>
