@@ -6,6 +6,8 @@ import buttonStyles from '../../styles/buttons.module.css'
 import formStyles from '../../styles/forms.module.css'
 import UUID from '../UUID'
 
+import Editor from '../Editor'
+
 const TestCaseFieldset = ({index, remove, test}) => {
   return (
     <fieldset name="testCase">
@@ -32,15 +34,17 @@ export default function EditForm({pageData}) {
   const { data: session } = useSession()
   const uuid = UUID()
 
+
+  const [codeBlockInitHTML, setCodeBlockInitHTML] = useState(pageData?.initHTML || '')
+  const [codeBlockSetup, setCodeBlockSetup] = useState(pageData?.setup || '')
+  const [codeBlockTeardown, setCodeBlockTeardown] = useState(pageData?.teardown || '')
+
   // Default form values if none are provided via props.pageData
   const formDefaults = Object.assign({}, {
     title: '',
     info: '',
     slug: '',
     visible: false,
-    initHTML: '',
-    setup: '',
-    teardown: '',
     tests: []
   }, pageData)
 
@@ -51,19 +55,17 @@ export default function EditForm({pageData}) {
     // Uses IIFE to destructure event.target. event.target is the form.
     const formData = (({
       title, 
-      info,
-      initHTML,
-      setup,
-      teardown
+      info
     }) => ({
       title: title.value, 
-      info: info.value,
-      initHTML: initHTML.value,
-      setup: setup.value,
-      teardown: teardown.value
+      info: info.value
     }))( event.target )
 
     formData.slug = formDefaults.slug
+
+    formData.initHTML = codeBlockInitHTML
+    formData.setup = codeBlockSetup
+    formData.teardown = codeBlockTeardown
 
     // Get a list of test case fieldset elements referenced by name="testCase"
     const formTestCases = event.target.elements.testCase
@@ -143,18 +145,22 @@ export default function EditForm({pageData}) {
       </fieldset>
       <fieldset>
         <h3 className="bg-blue-500">Preparation Code</h3>
+
         <div>
           <label htmlFor="initHTML" className="self-start">Preparation HTML <br /><span className="text-gray-300 font-normal">(this will be inserted in the <code>{`<body>`}</code> of a valid HTML5 document in standards mode)<br />(useful when testing DOM operations or including libraries)</span></label>
-          <textarea name="initHTML" id="initHTML" rows="8" maxLength="16777215" defaultValue={formDefaults.initHTML}></textarea>
+          <Editor code={codeBlockInitHTML} onUpdate={setCodeBlockInitHTML} className="html w-full md:w-1/2 p-2 border" style={{minHeight: "150px"}} />
         </div>
+
         <div>
-          <label htmlFor="setup" className="self-start">Setup</label>
-          <textarea name="setup" id="setup" rows="5" maxLength="16777215" defaultValue={formDefaults.setup}></textarea>
+          <label htmlFor="setup" className="self-start">Setup JS</label>
+          <Editor code={codeBlockSetup} onUpdate={setCodeBlockSetup} className="javascript w-full md:w-1/2 p-2 border" style={{minHeight: "150px"}} />
         </div>
+
         <div>
-          <label htmlFor="teardown" className="self-start">Teardown</label>
-          <textarea name="teardown" id="teardown" rows="5" maxLength="16777215" defaultValue={formDefaults.teardown}></textarea>
+          <label htmlFor="teardown" className="self-start">Teardown JS</label>
+          <Editor code={codeBlockTeardown} onUpdate={setCodeBlockTeardown} className="javascript w-full md:w-1/2 p-2 border" style={{minHeight: "150px"}} />
         </div>
+
       </fieldset>
       <fieldset>
         <h3 className="bg-blue-500">Test cases</h3>
