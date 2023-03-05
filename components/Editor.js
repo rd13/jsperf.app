@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
-import dynamic from 'next/dynamic'
+import { useEffect, useRef } from 'react'
 
 import hljs from '../utils/hljs'
 
@@ -21,12 +20,6 @@ export const Editor = (props) => {
       onUpdate(txt)
     });
   }, []);
-
-  // useEffect(() => {
-  //   console.log('update', props.code)
-  //   jarRef.current.updateCode(props.code);
-  //   // setCurrentCursorPosition(editorRef.current, cursorOffset);
-  // }, [props.code]);
 
   return <div ref={editorRef} className={className} style={style}></div>
 }

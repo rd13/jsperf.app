@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Router from 'next/router'
 import { signIn, useSession } from "next-auth/react"
 import GitHubIcon from '../GitHubIcon'
@@ -8,23 +8,23 @@ import UUID from '../UUID'
 
 import Editor from '../Editor'
 
-const TestCaseFieldset = ({index, remove, test}) => {
+const TestCaseFieldset = ({index, remove, test, update}) => {
   return (
     <fieldset name="testCase">
       <div>
-        <h2 className="text-gray-400 mx-5 w-full md:w-1/4 text-right">Code snippet #{index + 1} {remove && <a href="" onClick={remove}>Remove</a>}</h2>
+        <h2 className="text-gray-400 mx-5 w-full md:w-1/4 text-right">Code snippet #{index + 1} {remove && <button type="button" onClick={() => remove(index)}>Remove</button>}</h2>
       </div>
       <div>
         <label htmlFor="testTitle">Title <span className="text-red-600">*</span></label>
-        <input type="text" name="testTitle" required defaultValue={test && test.title} />
+        <input type="text" name="testTitle" onChange={event => update({"title": event.target.value}, index)} required defaultValue={test && test.title} />
       </div>
       <div>
         <label htmlFor="async">Async</label>
-        <input type="checkbox" name="async" defaultValue={test && test.async} />
+        <input type="checkbox" name="async" onChange={event => update({"async": event.target.checked}, index)} defaultValue={test && test.async} />
       </div>
       <div>
         <label htmlFor="code" className="self-start">Code <span className="text-red-600">*</span></label>
-        <textarea name="code" rows="5" maxLength="16777215" required defaultValue={test && test.code} />
+        <Editor code={test && test.code} onUpdate={code => update({code}, index)} className="javascript w-full md:w-1/2 p-2 border" style={{minHeight: "150px"}} />
       </div>
     </fieldset>
   )
@@ -34,10 +34,33 @@ export default function EditForm({pageData}) {
   const { data: session } = useSession()
   const uuid = UUID()
 
-
   const [codeBlockInitHTML, setCodeBlockInitHTML] = useState(pageData?.initHTML || '')
   const [codeBlockSetup, setCodeBlockSetup] = useState(pageData?.setup || '')
   const [codeBlockTeardown, setCodeBlockTeardown] = useState(pageData?.teardown || '')
+
+  const [testsState, setTestsState] = useState(pageData?.tests || [{}, {}])
+
+  // Test state update functions
+  const testsRemove = (index = testsState.length - 1) => {
+    console.log('removing test', index)
+    setTestsState(tests => tests.splice(index, 1) && [...tests])
+  }
+
+  const testsAdd = () => {
+    setTestsState(tests => tests.push({}) && [...tests])
+  }
+
+  const testsUpdate = (test, index) => {
+    console.log('updating test state for: ', index)
+    setTestsState(tests => tests[index] = {...tests[index], ...test} && tests)
+  }
+
+  const onUpdate = (data, index) => {
+    console.log('updating test state for: ', index)
+    testsState[index] = {...testsState[index], ...data}
+    setTestsState(testsState)
+  }
+
 
   // Default form values if none are provided via props.pageData
   const formDefaults = Object.assign({}, {
@@ -50,6 +73,10 @@ export default function EditForm({pageData}) {
 
   const submitFormHandler = async event => {
     event.preventDefault()
+
+
+    console.log(testsState)
+    return
 
     // Pick fields referenced by their ID from the form to include in request payload
     // Uses IIFE to destructure event.target. event.target is the form.
@@ -98,35 +125,13 @@ export default function EditForm({pageData}) {
 
     const {success, message, data} = await response.json()
 
-    console.log(success, message, data)
-
     if (success) {
       // redirect to SSR preview page
       Router.push(`/${data.slug}/${data.revision}/preview`)
     }
   }
 
-  // The number of test cases to render in the form
-  const [noTestCases, setNoTestCases] = useState(formDefaults.tests.length || 2)
-
-  let testCaseFieldsets = []
-
-  let conditionalProps = {}
-
-  for (let i = 0; i < noTestCases; i++)  {
-    // If we are creating from an existing test
-    conditionalProps.test = formDefaults.tests[i] ? formDefaults.tests[i] : {}
-
-    // Add a remove prop to the last test
-    if (i === noTestCases - 1 && i > 1) {
-      conditionalProps.remove = (event) => {
-        event.preventDefault()
-        setNoTestCases(noTestCases - 1)
-      }
-    }
-
-    testCaseFieldsets.push(<TestCaseFieldset key={i} index={i} {...conditionalProps} />)
-  }
+  console.log('running edit form init')
 
   return (
     <form onSubmit={submitFormHandler} className={`${formStyles.editForm} w-full`}>
@@ -164,11 +169,17 @@ export default function EditForm({pageData}) {
       </fieldset>
       <fieldset>
         <h3 className="bg-blue-500">Test cases</h3>
-        {testCaseFieldsets}
+        { 
+          testsState.map((t,i) => {
+            const optionalProps = {}
+            i > 1 && (optionalProps.remove = testsRemove)
+            return <TestCaseFieldset key={i} {...optionalProps} index={i} test={testsState[i]} update={e => {onUpdate(e, i)}} />
+          })
+        }
       </fieldset>
       <div className="flex my-5 items-center">
         <div className="flex-1">
-          <button type="button" className="underline hover:no-underline" onClick={() => setNoTestCases(noTestCases + 1)}>Add code snippet</button>
+          <button type="button" className="underline hover:no-underline" onClick={testsAdd}>Add code snippet</button>
         </div>
         <button type="submit" className={buttonStyles.default}>Save test case</button>
       </div>
