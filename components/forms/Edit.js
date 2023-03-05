@@ -31,52 +31,43 @@ const TestCaseFieldset = ({index, remove, test, update}) => {
 }
 
 export default function EditForm({pageData}) {
-  const { data: session } = useSession()
   const uuid = UUID()
 
+  // Code block states
   const [codeBlockInitHTML, setCodeBlockInitHTML] = useState(pageData?.initHTML || '')
   const [codeBlockSetup, setCodeBlockSetup] = useState(pageData?.setup || '')
   const [codeBlockTeardown, setCodeBlockTeardown] = useState(pageData?.teardown || '')
 
-  const [testsState, setTestsState] = useState(pageData?.tests || [{}, {}])
+  // Test states
+  const testDefault = {title: '', code: '', 'async': false}
 
-  // Test state update functions
+  const [testsState, setTestsState] = useState(pageData?.tests || [testDefault, testDefault])
+
   const testsRemove = (index = testsState.length - 1) => {
-    console.log('removing test', index)
     setTestsState(tests => tests.splice(index, 1) && [...tests])
   }
 
   const testsAdd = () => {
-    setTestsState(tests => tests.push({}) && [...tests])
+    setTestsState(tests => tests.push(testDefault) && [...tests])
   }
 
   const testsUpdate = (test, index) => {
-    console.log('updating test state for: ', index)
-    setTestsState(tests => tests[index] = {...tests[index], ...test} && tests)
-  }
-
-  const onUpdate = (data, index) => {
-    console.log('updating test state for: ', index)
-    testsState[index] = {...testsState[index], ...data}
+    testsState[index] = {...testsState[index], ...test}
     setTestsState(testsState)
   }
-
 
   // Default form values if none are provided via props.pageData
   const formDefaults = Object.assign({}, {
     title: '',
     info: '',
     slug: '',
-    visible: false,
-    tests: []
+    visible: false
   }, pageData)
 
   const submitFormHandler = async event => {
     event.preventDefault()
 
-
     console.log(testsState)
-    return
 
     // Pick fields referenced by their ID from the form to include in request payload
     // Uses IIFE to destructure event.target. event.target is the form.
@@ -93,20 +84,8 @@ export default function EditForm({pageData}) {
     formData.initHTML = codeBlockInitHTML
     formData.setup = codeBlockSetup
     formData.teardown = codeBlockTeardown
+    formData.tests = testsState
 
-    // Get a list of test case fieldset elements referenced by name="testCase"
-    const formTestCases = event.target.elements.testCase
-
-    // Select which element values to include in payload, reference by name=title,slug,async
-    formData.tests = [...formTestCases].map(testCase => (
-      {
-        title: testCase.elements.testTitle.value,
-        'async': testCase.elements.async.checked,
-        code: testCase.elements.code.value
-      }
-    ))
-
-    // const isOwner = session && pageData?.githubID === session?.user?.id
     const isPublished = !!pageData?.visible
 
     // Editing an existing document
@@ -130,8 +109,6 @@ export default function EditForm({pageData}) {
       Router.push(`/${data.slug}/${data.revision}/preview`)
     }
   }
-
-  console.log('running edit form init')
 
   return (
     <form onSubmit={submitFormHandler} className={`${formStyles.editForm} w-full`}>
@@ -173,7 +150,7 @@ export default function EditForm({pageData}) {
           testsState.map((t,i) => {
             const optionalProps = {}
             i > 1 && (optionalProps.remove = testsRemove)
-            return <TestCaseFieldset key={i} {...optionalProps} index={i} test={testsState[i]} update={e => {onUpdate(e, i)}} />
+            return <TestCaseFieldset key={i} {...optionalProps} index={i} test={testsState[i]} update={e => {testsUpdate(e, i)}} />
           })
         }
       </fieldset>
