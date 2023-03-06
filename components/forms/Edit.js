@@ -5,6 +5,7 @@ import GitHubIcon from '../GitHubIcon'
 import buttonStyles from '../../styles/buttons.module.css'
 import formStyles from '../../styles/forms.module.css'
 import UUID from '../UUID'
+import MinusIcon from '../MinusIcon'
 
 import Editor from '../Editor'
 
@@ -12,7 +13,15 @@ const TestCaseFieldset = ({index, remove, test, update}) => {
   return (
     <fieldset name="testCase">
       <div>
-        <h2 className="text-gray-400 mx-5 w-full md:w-1/4 text-right">Code snippet #{index + 1} {remove && <button type="button" onClick={() => remove(index)}>Remove</button>}</h2>
+        <h2 className="mx-5 w-full md:w-1/4 text-black font-bold text-right">
+          {
+            remove && 
+              <button className="align-middle mr-2" type="button" onClick={() => remove(index)}>
+                <MinusIcon fill="#000000" width={20} height={20} className="fill-inherit" />
+              </button>
+          }
+          Test #{index + 1}
+        </h2>
       </div>
       <div>
         <label htmlFor="testTitle">Title <span className="text-red-600">*</span></label>
@@ -44,8 +53,12 @@ export default function EditForm({pageData}) {
   const [testsState, setTestsState] = useState(pageData?.tests || [testDefault, testDefault])
 
   const testsRemove = (index = testsState.length - 1) => {
-    setTestsState(tests => tests.splice(index, 1) && [...tests])
+    console.log('removing ', index)
+    testsState.splice(index, 1)
+    console.log(testsState)
+    setTestsState([...testsState])
   }
+  console.log('re render')
 
   const testsAdd = () => {
     setTestsState(tests => tests.push(testDefault) && [...tests])
@@ -68,6 +81,7 @@ export default function EditForm({pageData}) {
     event.preventDefault()
 
     console.log(testsState)
+    return
 
     // Pick fields referenced by their ID from the form to include in request payload
     // Uses IIFE to destructure event.target. event.target is the form.
@@ -156,7 +170,7 @@ export default function EditForm({pageData}) {
       </fieldset>
       <div className="flex my-5 items-center">
         <div className="flex-1">
-          <button type="button" className="underline hover:no-underline" onClick={testsAdd}>Add code snippet</button>
+          <button type="button" className="underline hover:no-underline" onClick={testsAdd}>Add test</button>
         </div>
         <button type="submit" className={buttonStyles.default}>Save test case</button>
       </div>
