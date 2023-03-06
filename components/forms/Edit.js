@@ -39,6 +39,12 @@ const TestCaseFieldset = ({index, remove, test, update}) => {
   )
 }
 
+
+// We need to give each test in the array of tests a stable key.
+// Otherwise when we change order or remove react will not update the mapped array if using the array index
+// https://stackoverflow.com/questions/39549424/how-to-create-unique-keys-for-react-elements
+let stableTestKey = 0
+
 export default function EditForm({pageData}) {
   const uuid = UUID()
 
@@ -48,20 +54,17 @@ export default function EditForm({pageData}) {
   const [codeBlockTeardown, setCodeBlockTeardown] = useState(pageData?.teardown || '')
 
   // Test states
-  const testDefault = {title: '', code: '', 'async': false}
+  const testDefault = () => ({id: stableTestKey++, title: '', code: '', 'async': false})
 
-  const [testsState, setTestsState] = useState(pageData?.tests || [testDefault, testDefault])
+  const [testsState, setTestsState] = useState((pageData?.tests && pageData.tests.map(t => ({id: stableTestKey++, ...t}))) || [testDefault(), testDefault()])
 
   const testsRemove = (index = testsState.length - 1) => {
-    console.log('removing ', index)
     testsState.splice(index, 1)
-    console.log(testsState)
     setTestsState([...testsState])
   }
-  console.log('re render')
 
   const testsAdd = () => {
-    setTestsState(tests => tests.push(testDefault) && [...tests])
+    setTestsState(tests => tests.push(testDefault()) && [...tests])
   }
 
   const testsUpdate = (test, index) => {
@@ -164,7 +167,7 @@ export default function EditForm({pageData}) {
           testsState.map((t,i) => {
             const optionalProps = {}
             i > 1 && (optionalProps.remove = testsRemove)
-            return <TestCaseFieldset key={i} {...optionalProps} index={i} test={testsState[i]} update={e => {testsUpdate(e, i)}} />
+            return <TestCaseFieldset {...optionalProps} key={t.id} index={i} test={testsState[i]} update={e => {testsUpdate(e, i)}} />
           })
         }
       </fieldset>
