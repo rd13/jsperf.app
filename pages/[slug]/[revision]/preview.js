@@ -124,7 +124,7 @@ export default function Preview(props) {
   )
 }
 
-export async function getServerSideProps({params}) {
+export async function getServerSideProps({params, res}) {
   const { slug, revision } = params
 
   const pages = await pagesCollection()
@@ -138,6 +138,8 @@ export async function getServerSideProps({params}) {
       notFound: true
     }
   }
+
+  res.setHeader('Cache-Control', 'no-store')
 
   return { 
     props: { 
