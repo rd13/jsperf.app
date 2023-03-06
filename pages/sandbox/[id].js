@@ -30,7 +30,7 @@ export default function Sandbox(props) {
   )
 }
 
-export const getStaticProps = async ({params}) => {
+export async function getServerSideProps({params, res}) {
   const {id} = params
   let pageData
 
@@ -49,31 +49,11 @@ export const getStaticProps = async ({params}) => {
     }
   }
 
+  res.setHeader('Cache-Control', 'no-store')
+
   return {
     props: {
       pageData: JSON.parse(JSON.stringify(pageData)) // wtf bro
     }
   }
-}
-
-export async function getStaticPaths() {
-  // const pages = await pagesCollection()
-  //
-  // const pagesQuery = await pages.find({}, {
-  //   projection: { _id: 1 }
-  // }).toArray()
-  //
-  // const paths = pagesQuery.map(page => {
-  //   const id = page._id.toString()
-  //   return {
-  //     params: {
-  //       id
-  //     }
-  //   }
-  // })
-
-  return {
-    paths: [],
-    fallback: 'blocking'
-  };
 }
