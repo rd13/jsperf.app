@@ -16,7 +16,7 @@ const TestCaseFieldset = ({index, remove, test, update}) => {
         <h2 className="mx-5 w-full md:w-1/4 text-black font-bold text-right">
           {
             remove && 
-              <button className="align-middle mr-2" type="button" onClick={() => remove(index)}>
+              <button className="align-middle mr-2" type="button" onClick={() => remove(test.id)}>
                 <MinusIcon fill="#000000" width={20} height={20} className="fill-inherit" />
               </button>
           }
@@ -25,15 +25,15 @@ const TestCaseFieldset = ({index, remove, test, update}) => {
       </div>
       <div>
         <label htmlFor="testTitle">Title <span className="text-red-600">*</span></label>
-        <input type="text" name="testTitle" onChange={event => update({"title": event.target.value}, index)} required defaultValue={test && test.title} />
+        <input type="text" name="testTitle" onChange={event => update({"title": event.target.value}, test.id)} required defaultValue={test && test.title} />
       </div>
       <div>
         <label htmlFor="async">Async</label>
-        <input type="checkbox" name="async" onChange={event => update({"async": event.target.checked}, index)} defaultValue={test && test.async} />
+        <input type="checkbox" name="async" onChange={event => update({"async": event.target.checked}, test.id)} defaultValue={test && test.async} />
       </div>
       <div>
         <label htmlFor="code" className="self-start">Code <span className="text-red-600">*</span></label>
-        <Editor code={test && test.code} onUpdate={code => update({code}, index)} className="javascript w-full md:w-1/2 p-2 border" style={{minHeight: "150px"}} />
+        <Editor code={test && test.code} onUpdate={code => update({code}, test.id)} className="javascript w-full md:w-1/2 p-2 border" style={{minHeight: "150px"}} />
       </div>
     </fieldset>
   )
@@ -56,19 +56,31 @@ export default function EditForm({pageData}) {
   // Test states
   const testDefault = () => ({id: stableTestKey++, title: '', code: '', 'async': false})
 
-  const [testsState, setTestsState] = useState((pageData?.tests && pageData.tests.map(t => ({id: stableTestKey++, ...t}))) || [testDefault(), testDefault()])
+  let defaultTestsState = [
+    {id: 0, title: '', code: '', 'async': false},
+    {id: 1, title: '', code: '', 'async': false},
+  ]
+  if (pageData?.tests) {
+    defaultTestsState = pageData.tests.map((t, i) => ({id: i, ...t}))
+  }
 
-  const testsRemove = (index = testsState.length - 1) => {
-    testsState.splice(index, 1)
-    setTestsState([...testsState])
+  console.log('trigger', stableTestKey)
+  const [testsState, setTestsState] = useState(defaultTestsState)
+
+  const testsRemove = (id) => {
+    const testIndex = testsState.findIndex(test => test.id === id)
+    setTestsState(tests => tests.splice(testIndex, 1) && [...tests])
   }
 
   const testsAdd = () => {
-    setTestsState(tests => tests.push(testDefault()) && [...tests])
+    const lastId = testsState[testsState.length - 1].id
+    console.log('adding new test with id: ', lastId+1)
+    setTestsState(tests => tests.push({id: lastId+1, title: '', code: '', 'async': false}) && [...tests])
   }
 
-  const testsUpdate = (test, index) => {
-    testsState[index] = {...testsState[index], ...test}
+  const testsUpdate = (test, id) => {
+    const testIndex = testsState.findIndex(test => test.id === id)
+    testsState[testIndex] = {...testsState[testIndex], ...test}
     setTestsState(testsState)
   }
 
@@ -82,9 +94,6 @@ export default function EditForm({pageData}) {
 
   const submitFormHandler = async event => {
     event.preventDefault()
-
-    console.log(testsState)
-    return
 
     // Pick fields referenced by their ID from the form to include in request payload
     // Uses IIFE to destructure event.target. event.target is the form.
@@ -164,10 +173,10 @@ export default function EditForm({pageData}) {
       <fieldset>
         <h3 className="bg-blue-500">Test cases</h3>
         { 
-          testsState.map((t,i) => {
+          testsState.map((test,index) => {
             const optionalProps = {}
-            i > 1 && (optionalProps.remove = testsRemove)
-            return <TestCaseFieldset {...optionalProps} key={t.id} index={i} test={testsState[i]} update={e => {testsUpdate(e, i)}} />
+            index > 1 && (optionalProps.remove = testsRemove)
+            return <TestCaseFieldset {...optionalProps} key={test.id} index={index} test={test} update={e => {testsUpdate(e, test.id)}} />
           })
         }
       </fieldset>
