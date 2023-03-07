@@ -12,7 +12,7 @@ export default function Sandbox(props) {
 
   const {pageData} = props
 
-  useEffect(async () => {
+  useEffect(() => {
     setReady(true)
   }, []);
 

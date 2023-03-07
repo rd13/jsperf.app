@@ -19,7 +19,7 @@ export default function User(props) {
               return (
                 <li key={index}>
                   <Link href={`/${slug}/${revision}`}>
-                    <a>{title}</a>
+                    {title}
                   </Link>
                   <span> Published on <time dateTime={published}>
                     {datetimeLong(published)}

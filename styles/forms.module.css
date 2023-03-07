@@ -3,7 +3,7 @@
 }
 
 .editForm fieldset > div {
-  @apply md:flex md:items-center my-5;
+  @apply md:flex md:items-center my-2;
   @apply flex-wrap;
 }
 
@@ -12,7 +12,7 @@
 }
 
 .editForm input[type=text] {
-  @apply border h-10;
+  @apply border h-8;
   @apply px-2;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .editForm label {
-  @apply text-gray-600 font-bold;
+  @apply text-gray-600;
   @apply block mb-1 md:mb-0 mx-5;
   @apply md:w-1/4;
   @apply text-right;

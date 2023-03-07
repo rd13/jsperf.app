@@ -1,5 +1,5 @@
 import { signIn, signOut, useSession } from "next-auth/react"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import GitHubIcon from './GitHubIcon'
 import Link from 'next/link'
 
@@ -76,7 +76,7 @@ export default function Header(props) {
 
         <pre className="bg-gray-100 inline-block">
           <Link href="/negative-modulo/2">
-            <a>https://jsperf.app/negative-modulo/2</a>
+            https://jsperf.app/negative-modulo/2
           </Link>
         </pre>
       </section>

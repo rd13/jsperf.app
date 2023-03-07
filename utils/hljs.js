@@ -7,6 +7,8 @@ hljs.registerLanguage('javascript', javascript);
 import xml from 'highlight.js/lib/languages/xml'
 hljs.registerLanguage('xml', xml);
 
+hljs.configure({ ignoreUnescapedHTML: true })
+
 export const highlightSanitizedJS = js => {
   return DOMPurify.sanitize(hljs.highlight(js, {
     language: 'js', ignoreIllegals: true
@@ -36,3 +38,5 @@ export const highlightSanitizedHTML = (html) => {
 
   return DOMPurify.sanitize(highlighted)
 }
+
+export default hljs

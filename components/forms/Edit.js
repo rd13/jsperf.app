@@ -1,47 +1,92 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Router from 'next/router'
 import { signIn, useSession } from "next-auth/react"
 import GitHubIcon from '../GitHubIcon'
 import buttonStyles from '../../styles/buttons.module.css'
 import formStyles from '../../styles/forms.module.css'
 import UUID from '../UUID'
+import MinusIcon from '../MinusIcon'
 
-const TestCaseFieldset = ({index, remove, test}) => {
+import Editor from '../Editor'
+
+const TestCaseFieldset = ({index, remove, test, update}) => {
   return (
     <fieldset name="testCase">
       <div>
-        <h2 className="text-gray-400 mx-5 w-full md:w-1/4 text-right">Code snippet #{index + 1} {remove && <a href="" onClick={remove}>Remove</a>}</h2>
+        <h2 className="mx-5 w-full md:w-1/4 text-black font-bold text-right">
+          {
+            remove && 
+              <button className="align-middle mr-2" type="button" onClick={() => remove(test.id)}>
+                <MinusIcon fill="#000000" width={20} height={20} className="fill-inherit" />
+              </button>
+          }
+          Test #{index + 1}
+        </h2>
       </div>
       <div>
         <label htmlFor="testTitle">Title <span className="text-red-600">*</span></label>
-        <input type="text" name="testTitle" required defaultValue={test && test.title} />
+        <input type="text" name="testTitle" onChange={event => update({"title": event.target.value}, test.id)} required defaultValue={test && test.title} />
       </div>
       <div>
         <label htmlFor="async">Async</label>
-        <input type="checkbox" name="async" defaultValue={test && test.async} />
+        <input type="checkbox" name="async" onChange={event => update({"async": event.target.checked}, test.id)} defaultValue={test && test.async} />
       </div>
       <div>
         <label htmlFor="code" className="self-start">Code <span className="text-red-600">*</span></label>
-        <textarea name="code" rows="5" maxLength="16777215" required defaultValue={test && test.code} />
+        <Editor code={test && test.code} onUpdate={code => update({code}, test.id)} className="javascript w-full md:w-1/2 p-2 border" style={{minHeight: "150px"}} />
       </div>
     </fieldset>
   )
 }
 
+
+// We need to give each test in the array of tests a stable key.
+// Otherwise when we change order or remove react will not update the mapped array if using the array index
+// https://stackoverflow.com/questions/39549424/how-to-create-unique-keys-for-react-elements
+
 export default function EditForm({pageData}) {
-  const { data: session } = useSession()
   const uuid = UUID()
+
+  // Code block states
+  const [codeBlockInitHTML, setCodeBlockInitHTML] = useState(pageData?.initHTML || '')
+  const [codeBlockSetup, setCodeBlockSetup] = useState(pageData?.setup || '')
+  const [codeBlockTeardown, setCodeBlockTeardown] = useState(pageData?.teardown || '')
+
+  // Test states
+  let defaultTestsState = [
+    {id: 0, title: '', code: '', 'async': false},
+    {id: 1, title: '', code: '', 'async': false},
+  ]
+
+  if (pageData?.tests) {
+    defaultTestsState = pageData.tests.map((t, i) => ({id: i, ...t}))
+  }
+
+  const [testsState, setTestsState] = useState(defaultTestsState)
+
+  const testsRemove = (id) => {
+    const testIndex = testsState.findIndex(test => test.id === id)
+    setTestsState(tests => tests.splice(testIndex, 1) && [...tests])
+  }
+
+  const testsAdd = () => {
+    const lastId = testsState[testsState.length - 1].id
+    console.log('adding new test with id: ', lastId+1)
+    setTestsState(tests => tests.push({id: lastId+1, title: '', code: '', 'async': false}) && [...tests])
+  }
+
+  const testsUpdate = (test, id) => {
+    const testIndex = testsState.findIndex(test => test.id === id)
+    testsState[testIndex] = {...testsState[testIndex], ...test}
+    setTestsState(tests => (tests[testIndex] = {...tests[testIndex], ...test}) && [...tests])
+  }
 
   // Default form values if none are provided via props.pageData
   const formDefaults = Object.assign({}, {
     title: '',
     info: '',
     slug: '',
-    visible: false,
-    initHTML: '',
-    setup: '',
-    teardown: '',
-    tests: []
+    visible: false
   }, pageData)
 
   const submitFormHandler = async event => {
@@ -51,33 +96,21 @@ export default function EditForm({pageData}) {
     // Uses IIFE to destructure event.target. event.target is the form.
     const formData = (({
       title, 
-      info,
-      initHTML,
-      setup,
-      teardown
+      info
     }) => ({
       title: title.value, 
-      info: info.value,
-      initHTML: initHTML.value,
-      setup: setup.value,
-      teardown: teardown.value
+      info: info.value
     }))( event.target )
 
     formData.slug = formDefaults.slug
 
-    // Get a list of test case fieldset elements referenced by name="testCase"
-    const formTestCases = event.target.elements.testCase
+    formData.initHTML = codeBlockInitHTML
+    formData.setup = codeBlockSetup
+    formData.teardown = codeBlockTeardown
 
-    // Select which element values to include in payload, reference by name=title,slug,async
-    formData.tests = [...formTestCases].map(testCase => (
-      {
-        title: testCase.elements.testTitle.value,
-        'async': testCase.elements.async.checked,
-        code: testCase.elements.code.value
-      }
-    ))
+    // Sanitise tests - remove ids, remove those without code
+    formData.tests = testsState.map(test => ({...test})).map(test => delete test.id && test).filter(test => !!test.code)
 
-    // const isOwner = session && pageData?.githubID === session?.user?.id
     const isPublished = !!pageData?.visible
 
     // Editing an existing document
@@ -96,34 +129,13 @@ export default function EditForm({pageData}) {
 
     const {success, message, data} = await response.json()
 
-    console.log(success, message, data)
-
     if (success) {
       // redirect to SSR preview page
       Router.push(`/${data.slug}/${data.revision}/preview`)
+    } else {
+      // Should do something a bit more informative here
+      console.log(success, message, data)
     }
-  }
-
-  // The number of test cases to render in the form
-  const [noTestCases, setNoTestCases] = useState(formDefaults.tests.length || 2)
-
-  let testCaseFieldsets = []
-
-  let conditionalProps = {}
-
-  for (let i = 0; i < noTestCases; i++)  {
-    // If we are creating from an existing test
-    conditionalProps.test = formDefaults.tests[i] ? formDefaults.tests[i] : {}
-
-    // Add a remove prop to the last test
-    if (i === noTestCases - 1 && i > 1) {
-      conditionalProps.remove = (event) => {
-        event.preventDefault()
-        setNoTestCases(noTestCases - 1)
-      }
-    }
-
-    testCaseFieldsets.push(<TestCaseFieldset key={i} index={i} {...conditionalProps} />)
   }
 
   return (
@@ -143,26 +155,36 @@ export default function EditForm({pageData}) {
       </fieldset>
       <fieldset>
         <h3 className="bg-blue-500">Preparation Code</h3>
+
         <div>
           <label htmlFor="initHTML" className="self-start">Preparation HTML <br /><span className="text-gray-300 font-normal">(this will be inserted in the <code>{`<body>`}</code> of a valid HTML5 document in standards mode)<br />(useful when testing DOM operations or including libraries)</span></label>
-          <textarea name="initHTML" id="initHTML" rows="8" maxLength="16777215" defaultValue={formDefaults.initHTML}></textarea>
+          <Editor code={codeBlockInitHTML} onUpdate={setCodeBlockInitHTML} className="html w-full md:w-1/2 p-2 border" style={{minHeight: "150px"}} />
         </div>
+
         <div>
-          <label htmlFor="setup" className="self-start">Setup</label>
-          <textarea name="setup" id="setup" rows="5" maxLength="16777215" defaultValue={formDefaults.setup}></textarea>
+          <label htmlFor="setup" className="self-start">Setup JS</label>
+          <Editor code={codeBlockSetup} onUpdate={setCodeBlockSetup} className="javascript w-full md:w-1/2 p-2 border" style={{minHeight: "150px"}} />
         </div>
+
         <div>
-          <label htmlFor="teardown" className="self-start">Teardown</label>
-          <textarea name="teardown" id="teardown" rows="5" maxLength="16777215" defaultValue={formDefaults.teardown}></textarea>
+          <label htmlFor="teardown" className="self-start">Teardown JS</label>
+          <Editor code={codeBlockTeardown} onUpdate={setCodeBlockTeardown} className="javascript w-full md:w-1/2 p-2 border" style={{minHeight: "150px"}} />
         </div>
+
       </fieldset>
       <fieldset>
         <h3 className="bg-blue-500">Test cases</h3>
-        {testCaseFieldsets}
+        { 
+          testsState.map((test,index) => {
+            const optionalProps = {}
+            index > 1 && (optionalProps.remove = testsRemove)
+            return <TestCaseFieldset {...optionalProps} key={test.id} index={index} test={test} update={e => {testsUpdate(e, test.id)}} />
+          })
+        }
       </fieldset>
       <div className="flex my-5 items-center">
         <div className="flex-1">
-          <button type="button" className="underline hover:no-underline" onClick={() => setNoTestCases(noTestCases + 1)}>Add code snippet</button>
+          <button type="button" className="underline hover:no-underline" onClick={testsAdd}>Add test</button>
         </div>
         <button type="submit" className={buttonStyles.default}>Save test case</button>
       </div>
