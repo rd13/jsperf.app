@@ -43,7 +43,6 @@ const TestCaseFieldset = ({index, remove, test, update}) => {
 // We need to give each test in the array of tests a stable key.
 // Otherwise when we change order or remove react will not update the mapped array if using the array index
 // https://stackoverflow.com/questions/39549424/how-to-create-unique-keys-for-react-elements
-let stableTestKey = 0
 
 export default function EditForm({pageData}) {
   const uuid = UUID()
@@ -54,17 +53,15 @@ export default function EditForm({pageData}) {
   const [codeBlockTeardown, setCodeBlockTeardown] = useState(pageData?.teardown || '')
 
   // Test states
-  const testDefault = () => ({id: stableTestKey++, title: '', code: '', 'async': false})
-
   let defaultTestsState = [
     {id: 0, title: '', code: '', 'async': false},
     {id: 1, title: '', code: '', 'async': false},
   ]
+
   if (pageData?.tests) {
     defaultTestsState = pageData.tests.map((t, i) => ({id: i, ...t}))
   }
 
-  console.log('trigger', stableTestKey)
   const [testsState, setTestsState] = useState(defaultTestsState)
 
   const testsRemove = (id) => {
@@ -81,7 +78,7 @@ export default function EditForm({pageData}) {
   const testsUpdate = (test, id) => {
     const testIndex = testsState.findIndex(test => test.id === id)
     testsState[testIndex] = {...testsState[testIndex], ...test}
-    setTestsState(testsState)
+    setTestsState(tests => (tests[testIndex] = {...tests[testIndex], ...test}) && [...tests])
   }
 
   // Default form values if none are provided via props.pageData
@@ -110,7 +107,9 @@ export default function EditForm({pageData}) {
     formData.initHTML = codeBlockInitHTML
     formData.setup = codeBlockSetup
     formData.teardown = codeBlockTeardown
-    formData.tests = testsState
+
+    // Sanitise tests - remove ids, remove those without code
+    formData.tests = testsState.map(test => ({...test})).map(test => delete test.id && test).filter(test => !!test.code)
 
     const isPublished = !!pageData?.visible
 
@@ -133,6 +132,9 @@ export default function EditForm({pageData}) {
     if (success) {
       // redirect to SSR preview page
       Router.push(`/${data.slug}/${data.revision}/preview`)
+    } else {
+      // Should do something a bit more informative here
+      console.log(success, message, data)
     }
   }
 
