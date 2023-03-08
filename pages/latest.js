@@ -71,7 +71,7 @@ export const getStaticProps = async () => {
       }
     },
     {
-      $limit: 1000
+      $limit: 500
     }
   ],
     {
