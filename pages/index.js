@@ -1,15 +1,9 @@
 import Head from 'next/head'
 
 import Layout from '../components/Layout'
-import { signIn, useSession } from "next-auth/react"
-import GitHubIcon from '../components/GitHubIcon'
-import buttonStyles from '../styles/buttons.module.css'
 import EditForm from '../components/forms/Edit'
-import Link from 'next/link'
 
 export default function Home(props) {
-  const { data: session, status } = useSession()
-
   return (
     <>
     <Head>
