@@ -39,11 +39,6 @@ const TestCaseFieldset = ({index, remove, test, update}) => {
   )
 }
 
-
-// We need to give each test in the array of tests a stable key.
-// Otherwise when we change order or remove react will not update the mapped array if using the array index
-// https://stackoverflow.com/questions/39549424/how-to-create-unique-keys-for-react-elements
-
 export default function EditForm({pageData}) {
   const uuid = UUID()
 
@@ -53,13 +48,16 @@ export default function EditForm({pageData}) {
   const [codeBlockTeardown, setCodeBlockTeardown] = useState(pageData?.teardown || '')
 
   // Test states
+  // We need to give each test in the array of tests a stable key.
+  // Otherwise if we use the array index and change order or remove an item react will not update due to the key not changing
+  // https://stackoverflow.com/questions/39549424/how-to-create-unique-keys-for-react-elements
   let defaultTestsState = [
     {id: 0, title: '', code: '', 'async': false},
     {id: 1, title: '', code: '', 'async': false},
   ]
 
   if (pageData?.tests) {
-    defaultTestsState = pageData.tests.map((t, i) => ({id: i, ...t}))
+    defaultTestsState = pageData.tests.map((test, index) => ({id: index, ...test}))
   }
 
   const [testsState, setTestsState] = useState(defaultTestsState)
@@ -71,13 +69,11 @@ export default function EditForm({pageData}) {
 
   const testsAdd = () => {
     const lastId = testsState[testsState.length - 1].id
-    console.log('adding new test with id: ', lastId+1)
     setTestsState(tests => tests.push({id: lastId+1, title: '', code: '', 'async': false}) && [...tests])
   }
 
   const testsUpdate = (test, id) => {
     const testIndex = testsState.findIndex(test => test.id === id)
-    testsState[testIndex] = {...testsState[testIndex], ...test}
     setTestsState(tests => (tests[testIndex] = {...tests[testIndex], ...test}) && [...tests])
   }
 
@@ -108,8 +104,10 @@ export default function EditForm({pageData}) {
     formData.setup = codeBlockSetup
     formData.teardown = codeBlockTeardown
 
-    // Sanitise tests - remove ids, remove those without code
-    formData.tests = testsState.map(test => ({...test})).map(test => delete test.id && test).filter(test => !!test.code)
+    // Sanitise tests
+    formData.tests = testsState.map(test => ({...test})) // Clone state array
+      .map(test => delete test.id && test) // Remove ids
+      .filter(test => !!test.code) // Filter those without code
 
     const isPublished = !!pageData?.visible
 
