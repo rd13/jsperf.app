@@ -9,16 +9,16 @@ export default function Latest(props) {
     <Layout>
       <h2 className="font-bold my-5">Latest</h2>
         <ul>
-          {entries.map(({title, slug, revision, tests, published, revisionCount}, index) => {
+          {entries.map(({title, slug, revision, testsCount, published, revisionCount}, index) => {
               return (
                 <li key={index}>
                   <Link href={`/${slug}/${revision}`}>
-                    <a>{title}</a>
+                    {title}
                   </Link>
                   <span> Published on <time dateTime={published}>
                     {datetimeLong(published)}
                   </time></span>
-                  <span> [{tests.length} tests, {revisionCount} revision{`${revisionCount > 1 ? 's' : ''}`}]</span>
+                  <span> [{testsCount} tests, {revisionCount} revision{`${revisionCount > 1 ? 's' : ''}`}]</span>
                 </li>
               )
             }
@@ -41,7 +41,7 @@ export const getStaticProps = async () => {
     },
     {
       $project: {
-        title: 1, slug: 1, revision: 1, published: 1, tests: 1
+        title: 1, slug: 1, revision: 1, published: 1, testsCount: { $size: "$tests" }
       }
     },
     { 

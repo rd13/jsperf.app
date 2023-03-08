@@ -15,7 +15,7 @@ export default function User(props) {
       </Head>
       <Layout>
         <ul>
-          { published.map(({slug, revision, title, published, revisionCount, tests}, index) => {
+          { published.map(({slug, revision, title, published, revisionCount, testsCount}, index) => {
               return (
                 <li key={index}>
                   <Link href={`/${slug}/${revision}`}>
@@ -24,7 +24,7 @@ export default function User(props) {
                   <span> Published on <time dateTime={published}>
                     {datetimeLong(published)}
                   </time></span>
-                  <span> [{tests.length} tests, {revisionCount} revision{`${revisionCount > 1 ? 's' : ''}`}]</span>
+                  <span> [{testsCount} tests, {revisionCount} revision{`${revisionCount > 1 ? 's' : ''}`}]</span>
                 </li>
               )
           }) }
@@ -47,7 +47,7 @@ export const getStaticProps = async ({params}) => {
       },
       {
         $project: {
-          title: 1, slug: 1, revision: 1, published: 1, visible: 1, githubID: 1, tests: 1
+          title: 1, slug: 1, revision: 1, published: 1, visible: 1, githubID: 1, testsCount: { $size: "$tests" }
         }
       },
       { 
