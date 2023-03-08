@@ -13,8 +13,8 @@ export default function Footer() {
             <Link href="/" className="block mt-4 lg:inline-block lg:mt-0 mr-4 no-underline">
               New Benchmark
             </Link>
-            <Link href="https://github.com/rd13/jsperf.app" className="block mt-4 lg:inline-block lg:mt-0 mr-4 no-underline">
-              GitHub
+            <Link href="https://github.com/rd13/jsperf.app/issues" className="block mt-4 lg:inline-block lg:mt-0 mr-4 no-underline">
+              Report Issue
             </Link>
           </div>
           <div>
