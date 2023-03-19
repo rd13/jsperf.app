@@ -31,6 +31,9 @@ export default (props) => {
           } else {
             status = 'finished'
           }
+        } else if (event.target.error) {
+          status = 'error'
+          console.log(event.target.error)
         }
 
         broker.emit('cycle', {
@@ -67,7 +70,7 @@ export default (props) => {
       const fastestHz = fastest?.hz
 
       // Select some fields to pass to render
-      const results = uiBenchmarks.map(({id, hz, stats}) => {
+      const results = uiBenchmarks.map(({id, hz, stats, error}) => {
         const perc = (1 - (hz / fastestHz)) * 100
         const percentFormatted = Benchmark.formatNumber(
           perc < 1 
@@ -81,7 +84,8 @@ export default (props) => {
           rme: stats.rme.toFixed(2),
           fastest: id === fastest?.id, 
           slowest: id === slowest?.id, 
-          status: 'finished',
+          status: error ? 'error' : 'finished',
+          error,
           percent: percentFormatted
         }
       })
