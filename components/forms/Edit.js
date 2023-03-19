@@ -29,7 +29,7 @@ const TestCaseFieldset = ({index, remove, test, update}) => {
       </div>
       <div>
         <label htmlFor="async">Async</label>
-        <input type="checkbox" name="async" onChange={event => update({"async": event.target.checked}, test.id)} defaultValue={test && test.async} />
+        <input type="checkbox" name="async" onChange={event => update({"async": event.target.checked}, test.id)} defaultChecked={test && test.async} />
       </div>
       <div>
         <label htmlFor="code" className="self-start">Code <span className="text-red-600">*</span></label>

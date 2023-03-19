@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
 import lodash from 'lodash'
-import Benchmark from 'benchmark'
 import PostMessageBroker from '../utils/postMessageBroker'
 import {getRanked} from '../utils/ArrayUtils'
 
+import '../lib/benchmark.mjs' // mjs to avoid webpack parser
+
 export default (props) => {
   const {pageData: {tests, initHTML, setup, teardown}} = props
+  const Benchmark = global.Benchmark
 
   useEffect(() => {
-    global.Benchmark = Benchmark
     const ui = new Benchmark.Suite
 
     Benchmark.prototype.setup = setup
@@ -46,7 +47,7 @@ export default (props) => {
     tests.forEach((test, id) => {
       ui.add(test.title,
         {
-          defer: test.defer === 'y',
+          defer: test.async,
           fn: test.code,
           id
         }
