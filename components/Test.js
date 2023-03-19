@@ -28,11 +28,7 @@ export default function Test(props) {
             {__html: highlightSanitizedJS(code)}} />
         </pre>
       </td>
-      <td className={`
-        ${status === 'finished' && fastest && 'bg-jsp-green'} 
-        ${status === 'finished' && slowest && 'bg-jsp-pink'} 
-        ${status === 'error' && 'font-bold bg-jsp-pink text-red-600'} 
-        text-center w-[100px] p-2 border border-slate-300`}>{result[status] || result.default}</td>
+      <td className={`${(status === 'finished' && fastest) ? 'bg-jsp-green' : ''} ${(status === 'finished' && slowest) ? 'bg-jsp-pink' : ''} ${(status === 'error') ? 'font-bold bg-jsp-pink text-red-600' : ''} text-center w-[100px] p-2 border border-slate-300`}>{result[status] || result.default}</td>
     </tr>
   )
 }
