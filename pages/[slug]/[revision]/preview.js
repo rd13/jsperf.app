@@ -108,7 +108,7 @@ export default function Preview(props) {
           </section>
         }
         <section>
-          <TestRunner id={_id} tests={tests} />
+          <TestRunner id={_id} tests={tests} editable={canEdit} />
         </section>
         <hr className="my-5" />
         <div className="flex justify-end">

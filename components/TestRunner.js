@@ -3,11 +3,11 @@ import PostMessageBroker from '../utils/postMessageBroker'
 import { useState, useEffect, useRef } from 'react'
 import styles from './TestRunner.module.css'
 import UserAgent from './UserAgent'
-import Test from './Test'
+import Test, {TestEditable} from './Test'
 import buttonStyles from '../styles/buttons.module.css'
 
 export default function Tests(props) {
-  const {id} = props
+  const {id, editable} = props
 
   // A textual status message
   const [statusMessage, setStatusMessage] = useState('')
@@ -133,8 +133,12 @@ export default function Tests(props) {
           </tr>
         </thead>
         <tbody>
-          {tests.map((test, i) => 
-            <Test key={i} test={test} />
+          {tests.map((test, index) => 
+            (
+              editable 
+              ? <TestEditable key={index} id={index} test={test} onUpdate={(t) => {console.log('update sandbox code', t)}} />
+              : <Test key={index} test={test} />
+            )
           )}
         </tbody>
       </table>
