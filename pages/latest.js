@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Head from 'next/head'
 import { pagesCollection } from '../lib/mongodb'
 import Layout from '../components/Layout'
 import {datetimeLong} from '../utils/Date'
@@ -6,25 +7,35 @@ import {datetimeLong} from '../utils/Date'
 export default function Latest(props) {
   const {entries} = props
   return (
-    <Layout>
-      <h2 className="font-bold my-5">Latest</h2>
-        <ul>
-          {entries.map(({title, slug, revision, testsCount, published, revisionCount}, index) => {
-              return (
-                <li key={index}>
-                  <Link href={`/${slug}/${revision}`}>
-                    {title}
-                  </Link>
-                  <span> Published on <time dateTime={published}>
-                    {datetimeLong(published)}
-                  </time></span>
-                  <span> [{testsCount} tests, {revisionCount} revision{`${revisionCount > 1 ? 's' : ''}`}]</span>
-                </li>
-              )
-            }
-          )}
-        </ul>
-    </Layout>
+    <>
+      <Head>
+        <title>jsPerf - Latest Benchmarks</title>
+        <meta
+          name="description"
+          content="Browse the latest online javascript performance benchmarks"
+          key="desc"
+        />
+      </Head>
+      <Layout>
+        <h2 className="font-bold my-5">Latest</h2>
+          <ul>
+            {entries.map(({title, slug, revision, testsCount, published, revisionCount}, index) => {
+                return (
+                  <li key={index}>
+                    <Link href={`/${slug}/${revision}`}>
+                      {title}
+                    </Link>
+                    <span> Published on <time dateTime={published}>
+                      {datetimeLong(published)}
+                    </time></span>
+                    <span> [{testsCount} tests, {revisionCount} revision{`${revisionCount > 1 ? 's' : ''}`}]</span>
+                  </li>
+                )
+              }
+            )}
+          </ul>
+      </Layout>
+    </>
   )
 }
 

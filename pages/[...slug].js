@@ -33,7 +33,7 @@ export default function Slug(props) {
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>{title}{revision > 1 ? ` (version ${revision})` : ''}</title>
         <meta
           name="description"
           content={`${title} - Online Javascript Benchmark${mirror ? ' - jsPerf.com mirror' : ''}`}
