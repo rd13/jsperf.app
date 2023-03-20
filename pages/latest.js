@@ -22,7 +22,7 @@ export default function Latest(props) {
             {entries.map(({title, slug, revision, testsCount, published, revisionCount}, index) => {
                 return (
                   <li key={index}>
-                    <Link href={`/${slug}/${revision}`}>
+                    <Link href={revision === 1 ? `/${slug}` : `/${slug}/${revision}`}>
                       {title}
                     </Link>
                     <span> Published on <time dateTime={published}>
