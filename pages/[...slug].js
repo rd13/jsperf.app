@@ -33,16 +33,16 @@ export default function Slug(props) {
   return (
     <>
       <Head>
-        <title>{`${title}${revision > 1 ? ` (version ${revision})` : ''}`}</title>
+        <title>{`${title}${revision > 1 ? ` (v${revision})` : ''}`}</title>
         <meta
           name="description"
-          content={`${title} - Online Javascript Benchmark${mirror ? ' - jsPerf.com mirror' : ''}`}
+          content={`${title}${revision > 1 ? ` (v${revision})` : ''} - Online Javascript Benchmark${mirror ? ' - jsPerf.com mirror' : ''}`}
           key="desc"
         />
       </Head>
       <Layout>
         <hgroup>
-          <h1 className="text-2xl py-6 font-bold">{title}</h1>
+          <h1 className="text-2xl py-6 font-bold">{title}<span className="text-gray-400 text-base">{`${revision > 1 ? ` (v${revision})` : ''}`}</span></h1>
         </hgroup>
         <section>
           <Meta pageData={props.pageData} />
