@@ -13,9 +13,10 @@ export default function Home(props) {
         content="jsPerf.app is an online JavaScript performance benchmark test runner and jsperf.com mirror"
         key="desc"
       />
+      <link href="https://jsperf.app" rel="canonical" />
     </Head>
     <Layout navState={{ about: true }}>
-      <h2 className="font-semibold py-2">Create a test case</h2>
+      <h1 className="font-semibold py-2">Create a test case</h1>
       <EditForm />
     </Layout>
     </>

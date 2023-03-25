@@ -5,6 +5,8 @@ const Sitemap = () => {}
 export const getServerSideProps = async ({res, params}) => {
   // For some reason defining a route like [year].xml.js results in a 404,
   // so parse the year from the year param e.g. '2021.xml'
+
+  // Only add the latest version to the sitemap, which hints to google it as canonical
   
   const year = parseInt(params.year)
 
@@ -20,6 +22,24 @@ export const getServerSideProps = async ({res, params}) => {
             year
           ]
         }
+      }
+    },
+    {
+      '$sort': {
+        'revision': 1
+      }
+    },
+    {
+      '$group': {
+        _id: "$slug",
+        document: {
+          "$last": "$$ROOT"
+        }
+      }
+    },
+    {
+      '$replaceRoot': {
+        newRoot: "$document"
       }
     },
     {
