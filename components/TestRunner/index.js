@@ -1,10 +1,10 @@
-import SandboxIframe from '../components/SandboxIframe'
-import PostMessageBroker from '../utils/postMessageBroker'
+import SandboxIframe from '../SandboxIframe'
+import PostMessageBroker from '../../utils/postMessageBroker'
 import { useState, useEffect, useRef } from 'react'
 import styles from './TestRunner.module.css'
-import UserAgent from './UserAgent'
-import Test from './Test'
-import buttonStyles from '../styles/buttons.module.css'
+import UserAgent from '../UserAgent'
+import Test from '../Test'
+import buttonStyles from '../../styles/buttons.module.css'
 
 export default function Tests(props) {
   const {id} = props
