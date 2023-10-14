@@ -32,7 +32,7 @@ export default (props) => {
           }
         } else if (event.target.error) {
           status = 'error'
-          console.log(pageData)
+          console.log(props.pageData)
           console.log(event.target.error)
         }
 
@@ -48,6 +48,7 @@ export default (props) => {
     })
 
     tests.forEach((test, id) => {
+      console.log('adding test to ui', test)
       ui.add(test.title,
         {
           defer: test.async,
