@@ -32,6 +32,7 @@ export default (props) => {
           }
         } else if (event.target.error) {
           status = 'error'
+          console.log(pageData)
           console.log(event.target.error)
         }
 
