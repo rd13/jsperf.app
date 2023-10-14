@@ -1,4 +1,3 @@
-import PostMessageBroker from '../../utils/postMessageBroker'
 import MessageBus from '../../utils/MessageBus'
 import { useState, useEffect, useRef } from 'react'
 import styles from './TestRunner.module.css'
