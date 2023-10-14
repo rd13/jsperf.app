@@ -1,6 +1,5 @@
 import MessageBus from '../../utils/MessageBus'
-import { useState, useEffect, useRef } from 'react'
-import styles from './TestRunner.module.css'
+import { useState, useEffect } from 'react'
 import UserAgent from '../UserAgent'
 import Test from '../Test'
 import buttonStyles from '../../styles/buttons.module.css'
