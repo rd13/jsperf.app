@@ -75,7 +75,7 @@ export default function Header(props) {
         <p className="my-4">Can be accessed at:</p>
 
         <pre className="bg-gray-100 inline-block">
-          <Link href="/negative-modulo/2">
+          <Link href="https://jsperf.app/negative-modulo/2">
             https://jsperf.app/negative-modulo/2
           </Link>
         </pre>
