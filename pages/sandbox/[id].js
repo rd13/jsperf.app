@@ -8,13 +8,7 @@ import { useState, useEffect } from 'react'
 import UI from '../../components/UI'
 
 export default function Sandbox(props) {
-  const [ready, setReady] = useState(false);
-
   const {pageData} = props
-
-  useEffect(() => {
-    setReady(true)
-  }, []);
 
   return (
     <>

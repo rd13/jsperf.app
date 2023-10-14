@@ -6,7 +6,7 @@ import {getRanked} from '../utils/ArrayUtils'
 import '../lib/benchmark.mjs' // mjs to avoid webpack parser
 
 export default (props) => {
-  const {pageData: {tests, initHTML, setup, teardown}} = props
+  const {broker, pageData: {tests, initHTML, setup, teardown}} = props
   const Benchmark = global.Benchmark
 
   useEffect(() => {
@@ -57,8 +57,6 @@ export default (props) => {
       )
     })
 
-    const broker = new PostMessageBroker()
-
     // Component has been mounted and Benchmark / associated libs are ready
     broker.emit('ready', {})
 
@@ -95,7 +93,7 @@ export default (props) => {
       })
     })
 
-    broker.register('run', ({data: { options }}) => { 
+    broker.on('run', ({ options }) => { 
       // options can override each benchmark defaults, e.g. maxTime
       if (options) {
         for (let benchmark of uiBenchmarks) {

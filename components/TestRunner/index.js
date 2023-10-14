@@ -1,21 +1,22 @@
-import SandboxIframe from '../SandboxIframe'
 import PostMessageBroker from '../../utils/postMessageBroker'
+import MessageBus from '../../utils/MessageBus'
 import { useState, useEffect, useRef } from 'react'
 import styles from './TestRunner.module.css'
 import UserAgent from '../UserAgent'
 import Test from '../Test'
 import buttonStyles from '../../styles/buttons.module.css'
+import UI from '../UI'
 
 export default function Tests(props) {
   const {id} = props
+
+  const broker = MessageBus.broker('testRunner')
 
   // A textual status message
   const [statusMessage, setStatusMessage] = useState('')
 
   // The sandbox will send a postMessage when Benchmark is ready to run
   const [benchStatus, setBenchStatus] = useState('notready')
-
-  const [broker, setBroker] = useState(null)
 
   const [tests, setTests] = useState(props.tests)
 
@@ -26,57 +27,38 @@ export default function Tests(props) {
     'running'  : 'Stop'
   }
 
-  // This is a ref to the sandbox iframe window used for communication
-  const windowRef = useRef(null)
+  broker.on('ready', () => {
+    setStatusMessage('Ready to run.')
+    setBenchStatus('ready')
+  })
 
-  useEffect(() => {
-    // Setup communication with iframe
-    const _broker = new PostMessageBroker(windowRef.current.contentWindow)
+  broker.on('cycle', event => {
+    const {id, name, count, size, status} = event
 
-    setBroker(_broker)
+    if (!['finished', 'completed'].includes(status)) {
+      setStatusMessage(`${name} × ${count} (${size} sample${size === 1 ? '' : 's'})`)
+    }
 
-    _broker.register('cycle', event => {
-      const {id, name, count, size, status} = event.data
-
-      if (!['finished', 'completed'].includes(status)) {
-        setStatusMessage(`${name} × ${count} (${size} sample${size === 1 ? '' : 's'})`)
-      }
-
-      // Note to self: treat state arrays as immutable, instead provide setState with a function to update
-      // This is probably not optimal. Instead only update test status on status transition.
-      // Or, if there is no mutation is this intelligent enough not to trigger a re-render?
-      // Also to note: this is throttled
-      setTests(tests => {
-        tests[id].status = status
-        return tests
-      })
+    setTests(tests => {
+      tests[id].status = status
+      return tests
     })
+  })
 
-    _broker.register('complete', event => {
-      const {results} = event.data
-
-      setTests(prevTests => {
-        for(let result of results) {
-          // Merge each test with result
-          prevTests[result.id] = {
-            ...prevTests[result.id],
-            ...result
-          }
+  broker.on('complete', ({ results }) => {
+    setTests(prevTests => {
+      for(let result of results) {
+        // Merge each test with result
+        prevTests[result.id] = {
+          ...prevTests[result.id],
+          ...result
         }
-        return prevTests
-      })
-      setStatusMessage('Done. Ready to run again.')
-      setBenchStatus('complete')
+      }
+      return prevTests
     })
-
-    // The sandbox is ready to run a test
-    _broker.register('ready', () => {
-      setStatusMessage('Ready to run.')
-      setBenchStatus('ready')
-    })
-  }, [])
-
-  const sandboxUrl = `/sandbox/${id}`
+    setStatusMessage('Done. Ready to run again.')
+    setBenchStatus('complete')
+  })
 
   const run = (options) => {
     broker.emit('run', {options})
@@ -118,11 +100,9 @@ export default function Tests(props) {
             className={buttonStyles.default}
             onClick={() => run()}>Stop</button>
         }
-        <iframe 
-          src={sandboxUrl} 
-          ref={windowRef} 
-          sandbox="allow-scripts"
-          style={{height: "1px", width: "1px"}}></iframe>
+
+        <UI broker={broker} pageData={{tests: props.tests, initHTML: props.initHTML, setup: props.setup, teardown: props.teardown}} />
+
       </div>
       <table id="test-table" className="w-full border-collapse">
         <caption className="bg-gray-200 font-bold text-md text-gray-800">Testing in <UserAgent /></caption>
@@ -140,4 +120,8 @@ export default function Tests(props) {
       </table>
     </>
   )
+}
+
+export async function getServerSideProps({params, res}) {
+  console.log('test runner server side props')
 }
