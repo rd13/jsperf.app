@@ -26,33 +26,37 @@ export default function Tests(props) {
     setBenchStatus('ready')
   })
 
-  broker.on('cycle', event => {
-    const {id, name, count, size, status} = event
+  useEffect(() => {
 
-    if (!['finished', 'completed'].includes(status)) {
-      setStatusMessage(`${name} × ${count} (${size} sample${size === 1 ? '' : 's'})`)
-    }
+    broker.on('cycle', event => {
+      const {id, name, count, size, status} = event
 
-    setTests(tests => {
-      tests[id].status = status
-      return tests
-    })
-  })
-
-  broker.on('complete', ({ results }) => {
-    setTests(prevTests => {
-      for(let result of results) {
-        // Merge each test with result
-        prevTests[result.id] = {
-          ...prevTests[result.id],
-          ...result
-        }
+      if (!['finished', 'completed'].includes(status)) {
+        setStatusMessage(`${name} × ${count} (${size} sample${size === 1 ? '' : 's'})`)
       }
-      return prevTests
+
+      setTests(tests => {
+        tests[id].status = status
+        return tests
+      })
     })
-    setStatusMessage('Done. Ready to run again.')
-    setBenchStatus('complete')
-  })
+
+    broker.on('complete', ({ results }) => {
+      setTests(prevTests => {
+        for(let result of results) {
+          // Merge each test with result
+          prevTests[result.id] = {
+            ...prevTests[result.id],
+            ...result
+          }
+        }
+        return prevTests
+      })
+      setStatusMessage('Done. Ready to run again.')
+      setBenchStatus('complete')
+    })
+
+  }, [])
 
   const run = (options) => {
     broker.emit('run', {options})
