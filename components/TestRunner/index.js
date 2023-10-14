@@ -6,8 +6,6 @@ import buttonStyles from '../../styles/buttons.module.css'
 import UI from '../UI'
 
 export default function Tests(props) {
-  const {id} = props
-
   const broker = MessageBus.broker('testRunner')
 
   const [statusMessage, setStatusMessage] = useState('')
@@ -116,8 +114,4 @@ export default function Tests(props) {
       </table>
     </>
   )
-}
-
-export async function getServerSideProps({params, res}) {
-  console.log('test runner server side props')
 }

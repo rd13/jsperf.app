@@ -76,7 +76,6 @@ class MessageBus {
     });
   }
 
-  // private
   register(broker, eventName, callback, once = false) {
     if (!this.hasListeners(eventName)) {
       this.listeners[eventName] = [];
@@ -85,7 +84,6 @@ class MessageBus {
     this.listeners[eventName].push({ callback, broker, once });
   }
 
-  // private
   hasListeners(eventName) {
     return eventName in this.listeners;
   }
