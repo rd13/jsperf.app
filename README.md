@@ -10,11 +10,11 @@ jsperf.com URLs are mirrored at the same path, e.g:
 
 Can be accessed at:
 
-> [https://jsperf.app/negative-modulo/2](https://jsperf.com/negative-modulo/2)
+> [https://jsperf.app/negative-modulo/2](https://jsperf.app/negative-modulo/2)
 
 ## Development
 
-This project uses NextJS and is hosted on Vercel with a schemaless database hosted at MongoDB Atlas. For local development clone the repository and create a .env.local file with the following:
+This project uses NextJS and is hosted on Vercel with a schemaless database hosted at MongoDB Atlas. For local development clone the repository and create a `.env.local` file with the following:
 
 ```sh
 MONGODB_URI=
@@ -32,7 +32,4 @@ The local development server can then be run with `yarn dev`.
 - Single Page Application
 
 ### Phase 3 
-- Browserscope like service (Kafka?) for browser performance statistics
-
-### Phase 4
-- Rewrite benchmark.js
+- Browserscope like service (Kafka?) for logging browser performance statistics
