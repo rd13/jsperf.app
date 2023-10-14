@@ -120,6 +120,6 @@ export default (props) => {
   }, [])
 
   return (
-    <div className="prepHTMLOutput" dangerouslySetInnerHTML={{__html: initHTML}}/>
+    <div className="prepHTMLOutput hidden" dangerouslySetInnerHTML={{__html: initHTML}}/>
   )
 }
