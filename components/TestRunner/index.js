@@ -12,10 +12,8 @@ export default function Tests(props) {
 
   const broker = MessageBus.broker('testRunner')
 
-  // A textual status message
   const [statusMessage, setStatusMessage] = useState('')
 
-  // The sandbox will send a postMessage when Benchmark is ready to run
   const [benchStatus, setBenchStatus] = useState('notready')
 
   const [tests, setTests] = useState(props.tests)
