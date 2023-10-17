@@ -71,7 +71,7 @@ export default function Slug(props) {
           </section>
         }
         <section>
-          <TestRunner id={_id} tests={tests} initHTML={initHTML} setup={setup} teardown={teardown} />
+          <TestRunner tests={tests} initHTML={initHTML} setup={setup} teardown={teardown} />
         </section>
         <hr className="my-5" />
         <section>
