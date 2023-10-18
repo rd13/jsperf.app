@@ -18,6 +18,9 @@ export default function Tests(props) {
   const [broker, setBroker] = useState(null)
 
   const [tests, setTests] = useState(props.tests)
+  const [initHTML, setInitHTML] = useState(props.initHTML)
+  const [setup, setSetup] = useState(props.setup)
+  const [teardown, setTeardown] = useState(props.teardown)
 
   const runButtonText = {
     'default'  : 'Run',
@@ -42,10 +45,6 @@ export default function Tests(props) {
         setStatusMessage(`${name} × ${count} (${size} sample${size === 1 ? '' : 's'})`)
       }
 
-      // Note to self: treat state arrays as immutable, instead provide setState with a function to update
-      // This is probably not optimal. Instead only update test status on status transition.
-      // Or, if there is no mutation is this intelligent enough not to trigger a re-render?
-      // Also to note: this is throttled
       setTests(tests => {
         tests[id].status = status
         return tests
@@ -78,8 +77,18 @@ export default function Tests(props) {
 
   const sandboxUrl = `/sandbox/${id}`
 
+  const stop = (options) => {
+    broker.emit('stop')
+  }
+
   const run = (options) => {
-    broker.emit('run', {options})
+    broker.emit('newTestRun', {
+      options,
+      tests,
+      initHTML,
+      setup,
+      teardown
+    })
 
     setTests(tests => {
       // Transition all tests status to pending
@@ -116,7 +125,7 @@ export default function Tests(props) {
           <button 
             type="button"
             className={buttonStyles.default}
-            onClick={() => run()}>Stop</button>
+            onClick={() => stop()}>Stop</button>
         }
         <iframe 
           src={sandboxUrl} 
