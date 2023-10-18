@@ -75,8 +75,6 @@ export default function Tests(props) {
     })
   }, [])
 
-  const sandboxUrl = `/sandbox/${id}`
-
   const stop = (options) => {
     broker.emit('stop')
   }
@@ -128,7 +126,7 @@ export default function Tests(props) {
             onClick={() => stop()}>Stop</button>
         }
         <iframe 
-          src={sandboxUrl} 
+          src="/sandbox.html"
           ref={windowRef} 
           sandbox="allow-scripts"
           style={{height: "1px", width: "1px"}}></iframe>
