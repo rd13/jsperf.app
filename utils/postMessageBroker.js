@@ -19,9 +19,4 @@ export default class PostMessageBroker {
       event.data.message && event.data.message === message && callback(event)
     })
   }
-  register(message, callback) {
-    window.addEventListener('message', event => {
-      event.data.message && event.data.message === message && callback(event)
-    })
-  }
 }

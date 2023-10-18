@@ -5,40 +5,15 @@ import {getRanked} from '../utils/ArrayUtils'
 
 import '../lib/benchmark.mjs' // mjs to avoid webpack parser
 
-function injectScriptNodeToHead(script, document) {
-  return new Promise((resolve, reject) => {
-    const node = document.createElement('script')
-    if (script.src) {
-      node.src = script.src
-      node.onload = resolve
-      node.onerror = reject
-    } else {
-      node.text = script.text
-    }
-    document.head.appendChild(node)
-    script.remove()
-    return script.src || resolve(!0)
-  }).then(() => {
-    console.log('[sandbox] script injected', script.src || script.text.substr(0, 10))
-  })
-}
-
-function removeScriptNodesFromHead(document) {
-  const scriptNodes = [...document.head.getElementsByTagName('script')]
-  if (scriptNodes) {
-    scriptNodes.forEach(node => node.parentNode.removeChild(node))
-  }
-}
-
 export default (props) => {
   const Benchmark = global.Benchmark
 
-  const setupHTMLPlaceholder = useRef()
+  const initHTMLPlaceholder = useRef()
 
   useEffect(() => {
     const broker = new PostMessageBroker()
 
-    broker.on('newTestRun', async ({data: {options, tests, initHTML, setup, teardown}}) => {
+    broker.on('run', async ({data: {options, tests, initHTML, setup, teardown}}) => {
       console.log('[sandbox] new test run', tests)
 
       // Reset sandbox
@@ -47,14 +22,14 @@ export default (props) => {
 
       if (initHTML) {
         // Inject HTML
-        setupHTMLPlaceholder.current.innerHTML = initHTML
+        initHTMLPlaceholder.current.innerHTML = initHTML
 
         // Inject scripts into head
         let injectedScriptPromises = []
 
-        setupHTMLPlaceholder.current.querySelectorAll("script").forEach(node => injectedScriptPromises.push(injectScriptNodeToHead(node, document)))
+        initHTMLPlaceholder.current.querySelectorAll("script").forEach(node => injectedScriptPromises.push(injectScriptNodeToHead(node, document)))
 
-          await Promise.all(injectedScriptPromises)
+        await Promise.all(injectedScriptPromises)
       }
 
       console.log('[sandbox] setup complete')
@@ -140,6 +115,7 @@ export default (props) => {
       })
 
       broker.on('stop', () => {
+        ui.off('complete cycle')
         ui.abort()
         ui.length = 0
       })
@@ -151,29 +127,44 @@ export default (props) => {
         }
       }
 
-      const stopped = !ui.running
-
-
-      if (stopped) {
-        ui.push.apply(ui, uiBenchmarks.filter((bench) => {
-          return !bench.error && bench.reset()
-        }))
-
-        ui.run({
-          'async': true,
-          'queued': true
-        }) 
-      }
-
+      ui.run({
+        'async': true,
+        'queued': true
+      }) 
     })
 
-    broker.emit('ready', {})
+    broker.emit('ready')
 
   }, [Benchmark])
 
   return (
     <>
-      <div ref={setupHTMLPlaceholder}></div>
+      <div ref={initHTMLPlaceholder}></div>
     </>
   )
+}
+
+function injectScriptNodeToHead(script, document) {
+  return new Promise((resolve, reject) => {
+    const node = document.createElement('script')
+    if (script.src) {
+      node.src = script.src
+      node.onload = resolve
+      node.onerror = reject
+    } else {
+      node.text = script.text
+    }
+    document.head.appendChild(node)
+    script.remove()
+    return script.src || resolve(!0)
+  }).then(() => {
+    console.log('[sandbox] script injected', script.src || script.text.substr(0, 10))
+  })
+}
+
+function removeScriptNodesFromHead(document) {
+  const scriptNodes = [...document.head.getElementsByTagName('script')]
+  if (scriptNodes) {
+    scriptNodes.forEach(node => node.parentNode.removeChild(node))
+  }
 }

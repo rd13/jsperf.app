@@ -15,7 +15,7 @@ export default function Tests(props) {
   // The sandbox will send a postMessage when Benchmark is ready to run
   const [benchStatus, setBenchStatus] = useState('notready')
 
-  const [broker, setBroker] = useState(null)
+  const [broker, setBroker] = useState()
 
   const [tests, setTests] = useState(props.tests)
   const [initHTML, setInitHTML] = useState(props.initHTML)
@@ -29,17 +29,21 @@ export default function Tests(props) {
     'running'  : 'Stop'
   }
 
-  // This is a ref to the sandbox iframe window used for communication
-  const windowRef = useRef(null)
+  // This is a ref to the sandbox iframe used for communication
+  const sandboxRef = useRef()
 
   useEffect(() => {
     // Setup communication with iframe
-    const _broker = new PostMessageBroker(windowRef.current.contentWindow)
+    setBroker(new PostMessageBroker(sandboxRef.current.contentWindow))
+  }, [])
 
-    setBroker(_broker)
+  useEffect(() => {
+    if (!broker) return // communication with sandbox not yet established
 
-    _broker.register('cycle', event => {
-      const {id, name, count, size, status} = event.data
+    broker.on('cycle', event => {
+      const {id, name, count, size, status, running} = event.data
+
+      if (!running) return
 
       if (!['finished', 'completed'].includes(status)) {
         setStatusMessage(`${name} × ${count} (${size} sample${size === 1 ? '' : 's'})`)
@@ -51,7 +55,7 @@ export default function Tests(props) {
       })
     })
 
-    _broker.register('complete', event => {
+    broker.on('complete', event => {
       const {results} = event.data
 
       setTests(prevTests => {
@@ -69,18 +73,30 @@ export default function Tests(props) {
     })
 
     // The sandbox is ready to run a test
-    _broker.register('ready', () => {
+    broker.on('ready', () => {
+      console.log('readuu')
       setStatusMessage('Ready to run.')
       setBenchStatus('ready')
     })
-  }, [])
+  }, [broker])
 
-  const stop = (options) => {
+  const stop = () => {
     broker.emit('stop')
+
+    setTests(tests => {
+      // Transition all tests status to pending
+      for (let test of tests) {
+        test.status = 'default'
+      }
+      return tests
+    })
+
+    setStatusMessage('Ready to run.')
+    setBenchStatus('ready')
   }
 
   const run = (options) => {
-    broker.emit('newTestRun', {
+    broker.emit('run', {
       options,
       tests,
       initHTML,
@@ -127,7 +143,7 @@ export default function Tests(props) {
         }
         <iframe 
           src="/sandbox.html"
-          ref={windowRef} 
+          ref={sandboxRef} 
           sandbox="allow-scripts"
           style={{height: "1px", width: "1px"}}></iframe>
       </div>
