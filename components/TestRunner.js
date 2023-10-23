@@ -40,10 +40,9 @@ export default function Tests(props) {
   useEffect(() => {
     if (!broker) return // communication with sandbox not yet established
 
+    // These broker events should bind only once on broker initialisation
     broker.on('cycle', event => {
       const {id, name, count, size, status, running} = event.data
-
-      if (!running) return
 
       if (!['finished', 'completed'].includes(status)) {
         setStatusMessage(`${name} × ${count} (${size} sample${size === 1 ? '' : 's'})`)
@@ -74,24 +73,12 @@ export default function Tests(props) {
 
     // The sandbox is ready to run a test
     broker.on('ready', () => {
-      console.log('readuu')
-      setStatusMessage('Ready to run.')
       setBenchStatus('ready')
     })
   }, [broker])
 
   const stop = () => {
     broker.emit('stop')
-
-    setTests(tests => {
-      // Transition all tests status to pending
-      for (let test of tests) {
-        test.status = 'default'
-      }
-      return tests
-    })
-
-    setStatusMessage('Ready to run.')
     setBenchStatus('ready')
   }
 
@@ -118,8 +105,14 @@ export default function Tests(props) {
   return (
     <>
       <h2 className="font-bold my-5">Test runner</h2>
-      <div id="controls" className="flex my-5 items-center">
-        <p id="status" className="flex-1">{statusMessage}</p>
+      <div id="controls" className="flex my-5 h-16 items-center">
+        <p id="status" className="flex-1">
+          {
+            'ready' === benchStatus 
+              ? 'Ready to run.' 
+              : statusMessage
+          }
+        </p>
         { ['ready', 'complete'].includes(benchStatus) &&
           <>
             <button 
@@ -135,7 +128,7 @@ export default function Tests(props) {
               onClick={() => run({maxTime: 0.5})}>Quick Run</button>
             </>
         }
-        { benchStatus === 'running' &&
+        { 'running' === benchStatus &&
           <button 
             type="button"
             className={buttonStyles.default}
@@ -157,7 +150,7 @@ export default function Tests(props) {
         </thead>
         <tbody>
           {tests.map((test, i) => 
-            <Test key={i} test={test} />
+            <Test key={i} test={test} benchStatus={benchStatus} />
           )}
         </tbody>
       </table>

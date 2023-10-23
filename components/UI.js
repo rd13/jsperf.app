@@ -115,7 +115,7 @@ export default (props) => {
       })
 
       broker.on('stop', () => {
-        ui.off('complete cycle')
+        ui.off()
         ui.abort()
         ui.length = 0
       })
