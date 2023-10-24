@@ -133,8 +133,6 @@ export default (props) => {
       }) 
     })
 
-    broker.emit('ready')
-
   }, [Benchmark])
 
   return (

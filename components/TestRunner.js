@@ -13,7 +13,7 @@ export default function Tests(props) {
   const [statusMessage, setStatusMessage] = useState('')
 
   // The sandbox will send a postMessage when Benchmark is ready to run
-  const [benchStatus, setBenchStatus] = useState('notready')
+  const [benchStatus, setBenchStatus] = useState('ready')
 
   const [broker, setBroker] = useState()
 
@@ -70,11 +70,6 @@ export default function Tests(props) {
       setStatusMessage('Done. Ready to run again.')
       setBenchStatus('complete')
     })
-
-    // The sandbox is ready to run a test
-    broker.on('ready', () => {
-      setBenchStatus('ready')
-    })
   }, [broker])
 
   const stop = () => {
@@ -118,12 +113,10 @@ export default function Tests(props) {
             <button 
               id="run" 
               type="button" 
-              disabled={benchStatus === 'notready'}
               className={`${buttonStyles.default} mx-2`} 
               onClick={() => run({maxTime: 5})}>{runButtonText[benchStatus]||runButtonText['default']}</button>
             <button
               type="button" 
-              disabled={benchStatus === 'notready'}
               className={buttonStyles.default}
               onClick={() => run({maxTime: 0.5})}>Quick Run</button>
             </>
