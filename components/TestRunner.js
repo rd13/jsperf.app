@@ -32,6 +32,9 @@ export default function Tests(props) {
   // This is a ref to the sandbox iframe used for communication
   const sandboxRef = useRef()
 
+  // Reload the sandbox iframe
+  const reloadSandbox = () => sandboxRef.current.src = sandboxRef.current.src
+
   useEffect(() => {
     // Setup communication with iframe
     setBroker(new PostMessageBroker(sandboxRef.current.contentWindow))
@@ -69,12 +72,14 @@ export default function Tests(props) {
       })
       setStatusMessage('Done. Ready to run again.')
       setBenchStatus('complete')
+      reloadSandbox()
     })
   }, [broker])
 
   const stop = () => {
     broker.emit('stop')
     setBenchStatus('ready')
+    reloadSandbox()
   }
 
   const run = (options) => {

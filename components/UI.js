@@ -16,10 +16,6 @@ export default (props) => {
     broker.on('run', async ({data: {options, tests, initHTML, setup, teardown}}) => {
       console.log('[sandbox] new test run', tests)
 
-      // Reset sandbox
-      // Remove scripts
-      removeScriptNodesFromHead(document)
-
       if (initHTML) {
         // Inject HTML
         initHTMLPlaceholder.current.innerHTML = initHTML
@@ -158,11 +154,4 @@ function injectScriptNodeToHead(script, document) {
   }).then(() => {
     console.log('[sandbox] script injected', script.src || script.text.substr(0, 10))
   })
-}
-
-function removeScriptNodesFromHead(document) {
-  const scriptNodes = [...document.head.getElementsByTagName('script')]
-  if (scriptNodes) {
-    scriptNodes.forEach(node => node.parentNode.removeChild(node))
-  }
 }
