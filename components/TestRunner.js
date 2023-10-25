@@ -33,7 +33,9 @@ export default function Tests(props) {
   const sandboxRef = useRef()
 
   // Reload the sandbox iframe
-  const reloadSandbox = () => sandboxRef.current.src = sandboxRef.current.src
+  const reloadSandbox = () => {
+    sandboxRef.current.contentWindow.location.replace(sandboxRef.current.src)
+  }
 
   useEffect(() => {
     // Setup communication with iframe
