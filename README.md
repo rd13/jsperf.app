@@ -14,7 +14,7 @@ Can be accessed at:
 
 ## Development
 
-This project uses NextJS and is hosted on Vercel with a schemaless database hosted at MongoDB Atlas. For local development clone the repository and create a `.env.local` file with the following:
+This project uses NextJS / MongoDB. For local development clone the repository and create a `.env.local` file with the following:
 
 ```sh
 MONGODB_URI=
@@ -26,7 +26,7 @@ The local development server can then be run with `yarn dev`.
 ### Phase 1 - Complete
 - Replicate traditional functionality / workflow
 - GitHub auth / JWT auth
-- Mirror jsPerf.com URLs
+- jsPerf.com mirror
 
 ### Phase 2 
 - Single Page Application
