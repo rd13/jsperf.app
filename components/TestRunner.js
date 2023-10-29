@@ -34,7 +34,11 @@ export default function Tests(props) {
 
   // Reload the sandbox iframe
   const reloadSandbox = () => {
-    sandboxRef.current.contentWindow.location.replace(sandboxRef.current.src)
+    if (sandboxRef.current.contentWindow) {
+      sandboxRef.current.contentWindow.location.replace(sandboxRef.current.src)
+    } else {
+      sandboxRef.current.src = sandboxRef.current.src
+    }
   }
 
   useEffect(() => {
