@@ -3,4 +3,4 @@ Sitemap: https://jsperf.app/sitemap.xml
 User-agent: *
 Disallow: /*/edit$
 Disallow: /*/preview$
-Disallow: /sandbox
+Disallow: /sandbox.html

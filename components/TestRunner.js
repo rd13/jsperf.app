@@ -13,11 +13,14 @@ export default function Tests(props) {
   const [statusMessage, setStatusMessage] = useState('')
 
   // The sandbox will send a postMessage when Benchmark is ready to run
-  const [benchStatus, setBenchStatus] = useState('notready')
+  const [benchStatus, setBenchStatus] = useState('ready')
 
-  const [broker, setBroker] = useState(null)
+  const [broker, setBroker] = useState()
 
   const [tests, setTests] = useState(props.tests)
+  const [initHTML, setInitHTML] = useState(props.initHTML)
+  const [setup, setSetup] = useState(props.setup)
+  const [teardown, setTeardown] = useState(props.teardown)
 
   const runButtonText = {
     'default'  : 'Run',
@@ -26,33 +29,43 @@ export default function Tests(props) {
     'running'  : 'Stop'
   }
 
-  // This is a ref to the sandbox iframe window used for communication
-  const windowRef = useRef(null)
+  // This is a ref to the sandbox iframe used for communication
+  const sandboxRef = useRef()
+
+  // Reload the sandbox iframe
+  const reloadSandbox = () => {
+    if (!sandboxRef.current) return
+    if (sandboxRef.current.contentWindow) {
+      sandboxRef.current.contentWindow.location.replace(sandboxRef.current.src)
+    } else {
+      sandboxRef.current.src = sandboxRef.current.src
+    }
+  }
 
   useEffect(() => {
+    if (broker) return
     // Setup communication with iframe
-    const _broker = new PostMessageBroker(windowRef.current.contentWindow)
+    setBroker(new PostMessageBroker(sandboxRef.current.contentWindow))
+  }, [])
 
-    setBroker(_broker)
+  useEffect(() => {
+    if (!broker) return // communication with sandbox not yet established
 
-    _broker.register('cycle', event => {
-      const {id, name, count, size, status} = event.data
+    // These broker events should bind only once on broker initialisation
+    broker.on('cycle', event => {
+      const {id, name, count, size, status, running} = event.data
 
       if (!['finished', 'completed'].includes(status)) {
         setStatusMessage(`${name} × ${count} (${size} sample${size === 1 ? '' : 's'})`)
       }
 
-      // Note to self: treat state arrays as immutable, instead provide setState with a function to update
-      // This is probably not optimal. Instead only update test status on status transition.
-      // Or, if there is no mutation is this intelligent enough not to trigger a re-render?
-      // Also to note: this is throttled
       setTests(tests => {
         tests[id].status = status
         return tests
       })
     })
 
-    _broker.register('complete', event => {
+    broker.on('complete', event => {
       const {results} = event.data
 
       setTests(prevTests => {
@@ -67,19 +80,29 @@ export default function Tests(props) {
       })
       setStatusMessage('Done. Ready to run again.')
       setBenchStatus('complete')
+      reloadSandbox()
     })
 
-    // The sandbox is ready to run a test
-    _broker.register('ready', () => {
-      setStatusMessage('Ready to run.')
-      setBenchStatus('ready')
-    })
-  }, [])
+    return () => {
+      // Due to client side navigation we must unbind event listeners on route change
+      broker.destroy()
+    }
+  }, [broker])
 
-  const sandboxUrl = `/sandbox/${id}`
+  const stop = () => {
+    broker.emit('stop')
+    setBenchStatus('ready')
+    reloadSandbox()
+  }
 
   const run = (options) => {
-    broker.emit('run', {options})
+    broker.emit('run', {
+      options,
+      tests,
+      initHTML,
+      setup,
+      teardown
+    })
 
     setTests(tests => {
       // Transition all tests status to pending
@@ -95,32 +118,36 @@ export default function Tests(props) {
   return (
     <>
       <h2 className="font-bold my-5">Test runner</h2>
-      <div id="controls" className="flex my-5 items-center">
-        <p id="status" className="flex-1">{statusMessage}</p>
+      <div id="controls" className="flex my-5 h-16 items-center">
+        <p id="status" className="flex-1">
+          {
+            'ready' === benchStatus 
+              ? 'Ready to run.' 
+              : statusMessage
+          }
+        </p>
         { ['ready', 'complete'].includes(benchStatus) &&
           <>
             <button 
               id="run" 
               type="button" 
-              disabled={benchStatus === 'notready'}
               className={`${buttonStyles.default} mx-2`} 
               onClick={() => run({maxTime: 5})}>{runButtonText[benchStatus]||runButtonText['default']}</button>
             <button
               type="button" 
-              disabled={benchStatus === 'notready'}
               className={buttonStyles.default}
               onClick={() => run({maxTime: 0.5})}>Quick Run</button>
             </>
         }
-        { benchStatus === 'running' &&
+        { 'running' === benchStatus &&
           <button 
             type="button"
             className={buttonStyles.default}
-            onClick={() => run()}>Stop</button>
+            onClick={() => stop()}>Stop</button>
         }
         <iframe 
-          src={sandboxUrl} 
-          ref={windowRef} 
+          src="/sandbox.html"
+          ref={sandboxRef} 
           sandbox="allow-scripts"
           style={{height: "1px", width: "1px"}}></iframe>
       </div>
@@ -134,7 +161,7 @@ export default function Tests(props) {
         </thead>
         <tbody>
           {tests.map((test, i) => 
-            <Test key={i} test={test} />
+            <Test key={i} test={test} benchStatus={benchStatus} />
           )}
         </tbody>
       </table>

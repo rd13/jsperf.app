@@ -10,7 +10,7 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter()
 
   // Exclude sandbox from any additional scripts / providers
-  if (router.pathname === '/sandbox/[id]') {
+  if (router.pathname === '/sandbox.html') {
     return (
       <Component {...pageProps} />
     )
