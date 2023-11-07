@@ -34,6 +34,7 @@ export default function Tests(props) {
 
   // Reload the sandbox iframe
   const reloadSandbox = () => {
+    if (!sandboxRef.current) return
     if (sandboxRef.current.contentWindow) {
       sandboxRef.current.contentWindow.location.replace(sandboxRef.current.src)
     } else {
@@ -42,6 +43,7 @@ export default function Tests(props) {
   }
 
   useEffect(() => {
+    if (broker) return
     // Setup communication with iframe
     setBroker(new PostMessageBroker(sandboxRef.current.contentWindow))
   }, [])
@@ -80,6 +82,11 @@ export default function Tests(props) {
       setBenchStatus('complete')
       reloadSandbox()
     })
+
+    return () => {
+      // Due to client side navigation we must unbind event listeners on route change
+      broker.destroy()
+    }
   }, [broker])
 
   const stop = () => {

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import { pagesCollection } from '../../../lib/mongodb'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import { signIn, useSession } from "next-auth/react"
 
 import TestRunner from '../../../components/TestRunner'
@@ -19,6 +19,8 @@ import UUID from '../../../components/UUID'
 
 export default function Preview(props) {
   const { data: session, status } = useSession()
+  const router = useRouter()
+
   const { 
     _id, 
     authorName, 
@@ -66,7 +68,7 @@ export default function Preview(props) {
     const {success} = await response.json()
 
     if (success) {
-      Router.push(`/${slug}/${revision}`)
+      router.push(`/${slug}/${revision}`)
     }
   }
 
