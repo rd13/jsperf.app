@@ -39,7 +39,7 @@ const TestCaseFieldset = ({index, remove, test, update}) => {
   )
 }
 
-export default function EditForm({pageData}) {
+const EditForm = ({pageData}) => {
   const uuid = UUID()
 
   // Code block states
@@ -189,3 +189,5 @@ export default function EditForm({pageData}) {
     </form>
   )
 }
+
+export default EditForm

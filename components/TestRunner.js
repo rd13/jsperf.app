@@ -1,4 +1,3 @@
-import SandboxIframe from '../components/SandboxIframe'
 import PostMessageBroker from '../utils/postMessageBroker'
 import { useState, useEffect, useRef } from 'react'
 import styles from './TestRunner.module.css'

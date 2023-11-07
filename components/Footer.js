@@ -3,7 +3,7 @@ import buttonStyles from '../styles/buttons.module.css'
 import styles from './Footer.module.css'
 import Link from 'next/link'
 
-export default function Footer() {
+const Footer = () => {
   const { data: session, status } = useSession()
 
   return (
@@ -27,3 +27,5 @@ export default function Footer() {
       </footer>
   )
 }
+
+export default Footer
