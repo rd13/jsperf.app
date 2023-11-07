@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
 import { SessionProvider } from "next-auth/react"
+import { Analytics } from '@vercel/analytics/react'
 
 function App({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter()
@@ -28,6 +29,7 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
 
   return (
     <>
+      <Analytics />
       {/* Global Site Tag (gtag.js) - Google Analytics */}
       <Script
         strategy="afterInteractive"
