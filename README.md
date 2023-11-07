@@ -32,4 +32,4 @@ The local development server can then be run with `yarn dev`.
 - Single Page Application
 
 ### Phase 3 
-- Browserscope like service (Kafka?) for logging browser performance statistics
+- Browserscope like service for logging browser performance statistics
