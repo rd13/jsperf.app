@@ -22,7 +22,7 @@ export default function Edit({pageData}) {
   )
 }
 
-export async function getServerSideProps({params}) {
+export const getServerSideProps = async ({params}) => {
   const { slug, revision } = params
 
   const pages = await pagesCollection()

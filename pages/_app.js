@@ -6,7 +6,7 @@ import Script from 'next/script'
 import { useRouter } from 'next/router'
 import { SessionProvider } from "next-auth/react"
 
-function App({ Component, pageProps: { session, ...pageProps } }) {
+export default function App({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter()
 
   // Exclude sandbox from any additional scripts / providers
@@ -54,5 +54,3 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
     </>
   )
 }
-
-export default App

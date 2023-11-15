@@ -1,6 +1,6 @@
 import {highlightSanitizedHTML} from '../../utils/hljs'
 
-const PrepCode = (props) => {
+export default function PrepCode(props) {
   const {prepCode} = props
 
   return (
@@ -12,5 +12,3 @@ const PrepCode = (props) => {
     </>
   )
 }
-
-export default PrepCode

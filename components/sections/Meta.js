@@ -2,7 +2,7 @@ import { datetimeLong } from '../../utils/Date'
 import { useState } from 'react'
 import styles from './Meta.module.css'
 
-const Meta = (props) => {
+export default function Meta(props) {
   const {revision, authorName, published} = props.pageData
 
   return (
@@ -18,5 +18,3 @@ const Meta = (props) => {
     </>
   )
 }
-
-export default Meta

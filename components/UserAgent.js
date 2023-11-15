@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import UAParser from 'ua-parser-js'
 
-const UserAgent = () => {
+export default function UserAgent() {
   const [userAgent, setUserAgent] = useState(null)
 
   useEffect(() => {
@@ -15,5 +15,4 @@ const UserAgent = () => {
   }, []);
 
   return userAgent
-};
-export default UserAgent
+}

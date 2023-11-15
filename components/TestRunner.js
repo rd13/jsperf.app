@@ -6,8 +6,6 @@ import Test from './Test'
 import buttonStyles from '../styles/buttons.module.css'
 
 export default function Tests(props) {
-  const {id} = props
-
   // A textual status message
   const [statusMessage, setStatusMessage] = useState('')
 

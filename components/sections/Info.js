@@ -1,7 +1,7 @@
 import { marked } from 'marked'
 import DOMPurify from 'isomorphic-dompurify'
 
-const Info = (props) => {
+export default function Info(props) {
   const {info} = props
   return (
     <>
@@ -10,5 +10,3 @@ const Info = (props) => {
     </>
   )
 }
-
-export default Info

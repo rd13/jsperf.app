@@ -3,7 +3,7 @@ import DocHead from './DocHead'
 import Header from './Header'
 import Footer from './Footer'
 
-const Layout = (props) => {
+export default function Layout(props) {
   const {children, navState} = props
   return (
     <>
@@ -20,5 +20,3 @@ const Layout = (props) => {
     </>
   )
 }
-
-export default Layout

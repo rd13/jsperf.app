@@ -213,7 +213,7 @@ const updatePage = async (req, res) => {
   }
 }
 
-export default (req, res) => {
+export default function Page(req, res) {
   const { method } = req
 
   switch (method) {

@@ -2,7 +2,7 @@
 
 export default function Edit({slug}) {}
 
-export function getServerSideProps({params}) {
+export const getServerSideProps = ({params}) => {
   const { slug } = params
 
   return {

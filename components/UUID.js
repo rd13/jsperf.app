@@ -5,7 +5,7 @@ const STORAGE_KEY = '__user_uuid'
 
 // export const getUUID = () => typeof window !== 'undefined' ? useState(localStorage.getItem(STORAGE_KEY)) : []
 
-const UUID = () => {
+export default function UUID() {
   const [uuid, setUUID] = useState(null)
 
   useEffect(() => {
@@ -27,5 +27,3 @@ const UUID = () => {
 
   return uuid
 }
-
-export default UUID
