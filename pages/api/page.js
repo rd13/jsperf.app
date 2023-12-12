@@ -1,5 +1,6 @@
 import { pagesCollection } from '../../lib/mongodb'
-import { getSession } from "next-auth/react"
+import { getServerSession } from "next-auth"
+import { authOptions } from "./auth/[...nextauth]"
 import { shortcode } from "../../utils/Url"
 
 /**
@@ -59,11 +60,7 @@ const revalidatePath = async (baseUrl, path) => {
  */
 const addPage = async (req, res) => {
   try {
-    const session = await getSession({ req })
-
-    // if (!session) {
-    //   throw new Error('User is not authenticated.')
-    // }
+    const session = await getServerSession(req, res, authOptions)
 
     const pages = await pagesCollection()
 
@@ -131,7 +128,7 @@ const addPage = async (req, res) => {
  */
 const updatePage = async (req, res) => {
   try {
-    const session = await getSession({ req })
+    const session = await getServerSession(req, res, authOptions)
 
     const pages = await pagesCollection()
 

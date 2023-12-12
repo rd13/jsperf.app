@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import Router from 'next/router'
-import { signIn, useSession } from "next-auth/react"
-import GitHubIcon from '../GitHubIcon'
 import buttonStyles from '../../styles/buttons.module.css'
 import formStyles from '../../styles/forms.module.css'
 import UUID from '../UUID'
