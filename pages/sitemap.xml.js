@@ -1,6 +1,6 @@
 import { pagesCollection } from '../lib/mongodb'
 
-const Sitemap = () => {}
+export default function Sitemap() {}
 
 export const getServerSideProps = async ({res}) => {
 
@@ -47,5 +47,3 @@ export const getServerSideProps = async ({res}) => {
     props: {},
   }
 }
-
-export default Sitemap

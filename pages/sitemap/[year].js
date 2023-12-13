@@ -1,6 +1,6 @@
 import { pagesCollection } from '../../lib/mongodb'
 
-const Sitemap = () => {}
+export default function Sitemap() {}
 
 export const getServerSideProps = async ({res, params}) => {
   // For some reason defining a route like [year].xml.js results in a 404,
@@ -82,5 +82,3 @@ export const getServerSideProps = async ({res, params}) => {
     props: {},
   }
 }
-
-export default Sitemap

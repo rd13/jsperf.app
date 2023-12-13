@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 
-const DocHead = () => {
+export default function DocHead() {
   return (
     <>
       <Head>
@@ -11,5 +11,3 @@ const DocHead = () => {
     </>
   )
 }
-
-export default DocHead

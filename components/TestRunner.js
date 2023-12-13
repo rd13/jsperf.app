@@ -1,4 +1,3 @@
-import SandboxIframe from '../components/SandboxIframe'
 import PostMessageBroker from '../utils/postMessageBroker'
 import { useState, useEffect, useRef } from 'react'
 import styles from './TestRunner.module.css'
@@ -7,8 +6,6 @@ import Test from './Test'
 import buttonStyles from '../styles/buttons.module.css'
 
 export default function Tests(props) {
-  const {id} = props
-
   // A textual status message
   const [statusMessage, setStatusMessage] = useState('')
 

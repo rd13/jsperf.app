@@ -1,5 +1,6 @@
 import { pagesCollection } from '../../lib/mongodb'
-import { getSession } from "next-auth/react"
+import { getServerSession } from "next-auth"
+import { authOptions } from "./auth/[...nextauth]"
 import { shortcode } from "../../utils/Url"
 
 /**
@@ -7,31 +8,34 @@ import { shortcode } from "../../utils/Url"
  * Function to ensure we are using a slug that doesn't already exist
  *
  */
-const generateSlugId = async (length = 6, attempts = 10) => {
+const generateSlugId = async (attempts = 10) => {
   const pages = await pagesCollection()
 
-  return new Promise((resolve, reject) => {
-    const testSlug = (async (attempt = 0) => {
+  return new Promise(async (resolve, reject) => {
+    let attempt = 0
 
-      if (attempt >= attempts) {
-        reject(new Error('Too many attempts'))
-        return
+    while (attempt <= attempts) {
+      const slug = shortcode(6 + attempt)
+
+      const page = await pages.findOne({
+        slug
+      }).catch(reject)
+
+      // new slug found
+      if (!page) {
+        resolve(slug)
+        break
+      } 
+
+      // reached max attempts
+      if (attempt === attempts) {
+        reject(new Error('Too many attempts at generating a new slug'))
+        break
       }
 
-      const slug = shortcode(length + attempt)
-      
-      const result = await pages.findOne({
-        slug
-      }, (err, result) => {
-        if (err) {
-          reject(err)
-        } else if (result) {
-          testSlug(attempt++)
-        } else {
-          resolve(slug)
-        }
-      })
-    })()
+      // slug exists, try again
+      attempt++
+    }
   })
 }
 
@@ -56,11 +60,7 @@ const revalidatePath = async (baseUrl, path) => {
  */
 const addPage = async (req, res) => {
   try {
-    const session = await getSession({ req })
-
-    // if (!session) {
-    //   throw new Error('User is not authenticated.')
-    // }
+    const session = await getServerSession(req, res, authOptions)
 
     const pages = await pagesCollection()
 
@@ -128,7 +128,7 @@ const addPage = async (req, res) => {
  */
 const updatePage = async (req, res) => {
   try {
-    const session = await getSession({ req })
+    const session = await getServerSession(req, res, authOptions)
 
     const pages = await pagesCollection()
 
@@ -213,7 +213,7 @@ const updatePage = async (req, res) => {
   }
 }
 
-export default (req, res) => {
+export default function Page(req, res) {
   const { method } = req
 
   switch (method) {

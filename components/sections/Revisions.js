@@ -1,7 +1,7 @@
 import {datetimeLong} from '../../utils/Date'
 import Link from 'next/link'
 
-const Revisions = (props) => {
+export default function Revisions(props) {
   const {revisions, slug, revision} = props
   return (
     <>
@@ -25,5 +25,3 @@ const Revisions = (props) => {
     </>
   )
 }
-
-export default Revisions

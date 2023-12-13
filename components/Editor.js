@@ -4,7 +4,7 @@ import hljs from '../utils/hljs'
 
 import {CodeJar} from 'codejar'
 
-export const Editor = (props) => {
+export default function Editor(props) {
   const {code, onUpdate, style, className} = props
 
   const editorRef = useRef(<div></div>)
@@ -23,5 +23,3 @@ export const Editor = (props) => {
 
   return <code ref={editorRef} className={className} style={style}></code>
 }
-
-export default Editor

@@ -1,6 +1,6 @@
 import {highlightSanitizedJS} from '../../utils/hljs'
 
-const Teardown = (props) => {
+export default function Teardown(props) {
   const {teardown} = props
   return (
     <>
@@ -11,5 +11,3 @@ const Teardown = (props) => {
     </>
   )
 }
-
-export default Teardown

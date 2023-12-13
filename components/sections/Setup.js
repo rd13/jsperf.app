@@ -1,6 +1,6 @@
 import {highlightSanitizedJS} from '../../utils/hljs'
 
-const Setup = (props) => {
+export default function Setup(props) {
   const {setup} = props
   return (
     <>
@@ -11,5 +11,3 @@ const Setup = (props) => {
     </>
   )
 }
-
-export default Setup

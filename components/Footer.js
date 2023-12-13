@@ -16,6 +16,9 @@ export default function Footer() {
             <Link href="https://github.com/rd13/jsperf.app/issues" className="block mt-4 lg:inline-block lg:mt-0 mr-4 no-underline">
               Report Issue
             </Link>
+            <Link href="/latest" className="block mt-4 lg:inline-block lg:mt-0 mr-4 no-underline">
+              Latest
+            </Link>
           </div>
           <div>
             { 

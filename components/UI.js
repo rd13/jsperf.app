@@ -5,7 +5,7 @@ import {getRanked} from '../utils/ArrayUtils'
 
 import '../lib/benchmark.mjs' // mjs to avoid webpack parser
 
-export default (props) => {
+export default function UI(props) {
   const Benchmark = global.Benchmark
 
   const initHTMLPlaceholder = useRef()
