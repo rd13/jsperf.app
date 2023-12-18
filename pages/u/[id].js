@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Layout from '../../components/Layout'
 import Link from 'next/link'
 import { pagesCollection } from '../../lib/mongodb'
-import {datetimeLong} from '../../utils/Date'
+import { datetimeLong } from '../../utils/Date'
 
 export default function User(props) {
   const {published, unpublished} = props
@@ -34,7 +34,7 @@ export default function User(props) {
   )
 }
 
-export const getStaticProps = async ({params}) => {
+export const getServerSideProps = async ({params}) => {
   const {id} = params
   let pageData = []
 
@@ -87,11 +87,4 @@ export const getStaticProps = async ({params}) => {
       published: JSON.parse(JSON.stringify(published))
     }
   }
-}
-
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: 'blocking'
-  };
 }
