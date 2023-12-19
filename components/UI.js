@@ -5,10 +5,18 @@ import {getRanked} from '../utils/ArrayUtils'
 
 import '../lib/benchmark.mjs' // mjs to avoid webpack parser
 
+let modulePromises = {}
+
 export default function UI(props) {
   const Benchmark = global.Benchmark
 
   const initHTMLPlaceholder = useRef()
+
+  useEffect(() => {
+    window.resolveScriptModuleById = id => {
+      modulePromises[id]()
+    }
+  }, [])
 
   useEffect(() => {
     const broker = new PostMessageBroker()
@@ -141,6 +149,20 @@ export default function UI(props) {
 function injectScriptNodeToHead(script, document) {
   return new Promise((resolve, reject) => {
     const node = document.createElement('script')
+
+    // if script type is a module, inject a callback function
+    if (script.type === 'module') {
+      const id = Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1)
+      modulePromises[id] = resolve
+      script.text = `${script.text} ;window.resolveScriptModuleById("${id}")`
+    }
+
+    if (script.type) {
+      node.type = script.type
+    }
+
     if (script.src) {
       node.src = script.src
       node.onload = resolve
@@ -148,9 +170,11 @@ function injectScriptNodeToHead(script, document) {
     } else {
       node.text = script.text
     }
+
     document.head.appendChild(node)
     script.remove()
-    return script.src || resolve(!0)
+
+    return script.src || script.type || resolve(!0)
   }).then(() => {
     console.log('[sandbox] script injected', script.src || script.text.substr(0, 10))
   })
