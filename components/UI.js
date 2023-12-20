@@ -14,7 +14,7 @@ export default function UI(props) {
 
   useEffect(() => {
     window.resolveScriptModuleById = id => {
-      modulePromises[id]()
+      modulePromises[id] && modulePromises[id]()
     }
   }, [])
 
@@ -176,6 +176,6 @@ function injectScriptNodeToHead(script, document) {
 
     return script.src || script.type || resolve(!0)
   }).then(() => {
-    console.log('[sandbox] script injected', script.src || script.text.substr(0, 10))
+    console.log('[sandbox] script injected', script.src || script.type || script.text.substr(0, 10))
   })
 }
