@@ -39,17 +39,6 @@ const generateSlugId = async (attempts = 10) => {
   })
 }
 
-const revalidatePath = async (baseUrl, path) => {
-  const response = await fetch(baseUrl + '/api/revalidate?' + new URLSearchParams({
-    secret: process.env.REVALIDATE_SECRET,
-    path
-  }))
-
-  const {revalidated} = await response.json()
-
-  return revalidated
-}
-
 /**
  * Adds a new page.
  *
@@ -195,8 +184,6 @@ const updatePage = async (req, res) => {
       // We need to specify absolute URL because node/server/fetch
       const protocol = req.headers['x-forwarded-proto'] || 'http'
       const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
-
-      // const revalidated = await revalidatePath(baseUrl, `/${slug}/${revision}`)
 
       res.json({
         message: 'Updated page successfully',
