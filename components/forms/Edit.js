@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from 'react'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 import buttonStyles from '../../styles/buttons.module.css'
 import formStyles from '../../styles/forms.module.css'
 import UUID from '../UUID'
@@ -40,6 +40,7 @@ const TestCaseFieldset = ({index, remove, test, update}) => {
 }
 
 export default function EditForm({pageData}) {
+  const router = useRouter()
   const uuid = UUID()
 
   // Code block states
@@ -69,12 +70,21 @@ export default function EditForm({pageData}) {
 
   const testsAdd = () => {
     const lastId = testsState[testsState.length - 1].id
-    setTestsState(tests => tests.push({id: lastId+1, title: '', code: '', 'async': false}) && [...tests])
+    setTestsState(tests => [
+      ...tests, 
+      { id: lastId+1, 
+        title: '', 
+        code: '', 
+        'async': false
+      }
+    ])
   }
 
   const testsUpdate = (test, id) => {
     const testIndex = testsState.findIndex(test => test.id === id)
-    setTestsState(tests => (tests[testIndex] = {...tests[testIndex], ...test}) && [...tests])
+    const nextTests = [...testsState]
+    nextTests[testIndex] = {...nextTests[testIndex], ...test}
+    setTestsState(nextTests)
   }
 
   // Default form values if none are provided via props.pageData
@@ -129,7 +139,7 @@ export default function EditForm({pageData}) {
 
     if (success) {
       // redirect to SSR preview page
-      Router.push(`/${data.slug}/${data.revision}/preview`)
+      router.push(`/${data.slug}/${data.revision}/preview`)
     } else {
       // Should do something a bit more informative here
       console.log(success, message, data)
