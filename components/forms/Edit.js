@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import buttonStyles from '../../styles/buttons.module.css'
 import formStyles from '../../styles/forms.module.css'
@@ -82,9 +82,7 @@ export default function EditForm({pageData}) {
 
   const testsUpdate = (test, id) => {
     const testIndex = testsState.findIndex(test => test.id === id)
-    const nextTests = [...testsState]
-    nextTests[testIndex] = {...nextTests[testIndex], ...test}
-    setTestsState(nextTests)
+    setTestsState(tests => (tests[testIndex] = {...tests[testIndex], ...test}) && [...tests])
   }
 
   // Default form values if none are provided via props.pageData

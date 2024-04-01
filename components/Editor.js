@@ -1,9 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from 'react'
-
 import hljs from '../utils/hljs'
-
 import {CodeJar} from 'codejar'
 
 export default function Editor(props) {
