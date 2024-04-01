@@ -7,12 +7,6 @@ export default function Home(props) {
   return (
     <>
     <Head>
-      <title>jsPerf - Online JavaScript performance benchmark - jsPerf.com mirror</title>
-      <meta
-        name="description"
-        content="jsPerf.app is an online JavaScript performance benchmark test runner and jsperf.com mirror"
-        key="desc"
-      />
       <link href="https://jsperf.app" rel="canonical" />
     </Head>
     <Layout navState={{ about: true }}>
@@ -21,4 +15,9 @@ export default function Home(props) {
     </Layout>
     </>
   )
+}
+
+export const metadata = {
+  title: 'jsPerf - Online JavaScript performance benchmark - jsPerf.com mirror',
+  description: 'jsPerf.app is an online JavaScript performance benchmark test runner and jsperf.com mirror',
 }

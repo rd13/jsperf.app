@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect, useRef } from 'react'
 import Router from 'next/router'
 import buttonStyles from '../../styles/buttons.module.css'

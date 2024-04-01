@@ -1,9 +1,9 @@
-import { pagesCollection } from '../lib/mongodb'
+"use server"
 
-export default function Sitemap() {}
+import { NextResponse } from "next/server"
+import { pagesCollection } from '../../lib/mongodb'
 
-export const getServerSideProps = async ({res}) => {
-
+export async function GET() {
   const pages = await pagesCollection()
 
   const result = await pages.aggregate([
@@ -24,7 +24,7 @@ export const getServerSideProps = async ({res}) => {
     }
   ]).toArray()
 
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+  const xmlResponse = `<?xml version="1.0" encoding="UTF-8"?>
     <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     ${result.map(({_id}) => {
       return `
@@ -36,14 +36,10 @@ export const getServerSideProps = async ({res}) => {
     </sitemapindex>
   `
 
-  /**  Set Cache Control in vercel @see https://vercel.com/docs/edge-network/caching#stale-while-revalidate */
-  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
-  res.setHeader('Content-Type', 'text/xml');
-  res.write(sitemap);
-
-  res.end();
-
-  return {
-    props: {},
-  }
+  return new NextResponse(xmlResponse, { 
+    headers: { 
+      "Cache-Control": "s-maxage=60, stale-while-revalidate",
+      "Content-Type": "text/xml" 
+    } 
+  })
 }

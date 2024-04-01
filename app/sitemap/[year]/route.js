@@ -1,15 +1,13 @@
-import { pagesCollection } from '../../lib/mongodb'
+"use server"
 
-export default function Sitemap() {}
+import { NextResponse } from "next/server"
+import { pagesCollection } from '../../../lib/mongodb'
 
-export const getServerSideProps = async ({res, params}) => {
-  // For some reason defining a route like [year].xml.js results in a 404,
-  // so parse the year from the year param e.g. '2021.xml'
-
-  // Only add the latest version to the sitemap, which hints to google it as canonical
-  
-  const year = parseInt(params.year)
-
+export async function GET(
+  request, 
+  { params: { year } } 
+) {
+  // Only add the latest revision to the sitemap, which hints to google it as canonical
   const pages = await pagesCollection()
 
   const result = await pages.aggregate([
@@ -19,7 +17,7 @@ export const getServerSideProps = async ({res, params}) => {
         '$expr': {
           '$eq': [
             {'$year': '$published'},
-            year
+            parseInt(year) // [year].xml
           ]
         }
       }
@@ -58,7 +56,7 @@ export const getServerSideProps = async ({res, params}) => {
     }
   ]).toArray()
 
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+  const xmlResponse = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     ${result.map(({slug, revision, published}) => {
       return `
@@ -71,14 +69,11 @@ export const getServerSideProps = async ({res, params}) => {
     </urlset>
   `
 
-  /**  Set Cache Control in vercel @see https://vercel.com/docs/edge-network/caching#stale-while-revalidate */
-  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
-  res.setHeader('Content-Type', 'text/xml')
-  res.write(sitemap)
 
-  res.end();
-
-  return {
-    props: {},
-  }
+  return new NextResponse(xmlResponse, { 
+    headers: { 
+      "Cache-Control": "s-maxage=60, stale-while-revalidate",
+      "Content-Type": "text/xml" 
+    } 
+  })
 }

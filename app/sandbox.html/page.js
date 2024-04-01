@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import UI from '../components/UI'
+import UI from '../../components/UI'
 
 export default function Sandbox(props) {
   return (

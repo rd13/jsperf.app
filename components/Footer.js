@@ -1,3 +1,5 @@
+"use client"
+
 import { signOut, useSession } from "next-auth/react"
 import buttonStyles from '../styles/buttons.module.css'
 import styles from './Footer.module.css'

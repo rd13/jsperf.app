@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect, useRef } from 'react'
 import lodash from 'lodash'
 import PostMessageBroker from '../utils/postMessageBroker'
