@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Head from 'next/head'
 import { pagesCollection } from '../../lib/mongodb'
 import Layout from '../../components/Layout'
 import {datetimeLong} from '../../utils/Date'
