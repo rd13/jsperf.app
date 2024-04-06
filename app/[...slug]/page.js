@@ -53,7 +53,7 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default async function Slug({params}) {
+export default async function Slug({ params }) {
   const [ slug, revision ] = params.slug
 
   /**
@@ -113,7 +113,7 @@ export default async function Slug({params}) {
         </section>
         <hr className="my-5" />
         <section>
-          <Revisions revisions={revisions} slug={slug} revision={revision} />
+          <Revisions revisions={revisions} slug={slug} revision={revision || 1} />
         </section>
       </Layout>
     </>

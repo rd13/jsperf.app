@@ -9,6 +9,6 @@ export default function Sandbox(props) {
 export const metadata = {
   robots: {
     index: false,
-    follow: false
+    follow: true
   },
 }
