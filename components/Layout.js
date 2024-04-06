@@ -6,7 +6,6 @@ import '../styles/globals.css'
 import { SessionProvider } from "next-auth/react"
 import * as gtag from '../lib/gtag'
 import Script from 'next/script'
-import React from 'react'
 import Header from './Header'
 import Footer from './Footer'
 
