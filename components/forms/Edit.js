@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import buttonStyles from '../../styles/buttons.module.css'
-import formStyles from '../../styles/forms.module.css'
+import buttonStyles from '@/styles/buttons.module.css'
+import formStyles from '@/styles/forms.module.css'
 import UUID from '../UUID'
 import MinusIcon from '../MinusIcon'
 

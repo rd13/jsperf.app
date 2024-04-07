@@ -1,7 +1,7 @@
 "use client"
 
 import 'highlight.js/styles/github.css'
-import '../styles/globals.css'
+import '@/styles/globals.css'
 
 import { SessionProvider } from "next-auth/react"
 import * as gtag from '@/app/lib/gtag'

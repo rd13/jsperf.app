@@ -1,8 +1,0 @@
-.unpublishedButton {
-  @apply border border-red-400;
-  @apply bg-red-100 hover:bg-red-200;
-  @apply p-2;
-  @apply rounded;
-  @apply no-underline;
-  color: #000000;
-}

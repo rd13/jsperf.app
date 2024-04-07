@@ -3,9 +3,9 @@
 import PostMessageBroker from '@/utils/postMessageBroker'
 import { useState, useEffect, useRef } from 'react'
 import styles from './TestRunner.module.css'
-import UserAgent from './UserAgent'
-import Test from './Test'
-import buttonStyles from '../styles/buttons.module.css'
+import UserAgent from '@/components/UserAgent'
+import Test from '@/components/Test'
+import buttonStyles from '@/styles/buttons.module.css'
 
 export default function Tests(props) {
   // A textual status message

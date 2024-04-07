@@ -29,3 +29,12 @@
 .default:hover {
 	background-image: linear-gradient(to bottom, #ebebeb, #f5f5f5);
 }
+
+.unpublishedButton {
+  @apply border border-red-400;
+  @apply bg-red-100 hover:bg-red-200;
+  @apply p-2;
+  @apply rounded;
+  @apply no-underline;
+  color: #000000;
+}
