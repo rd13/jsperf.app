@@ -1,6 +1,7 @@
 "use client"
 
 import buttonStyles from '@/styles/buttons.module.css'
+import styles from './PublishButton.module.css'
 import { useRouter } from 'next/navigation'
 import UUID from '../../UUID'
 import { useSession } from "next-auth/react"
@@ -44,7 +45,7 @@ export default function PublishButton({ slug, revision, uuid, githubID }) {
   return (
     <>
       <a href={`/${slug}/${revision}/edit`} className={buttonStyles.default}>Edit Tests</a><span className="inline-flex items-center px-2"> - or - </span>
-      <a onClick={publish} href="#" className={buttonStyles.unpublishedButton}>Publish</a> 
+      <a onClick={publish} href="#" className={styles.PublishButton}>Publish</a> 
     </>
   )
 
