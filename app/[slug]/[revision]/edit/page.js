@@ -1,6 +1,6 @@
 import { pagesCollection } from '../../../../lib/mongodb'
-import EditForm from '../../../../components/forms/Edit'
-import Layout from '../../../../components/Layout'
+import EditForm from '@/components/forms/Edit'
+import Layout from '@/components/Layout'
 
 export const getPageData = async (params) => {
   const { slug, revision } = params

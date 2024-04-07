@@ -1,5 +1,5 @@
-import Layout from '../components/Layout'
-import EditForm from '../components/forms/Edit'
+import Layout from '@/components/Layout'
+import EditForm from '@/components/forms/Edit'
 
 export default function Home(props) {
   return (

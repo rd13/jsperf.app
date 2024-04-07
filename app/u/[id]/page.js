@@ -1,4 +1,4 @@
-import Layout from '../../../components/Layout'
+import Layout from '@/components/Layout'
 import Link from 'next/link'
 import { pagesCollection } from '../../../lib/mongodb'
 import { datetimeLong } from '../../../utils/Date'

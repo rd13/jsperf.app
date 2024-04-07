@@ -1,15 +1,13 @@
 import { pagesCollection } from '../../../../lib/mongodb'
 
-import TestRunner from '../../../../components/TestRunner'
-
-import Layout from '../../../../components/Layout'
-
-import Meta from '../../../../components/sections/Meta'
-import Info from '../../../../components/sections/Info'
-import Setup from '../../../../components/sections/Setup'
-import Teardown from '../../../../components/sections/Teardown'
-import PrepCode from '../../../../components/sections/PrepCode'
-import PublishButton from '../../../../components/Buttons/PublishButton'
+import TestRunner from '@/components/TestRunner'
+import Layout from '@/components/Layout'
+import Meta from '@/components/sections/Meta'
+import Info from '@/components/sections/Info'
+import Setup from '@/components/sections/Setup'
+import Teardown from '@/components/sections/Teardown'
+import PrepCode from '@/components/sections/PrepCode'
+import PublishButton from '@/components/Buttons/PublishButton'
 
 const getPageData = async (params) => {
   const { slug, revision } = params
