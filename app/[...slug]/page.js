@@ -5,12 +5,12 @@ import TestRunner from '@/components/TestRunner'
 
 import Layout from '@/components/Layout'
 
-import Meta from '@/components/sections/Meta'
-import Revisions from '@/components/sections/Revisions'
-import Info from '@/components/sections/Info'
-import Setup from '@/components/sections/Setup'
-import Teardown from '@/components/sections/Teardown'
-import PrepCode from '@/components/sections/PrepCode'
+import Meta from '@/components/Sections/Meta'
+import Revisions from '@/components/Sections/Revisions'
+import Info from '@/components/Sections/Info'
+import Setup from '@/components/Sections/Setup'
+import Teardown from '@/components/Sections/Teardown'
+import PrepCode from '@/components/Sections/PrepCode'
 
 export const revalidate = 60 * 60 * 24 // 1 day
 
