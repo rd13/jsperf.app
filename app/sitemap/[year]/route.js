@@ -1,7 +1,7 @@
 "use server"
 
 import { NextResponse } from "next/server"
-import { pagesCollection } from '../../../lib/mongodb'
+import { pagesCollection } from '@/app/lib/mongodb'
 
 export async function GET(
   request, 

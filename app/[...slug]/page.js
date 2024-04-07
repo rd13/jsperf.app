@@ -1,6 +1,6 @@
 import { cache } from 'react'
 import { redirect } from "next/navigation"
-import { pagesCollection } from '../../lib/mongodb'
+import { pagesCollection } from '@/app/lib/mongodb'
 import TestRunner from '@/components/TestRunner'
 
 import Layout from '@/components/Layout'

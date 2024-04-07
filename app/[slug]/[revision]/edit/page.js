@@ -1,4 +1,4 @@
-import { pagesCollection } from '../../../../lib/mongodb'
+import { pagesCollection } from '@/app/lib/mongodb'
 import EditForm from '@/components/forms/Edit'
 import Layout from '@/components/Layout'
 

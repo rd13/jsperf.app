@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout'
 import Link from 'next/link'
-import { pagesCollection } from '../../../lib/mongodb'
+import { pagesCollection } from '@/app/lib/mongodb'
 import { datetimeLong } from '../../../utils/Date'
 
 export const getPageData = async (id) => {

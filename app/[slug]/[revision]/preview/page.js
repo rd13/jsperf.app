@@ -1,4 +1,4 @@
-import { pagesCollection } from '../../../../lib/mongodb'
+import { pagesCollection } from '@/app/lib/mongodb'
 
 import TestRunner from '@/components/TestRunner'
 import Layout from '@/components/Layout'
