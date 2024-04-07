@@ -4,7 +4,7 @@ import 'highlight.js/styles/github.css'
 import '../styles/globals.css'
 
 import { SessionProvider } from "next-auth/react"
-import * as gtag from '../lib/gtag'
+import * as gtag from '@/app/lib/gtag'
 import Script from 'next/script'
 import Header from './Header'
 import Footer from './Footer'

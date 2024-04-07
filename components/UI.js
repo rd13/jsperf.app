@@ -5,7 +5,7 @@ import lodash from 'lodash'
 import PostMessageBroker from '../utils/postMessageBroker'
 import {getRanked} from '../utils/ArrayUtils'
 
-import '../lib/benchmark.mjs' // mjs to avoid webpack parser
+import '@/app/lib/benchmark.mjs' // mjs to avoid webpack parser
 
 let modulePromises = {}
 
