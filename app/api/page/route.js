@@ -1,7 +1,7 @@
-import { pagesCollection } from '../../lib/mongodb'
+import { pagesCollection } from '../../../lib/mongodb'
 import { getServerSession } from "next-auth"
-import { authOptions } from "./auth/[...nextauth]"
-import { shortcode } from "../../utils/Url"
+import { authOptions } from "@/app/lib/auth"
+import { shortcode } from "../../../utils/Url"
 
 /**
  *
@@ -47,13 +47,13 @@ const generateSlugId = async (attempts = 10) => {
  * @param {} req The request object.
  * @param {} res The response object.
  */
-const addPage = async (req, res) => {
+export async function POST(req, res) {
   try {
-    const session = await getServerSession(req, res, authOptions)
+    const session = await getServerSession(authOptions)
 
     const pages = await pagesCollection()
 
-    const payload = JSON.parse(req.body)
+    const payload = await req.json()
 
     // Could be a revision of an existing page.
     // In which case use the same slug.
@@ -87,22 +87,20 @@ const addPage = async (req, res) => {
     }
 
     // Will throw an error if schema validation fails
-    await pages.insertOne(payload)
-      .then(({acknowledged, insertedId}) => {
-        // Mongo 4.x no longer returns the inserted document
-        // it will return {acknowledged, insertedId}
-        if (acknowledged && insertedId) {
-          res.json({
-            message: 'Post added successfully',
-            success: true,
-            data: { slug: payload.slug, revision: payload.revision },
-          })
-        } else {
-          throw new Error('Mongo couldn\'t insertOne')
-        }
+    const { acknowledged, insertedId } = await pages.insertOne(payload)
+
+    if (acknowledged && insertedId) {
+      return Response.json({
+        message: 'Post added successfully',
+        success: true,
+        data: { slug: payload.slug, revision: payload.revision },
       })
+    } else {
+      throw new Error('Mongo couldn\'t insertOne')
+    }
+
   } catch (error) {
-    return res.json({
+    return Response.json({
       message: new Error(error).message,
       success: false,
     })
@@ -115,13 +113,13 @@ const addPage = async (req, res) => {
  * @param {} req The request object.
  * @param {} res The response object.
  */
-const updatePage = async (req, res) => {
+export async function PUT(req, res) {
   try {
-    const session = await getServerSession(req, res, authOptions)
+    const session = await getServerSession(authOptions)
 
     const pages = await pagesCollection()
 
-    const payload = JSON.parse(req.body)
+    const payload = await req.json()
 
     const {slug, revision, uuid} = payload
 
@@ -172,44 +170,31 @@ const updatePage = async (req, res) => {
       payload.githubID = session?.user?.id
     }
 
-    await pages.updateOne({
+    const result = await pages.updateOne({
       '_id': page._id
     }, {
       $set: {
         ...payload
       }
-    }).then(async () => {
+    })
 
-      // Invalidate cache
-      // We need to specify absolute URL because node/server/fetch
-      const protocol = req.headers['x-forwarded-proto'] || 'http'
-      const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+    // Invalidate cache
+    // We need to specify absolute URL because node/server/fetch
+    // const protocol = req.headers['x-forwarded-proto'] || 'http'
+    // const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
 
-      res.json({
-        message: 'Updated page successfully',
-        success: true,
-        data: { slug, revision },
-      })
+    return Response.json({
+      message: 'Updated page successfully',
+      success: true,
+      data: { slug, revision },
     })
 
   } catch (error) {
-    return res.json({
+    return Response.json({
       message: new Error(error).message,
       success: false,
     })
   }
 }
 
-export default function Page(req, res) {
-  const { method } = req
-
-  switch (method) {
-    case 'POST':
-      return addPage(req, res)
-    case 'PUT':
-      return updatePage(req, res)
-    default:
-      res.setHeader('Allow', ['POST', 'PUT'])
-      res.status(405).end(`Method ${method} Not Allowed`)
-  }
-}
+// TODO: Respond 405 for methods that aren't allowed DELETE, GET, etc

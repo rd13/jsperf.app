@@ -133,6 +133,8 @@ export default function EditForm({pageData}) {
       body: JSON.stringify(formData),
     })
 
+    console.log(response)
+
     const {success, message, data} = await response.json()
 
     if (success) {
