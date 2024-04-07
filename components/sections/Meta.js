@@ -1,6 +1,6 @@
 "use client"
 
-import { datetimeLong } from '../../utils/Date'
+import { datetimeLong } from '@/utils/Date'
 import { useState } from 'react'
 import styles from './Meta.module.css'
 

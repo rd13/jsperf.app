@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import lodash from 'lodash'
-import PostMessageBroker from '../utils/postMessageBroker'
-import {getRanked} from '../utils/ArrayUtils'
+import PostMessageBroker from '@/utils/postMessageBroker'
+import { getRanked } from '@/utils/Array'
 
 import '@/app/lib/benchmark.mjs' // mjs to avoid webpack parser
 

@@ -1,6 +1,6 @@
 "use client"
 
-import PostMessageBroker from '../utils/postMessageBroker'
+import PostMessageBroker from '@/utils/postMessageBroker'
 import { useState, useEffect, useRef } from 'react'
 import styles from './TestRunner.module.css'
 import UserAgent from './UserAgent'

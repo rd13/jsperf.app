@@ -1,4 +1,4 @@
-import {highlightSanitizedJS} from '../utils/hljs'
+import { highlightSanitizedJS } from '@/utils/hljs'
 
 export default function Test(props) {
   const {benchStatus, test: {title, code, error, status, hz, rme, fastest, slowest, percent}} = props

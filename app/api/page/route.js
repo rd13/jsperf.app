@@ -1,7 +1,7 @@
 import { pagesCollection } from '@/app/lib/mongodb'
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/app/lib/auth"
-import { shortcode } from "../../../utils/Url"
+import { shortcode } from "@/utils/Url"
 
 /**
  *

@@ -1,4 +1,4 @@
-import {highlightSanitizedJS} from '../../utils/hljs'
+import { highlightSanitizedJS } from '@/utils/hljs'
 
 export default function Setup(props) {
   const {setup} = props

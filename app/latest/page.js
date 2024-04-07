@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { pagesCollection } from '@/app/lib/mongodb'
 import Layout from '@/components/Layout'
-import {datetimeLong} from '../../utils/Date'
+import { datetimeLong } from '@/utils/Date'
 
 export const revalidate = 60 * 60 // 1 hour
 

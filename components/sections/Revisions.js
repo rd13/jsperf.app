@@ -1,4 +1,4 @@
-import {datetimeLong} from '../../utils/Date'
+import {datetimeLong} from '@/utils/Date'
 import Link from 'next/link'
 
 export default function Revisions(props) {
