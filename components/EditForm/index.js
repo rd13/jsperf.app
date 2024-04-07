@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import buttonStyles from '@/styles/buttons.module.css'
-import formStyles from '@/styles/forms.module.css'
+import styles from './EditForm.module.css'
 import UUID from '../UUID'
 import MinusIcon from '../MinusIcon'
 
@@ -145,7 +145,7 @@ export default function EditForm({pageData}) {
   }
 
   return (
-    <form onSubmit={submitFormHandler} className={`${formStyles.editForm} w-full`}>
+    <form onSubmit={submitFormHandler} className={`${styles.editForm} w-full`}>
       <fieldset>
         <h3 className="bg-blue-500">Test case details</h3>
         <div>

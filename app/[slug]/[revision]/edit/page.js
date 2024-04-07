@@ -1,5 +1,5 @@
 import { pagesCollection } from '@/app/lib/mongodb'
-import EditForm from '@/components/forms/Edit'
+import EditForm from '@/components/EditForm'
 import Layout from '@/components/Layout'
 
 export const getPageData = async (params) => {
