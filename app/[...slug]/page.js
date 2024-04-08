@@ -1,5 +1,5 @@
 import { cache } from 'react'
-import { redirect } from "next/navigation"
+import { redirect, notFound } from "next/navigation"
 import { pagesCollection } from '@/app/lib/mongodb'
 import TestRunner from '@/components/TestRunner'
 
@@ -26,9 +26,7 @@ const getPageData = cache(async (slug, revision) => {
   }, {projection: {slug: 1, revision: 1, authorName: 1, published: 1} }).sort({revision: 1}).toArray()
 
   if (!pageData || !pageData.visible) {
-    return {
-      notFound: true
-    }
+    return notFound()
   }
 
   return { 

@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation"
 import { pagesCollection } from '@/app/lib/mongodb'
 
 import TestRunner from '@/components/TestRunner'
@@ -19,9 +20,7 @@ const getPageData = async (params) => {
   })
 
   if (!pageData) {
-    return {
-      notFound: true
-    }
+    return notFound()
   }
 
   return { 
