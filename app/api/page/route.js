@@ -196,5 +196,3 @@ export async function PUT(req, res) {
     })
   }
 }
-
-// TODO: Respond 405 for methods that aren't allowed DELETE, GET, etc
