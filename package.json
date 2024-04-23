@@ -12,6 +12,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@sentry/nextjs": "^7.105.0",
     "autoprefixer": "10.4.0",
     "benchmark": "2.1.4",
     "codejar": "3.2.3",
