@@ -71,6 +71,13 @@
   resolved "https://registry.yarnpkg.com/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.2.tgz#95cc0dad2c7ac5177fa6eeab070dccfa30532353"
   integrity sha512-a/20E/wtTJZ3Ykv3f/8F0l7TtgQa2LWHU2oNB9bsu0VjqGuGGHmm/q6waoUNQYTVPYrrlxxaHjJcDV6aiSTt/w==
 
+"@next/third-parties@^14.2.3":
+  version "14.2.3"
+  resolved "https://registry.yarnpkg.com/@next/third-parties/-/third-parties-14.2.3.tgz#2e72d9fa456c1155700082ab40ac68018e9ec5d2"
+  integrity sha512-j4E2xBSsEZq4VX2pVm3LpGltSwCxETic6glJWfHyYQvpoMdplCAYrQKpF+E9Gg3jfsrfmRAIdTE11m+biBCx1Q==
+  dependencies:
+    third-party-capital "1.0.20"
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -1460,6 +1467,11 @@ tailwindcss@3.0.24:
     postcss-value-parser "^4.2.0"
     quick-lru "^5.1.1"
     resolve "^1.22.0"
+
+third-party-capital@1.0.20:
+  version "1.0.20"
+  resolved "https://registry.yarnpkg.com/third-party-capital/-/third-party-capital-1.0.20.tgz#e218a929a35bf4d2245da9addb8ab978d2f41685"
+  integrity sha512-oB7yIimd8SuGptespDAZnNkzIz+NWaJCu2RMsbs4Wmp9zSDUM8Nhi3s2OOcqYuv3mN4hitXc8DVx+LyUmbUDiA==
 
 to-regex-range@^5.0.1:
   version "5.0.1"
