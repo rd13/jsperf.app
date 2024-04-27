@@ -1,6 +1,7 @@
 "use server"
 
 import { NextResponse } from "next/server"
+import { notFound } from "next/navigation"
 import { pagesCollection } from '@/app/lib/mongodb'
 
 export async function GET(
@@ -59,6 +60,10 @@ export async function GET(
       allowDiskUse: true
     }
   ).toArray()
+
+  if (result.length === 0) {
+    return notFound()
+  }
 
   const xmlResponse = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
