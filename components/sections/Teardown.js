@@ -1,4 +1,4 @@
-import {highlightSanitizedJS} from '../../utils/hljs'
+import { highlightSanitizedJS } from '@/utils/hljs'
 
 export default function Teardown(props) {
   const {teardown} = props

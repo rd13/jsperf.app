@@ -1,9 +1,11 @@
+"use client"
+
 import { useState, useEffect, useRef } from 'react'
 import lodash from 'lodash'
-import PostMessageBroker from '../utils/postMessageBroker'
-import {getRanked} from '../utils/ArrayUtils'
+import PostMessageBroker from '@/utils/postMessageBroker'
+import { getRanked } from '@/utils/Array'
 
-import '../lib/benchmark.mjs' // mjs to avoid webpack parser
+import '@/app/lib/benchmark.mjs' // mjs to avoid webpack parser
 
 let modulePromises = {}
 
@@ -28,12 +30,12 @@ export default function UI(props) {
         // Inject HTML
         initHTMLPlaceholder.current.innerHTML = initHTML
 
-        // Inject scripts into head
-        let injectedScriptPromises = []
+        // Resolve scripts synchronously
+        const scriptNodes = initHTMLPlaceholder.current.querySelectorAll("script")
 
-        initHTMLPlaceholder.current.querySelectorAll("script").forEach(node => injectedScriptPromises.push(injectScriptNodeToHead(node, document)))
-
-        await Promise.all(injectedScriptPromises)
+        for (const scriptNode of scriptNodes) {
+          await injectScriptNodeToHead(scriptNode, document)
+        }
       }
 
       console.log('[sandbox] setup complete')

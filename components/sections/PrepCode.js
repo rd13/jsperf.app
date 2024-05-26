@@ -1,4 +1,4 @@
-import {highlightSanitizedHTML} from '../../utils/hljs'
+import { highlightSanitizedHTML } from '@/utils/hljs'
 
 export default function PrepCode(props) {
   const {prepCode} = props
