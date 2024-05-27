@@ -1,4 +1,4 @@
-import UI from '@/components/UI'
+import UI from '@/components/Sandbox'
 
 export default function Sandbox(props) {
   return (

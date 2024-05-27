@@ -9,7 +9,7 @@ import '@/app/lib/benchmark.mjs' // mjs to avoid webpack parser
 
 let modulePromises = {}
 
-export default function UI(props) {
+export default function Sandbox(props) {
   const Benchmark = global.Benchmark
 
   const initHTMLPlaceholder = useRef()
