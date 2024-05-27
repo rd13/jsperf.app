@@ -8,6 +8,15 @@
   cursor: pointer;
 }
 
+.submit {
+  @apply no-underline;
+  @apply bg-blue-500 hover:bg-gray-200;
+  @apply font-bold;
+  @apply py-2 px-2;
+  color: #ffffff;
+  cursor: pointer;
+}
+
 .default > * {
   vertical-align: middle;
 }

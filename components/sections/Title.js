@@ -1,9 +1,9 @@
 export default function Title(props) {
-  const { editable, pageData} = props
+  const { editable, title} = props
 
   if (editable) {
     return (
-      <input type="text" className="w-full text-2xl border-b border-gray-300 p-2" placeholder="Benchmark Title (optional)" />
+      <input type="text" name="title" className="w-full text-2xl border-b border-gray-300 p-2" placeholder="Benchmark Title (optional)" defaultValue={title} />
     )
   }
 
