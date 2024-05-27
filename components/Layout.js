@@ -16,7 +16,7 @@ export default function Layout(props) {
       <SessionProvider>
         <div className="font-sans antialiased min-h-full flex flex-col">
           <div className="flex-auto ">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 bg-white min-h-screen">
+            <div className="mx-auto px-4 sm:px-6 lg:px-8 bg-white min-h-screen">
               <Header navState={navState} />
               { children }
               <Footer />

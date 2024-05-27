@@ -116,7 +116,6 @@ export default function Tests(props) {
 
   return (
     <>
-    <h2 className="font-bold my-5">Test runner</h2>
     <div className="shadow-2xl">
       <div id="controls" className="flex px-2 my-5 h-16 items-center">
         <p id="status" className="flex-1">
