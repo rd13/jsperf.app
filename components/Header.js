@@ -24,7 +24,7 @@ export default function Header(props) {
         <div className="flex items-center flex-shrink-0 mr-6">
           <a href="/" className="no-underline text-black">
             <span className="sr-only">jsPerf Home Page</span>
-            <span className="font-semibold text-2xl tracking-tight">jsPerf.app</span>
+            <span className="font-semibold text-2xl tracking-tight"><span className="font-bold text-3xl bg-yellow-300 p-1 pt-5 pl-5 mr-1">JS</span>Perf.app</span>
           </a>
         </div>
         <div className="block lg:hidden">

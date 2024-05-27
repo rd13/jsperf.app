@@ -116,8 +116,9 @@ export default function Tests(props) {
 
   return (
     <>
-      <h2 className="font-bold my-5">Test runner</h2>
-      <div id="controls" className="flex my-5 h-16 items-center">
+    <h2 className="font-bold my-5">Test runner</h2>
+    <div className="shadow-2xl">
+      <div id="controls" className="flex px-2 my-5 h-16 items-center">
         <p id="status" className="flex-1">
           {
             'ready' === benchStatus 
@@ -134,7 +135,7 @@ export default function Tests(props) {
               onClick={() => run({maxTime: 5})}>{runButtonText[benchStatus]||runButtonText['default']}</button>
             <button
               type="button" 
-              className={buttonStyles.default}
+              className={`${buttonStyles.default} bg-green-600`}
               onClick={() => run({maxTime: 0.5})}>Quick Run</button>
             </>
         }
@@ -152,9 +153,9 @@ export default function Tests(props) {
       </div>
       <table id="test-table" className="w-full border-collapse">
         <caption className="bg-gray-200 font-bold text-md text-gray-800">Testing in <UserAgent /></caption>
-        <thead className="bg-blue-500 text-white">
+        <thead className="text-blue-500 ">
           <tr>
-            <th colSpan="2" className="py-1">Test</th>
+            <th colSpan="2" className="py-1">Test cases</th>
             <th title="Operations per second (higher is better)" className="px-2">Ops/sec</th>
           </tr>
         </thead>
@@ -164,6 +165,7 @@ export default function Tests(props) {
           )}
         </tbody>
       </table>
+    </div>
     </>
   )
 }
