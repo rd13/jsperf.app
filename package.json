@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@next/third-parties": "^14.2.3",
-    "@sentry/nextjs": "^7.105.0",
     "autoprefixer": "10.4.0",
     "benchmark": "2.1.4",
     "codejar": "3.2.3",
