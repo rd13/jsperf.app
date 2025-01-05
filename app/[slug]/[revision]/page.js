@@ -36,7 +36,7 @@ const getPageData = cache(async (slug, revision) => {
 })
 
 export async function generateMetadata({ params }) {
-  const [ slug, revision ] = params.slug
+  const { slug, revision } = params
 
   const { pageData } = await getPageData(slug, revision)
 
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Slug({ params }) {
-  const [ slug, revision ] = params.slug
+  const { slug, revision } = params
 
   /**
    * Redirect revision 1 so we don't have a duplicate URL
