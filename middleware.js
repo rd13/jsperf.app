@@ -4,7 +4,7 @@ import { kv } from '@vercel/kv'
 
 const rateLimit = new Ratelimit({
   redis: kv,
-  limiter: Ratelimit.slidingWindow(5, '10 s'),
+  limiter: Ratelimit.slidingWindow(1000, '1 h'),
 });
 
 export default async function middleware(request) {
