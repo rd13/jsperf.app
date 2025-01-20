@@ -18,7 +18,7 @@ const getPageData = cache(async (slug, revision) => {
   const pages = await pagesCollection()
 
   const pageData = await pages.findOne({
-    slug, revision: parseInt(revision) || 1
+    slug, revision: parseInt(revision)
   })
 
   const revisions = await pages.find({
