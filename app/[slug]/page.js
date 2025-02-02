@@ -18,7 +18,7 @@ const getPageData = cache(async (slug, revision) => {
   const pages = await pagesCollection()
 
   const pageData = await pages.findOne({
-    slug, revision: parseInt(revision) || 1
+    slug, revision
   })
 
   const revisions = await pages.find({
@@ -36,7 +36,8 @@ const getPageData = cache(async (slug, revision) => {
 })
 
 export async function generateMetadata({ params }) {
-  const [ slug, revision ] = params.slug
+  const { slug } = params
+  const revision = 1
 
   const { pageData } = await getPageData(slug, revision)
 
@@ -52,14 +53,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Slug({ params }) {
-  const [ slug, revision ] = params.slug
-
-  /**
-   * Redirect revision 1 so we don't have a duplicate URL
-   */
-  if (revision === '1') {
-    redirect(`/${slug}`)
-  }
+  const { slug } = params
+  const revision = 1
 
   const { pageData, revisions } = await getPageData(slug, revision)
 
