@@ -14,10 +14,10 @@ export default function Layout(props) {
   return (
     <>
       <SessionProvider>
-        <div className="font-sans antialiased min-h-full flex flex-col">
+        <div className="font-sans antialiased min-h-full flex flex-col bg-gray-50">
           <div className="flex-auto ">
-            <div className="mx-auto px-4 sm:px-6 lg:px-8 bg-white min-h-screen">
-              <Header navState={navState} />
+            <Header navState={navState} />
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen">
               { children }
               <Footer />
             </div>

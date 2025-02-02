@@ -20,11 +20,11 @@ export default function Header(props) {
 
   return (
     <header>
-      <nav className="flex items-center justify-between flex-wrap py-2">
+      <nav className="flex items-center justify-between flex-wrap border-b-2 border-gray-300 bg-white">
         <div className="flex items-center flex-shrink-0 mr-6">
-          <a href="/" className="no-underline text-black">
+          <a href="/" className="no-underline text-black h-full">
             <span className="sr-only">jsPerf Home Page</span>
-            <span className="font-semibold text-2xl tracking-tight"><span className="font-bold text-3xl bg-yellow-300 p-1 pt-5 pl-5 mr-1">JS</span>Perf.app</span>
+            <span className="font-semibold text-2xl tracking-tight"><span className="inline-block font-bold text-3xl bg-jsp-yellow py-2 pr-1 pl-3 mr-1">JS</span>Perf.app</span>
           </a>
         </div>
         <div className="block lg:hidden">
@@ -40,7 +40,7 @@ export default function Header(props) {
           </div>
           { !session &&
           <div>
-            <button className="flex items-center inline-block text-sm px-4 py-2 hover:fill-blue-500 hover:text-blue-500 lg:mt-0" onClick={() => signIn("github")}>
+            <button className="flex items-center inline-block text-sm px-4 py-4 hover:fill-blue-500 hover:text-blue-500 lg:mt-0" onClick={() => signIn("github")}>
               <span>Sign In</span>
               <GitHubIcon fill="#000000" width={16} height={16} className="ml-2 fill-inherit" />
             </button>
