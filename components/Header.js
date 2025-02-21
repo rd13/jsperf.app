@@ -21,7 +21,7 @@ export default function Header(props) {
   return (
     <header>
       <nav className="flex items-center justify-between flex-wrap border-b-2 border-gray-300 bg-white">
-        <div className="flex items-center flex-shrink-0 mr-6">
+        <div className="flex items-center flex-shrink-0 mr-6 max-w-6xl">
           <a href="/" className="no-underline text-black h-full">
             <span className="sr-only">jsPerf Home Page</span>
             <span className="font-semibold text-2xl tracking-tight"><span className="inline-block font-bold text-3xl bg-jsp-yellow py-2 pr-1 pl-3 mr-1">JS</span>Perf.app</span>

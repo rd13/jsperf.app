@@ -17,7 +17,7 @@ export default function Layout(props) {
         <div className="font-sans antialiased min-h-full flex flex-col bg-gray-50">
           <div className="flex-auto ">
             <Header navState={navState} />
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen bg-white">
               { children }
               <Footer />
             </div>
