@@ -1,12 +1,12 @@
 import Layout from '@/components/Layout'
-import EditForm from '@/components/EditForm'
+import UI from '@/components/UI'
 
 export default function Home(props) {
   return (
     <>
-    <Layout navState={{ about: true }}>
-      <h1 className="font-semibold py-2">Create a test case</h1>
-      <EditForm />
+    <Layout navState={{ about: false }}>
+      <br />
+      <UI editable={true} />
     </Layout>
     </>
   )

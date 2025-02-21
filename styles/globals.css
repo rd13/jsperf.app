@@ -23,6 +23,10 @@ a:hover {
   .bg-jsp-blue {
     background-image: linear-gradient(to bottom, #6ca5dd, #1a6ab9);
   }
+
+  .bg-jsp-yellow {
+    background-color: rgb(244 225 30);
+  }
 }
 
 

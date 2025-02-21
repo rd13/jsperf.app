@@ -116,8 +116,8 @@ export default function Tests(props) {
 
   return (
     <>
-      <h2 className="font-bold my-5">Test runner</h2>
-      <div id="controls" className="flex my-5 h-16 items-center">
+    <div className="mt-5">
+      <div id="controls" className="flex px-2 my-5 h-16 items-center">
         <p id="status" className="flex-1">
           {
             'ready' === benchStatus 
@@ -127,15 +127,10 @@ export default function Tests(props) {
         </p>
         { ['ready', 'complete'].includes(benchStatus) &&
           <>
-            <button 
-              id="run" 
-              type="button" 
-              className={`${buttonStyles.default} mx-2`} 
-              onClick={() => run({maxTime: 5})}>{runButtonText[benchStatus]||runButtonText['default']}</button>
             <button
               type="button" 
-              className={buttonStyles.default}
-              onClick={() => run({maxTime: 0.5})}>Quick Run</button>
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => run({maxTime: 0.5})}>Run Tests &#9654;</button>
             </>
         }
         { 'running' === benchStatus &&
@@ -151,10 +146,10 @@ export default function Tests(props) {
           style={{height: "1px", width: "1px"}}></iframe>
       </div>
       <table id="test-table" className="w-full border-collapse">
-        <caption className="bg-gray-200 font-bold text-md text-gray-800">Testing in <UserAgent /></caption>
-        <thead className="bg-blue-500 text-white">
+        <caption className="bg-gray-300 font-bold text-md text-black">Testing in <UserAgent /></caption>
+        <thead className="text-white bg-blue-500 ">
           <tr>
-            <th colSpan="2" className="py-1">Test</th>
+            <th colSpan="2" className="py-1">Test cases</th>
             <th title="Operations per second (higher is better)" className="px-2">Ops/sec</th>
           </tr>
         </thead>
@@ -162,8 +157,12 @@ export default function Tests(props) {
           {tests.map((test, i) => 
             <Test key={i} test={test} benchStatus={benchStatus} />
           )}
+          <tr>
+            <td colSpan="3" className="bg-gray-100 text-black font-bold text-center">+ Add Test</td>
+          </tr>
         </tbody>
       </table>
+    </div>
     </>
   )
 }

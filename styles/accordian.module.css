@@ -1,0 +1,16 @@
+.default details button {
+  pointer-events: none;
+}
+
+.default details summary svg { 
+  transform: rotate(90deg);
+  transition: all 0.3s;
+}
+
+.default details[open] summary svg {
+  transform: rotate(-90deg);  
+}
+
+.default details[open] summary ~ * {	
+  animation: ease-opacity-t-b .5s ease
+}
