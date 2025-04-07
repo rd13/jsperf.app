@@ -5,7 +5,13 @@ import { datetimeLong } from '@/utils/Date'
 
 export const revalidate = 60 * 60 // 1 hour
 
-const pageMap = [
+const pageMapDev = [
+  { slug: 'kipuyi', revision: 9 },
+  { slug: 'zoqake', revision: 1 },
+  { slug: 'desihe', revision: 7 },
+]
+
+const pageMapProd = [
   { slug: 'kipuyi', revision: 9 },
   { slug: 'zoqake', revision: 1 },
   { slug: 'desihe', revision: 7 },
@@ -19,7 +25,7 @@ const getStaticProps = async () => {
       $match : {
         $and: [
           {
-            $or: pageMap
+            $or: process.env.NODE_ENV === 'production' ? pageMapProd : pageMapDev
           },
           { visible: true }
         ]
