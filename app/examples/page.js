@@ -59,7 +59,7 @@ export default async function Latest() {
           <h2 className="font-bold my-5">Example jsPerf Benchmark Tests</h2>
           {entries.map(({title, info, slug, revision, testsCount, published, revisionCount}, index) => {
               return (
-                <article key={index} className="lg:px-8 py-4 sm:py-12">
+                <article key={index} className="lg:px-8 py-4">
                   <Link href={revision === 1 ? `/${slug}` : `/${slug}/${revision}`} className="text-lg font-bold">
                     {title}
                   </Link>
