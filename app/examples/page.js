@@ -56,11 +56,13 @@ export default async function Latest() {
   return (
     <Layout>
         <article>
-          <h2 className="font-bold my-5">Example jsPerf Benchmark Tests</h2>
+          <h1 className="font-bold text-4xl my-5">Example Benchmarks</h1>
+          <hr className="mb-6" />
+          
           {entries.map(({title, info, slug, revision, testsCount, published, revisionCount}, index) => {
               return (
                 <article key={index} className="lg:px-8 py-4">
-                  <Link href={revision === 1 ? `/${slug}` : `/${slug}/${revision}`} className="text-lg font-bold">
+                  <Link href={revision === 1 ? `/${slug}` : `/${slug}/${revision}`} className="font-bold">
                     {title}
                   </Link>
                   <p>{info}</p>
