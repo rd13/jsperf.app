@@ -2,18 +2,20 @@ import Link from 'next/link'
 import { pagesCollection } from '@/app/lib/mongodb'
 import Layout from '@/components/Layout'
 import { datetimeLong } from '@/utils/Date'
+import { marked } from 'marked'
+import { highlightSanitizedMarkdown } from '@/utils/hljs'
 
 export const revalidate = 60 * 60 // 1 hour
 
 const pageMapDev = [
-  { slug: 'kipuyi', revision: 9 },
+  { slug: 'kipuyi', revision: 14 },
   { slug: 'zoqake', revision: 1 },
   { slug: 'desihe', revision: 7 },
 ]
 
 const pageMapProd = [
-  { slug: 'kipuyi', revision: 9 },
-  { slug: 'zoqake', revision: 1 },
+  { slug: 'negative-modulo', revision: 142 },
+  { slug: 'yiwuwi', revision: 1 },
   { slug: 'desihe', revision: 7 },
 ]
 
@@ -65,7 +67,7 @@ export default async function Latest() {
                   <Link href={revision === 1 ? `/${slug}` : `/${slug}/${revision}`} className="font-bold">
                     {title}
                   </Link>
-                  <p>{info}</p>
+                  <div className="markdown" dangerouslySetInnerHTML={{__html: highlightSanitizedMarkdown(marked(info))}}></div>
                 </article>
               )
             }
@@ -76,6 +78,6 @@ export default async function Latest() {
 }
 
 export const metadata = {
-  title: 'jsPerf - Latest Benchmarks',
+  title: 'jsPerf - Example Online Javascript Performance Benchmarks',
   description: 'Browse the latest online javascript performance benchmarks',
 }
