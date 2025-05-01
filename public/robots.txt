@@ -6,4 +6,4 @@ Disallow: /*/preview$
 Disallow: /sandbox.html
 
 User-agent: SentryUptimeBot
-Disallow: *
+Disallow: /
