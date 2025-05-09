@@ -5,9 +5,5 @@ Disallow: /*/edit$
 Disallow: /*/preview$
 Disallow: /sandbox.html
 
-User-agent: Amazonbot
-User-agent: Bytespider
-User-agent: Claude-Web
-User-agent: ClaudeBot
 User-agent: SentryUptimeBot
 Disallow: /

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { pagesCollection } from '@/app/lib/mongodb'
+import { pagesCollection, examplesCollection } from '@/app/lib/mongodb'
 import Layout from '@/components/Layout'
 import { datetimeLong } from '@/utils/Date'
 import { marked } from 'marked'
@@ -7,29 +7,33 @@ import { highlightSanitizedMarkdown } from '@/utils/hljs'
 
 export const revalidate = 60 * 60 // 1 hour
 
-const pageMapDev = [
-  { slug: 'torago', revision: 1 },
-  { slug: 'bosute', revision: 1 },
-  { slug: 'zoqake', revision: 1 },
-]
-
-const pageMapProd = [
-  { slug: 'negative-modulo', revision: 142 }, // prototype
-  { slug: 'yiwuwi', revision: 1 }, // embedded <script>
-  {}
-  // mobule import underscore flatten
-  // async example
-]
-
 const getStaticProps = async () => {
-  const pages = await pagesCollection()
+  const pagesC = await pagesCollection()
+  const examplesC = await examplesCollection()
 
-  const entries = await pages.aggregate([
+  const examplesMap = await examplesC.aggregate([
+    {
+      $project: {
+        _id: 0, slug: 1, revision: 1
+      }
+    },
+    {
+      $limit: 100
+    }
+  ]).toArray()
+
+  if (!examplesMap.length) {
+    return {
+      entries: []
+    }
+  }
+
+  const entries = await pagesC.aggregate([
     { 
       $match : {
         $and: [
           {
-            $or: process.env.NODE_ENV === 'production' ? pageMapProd : pageMapDev
+            $or: examplesMap
           },
           { visible: true }
         ]
