@@ -64,12 +64,12 @@ export default async function Latest() {
   return (
     <Layout>
         <article>
-          <h1 className="font-bold text-4xl my-5">Example Benchmarks</h1>
-          <hr className="mb-6" />
+          <h1 className="font-bold text-2xl my-3">Example Benchmarks</h1>
+          <hr className="mb-2" />
           
           {entries.map(({title, info, slug, revision, testsCount, published, revisionCount}, index) => {
               return (
-                <article key={index} className="lg:px-8 py-4">
+                <article key={index} className="py-4">
                   <Link href={revision === 1 ? `/${slug}` : `/${slug}/${revision}`} className="font-bold">
                     {title}
                   </Link>

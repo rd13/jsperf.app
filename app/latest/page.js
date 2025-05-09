@@ -65,7 +65,8 @@ export default async function Latest() {
 
   return (
     <Layout>
-        <h2 className="font-bold my-5">Latest</h2>
+        <h1 className="font-bold text-2xl my-3">Latest Benchmarks</h1>
+        <hr className="mb-5" />
         <ul>
           {entries.map(({title, slug, revision, testsCount, published, revisionCount}, index) => {
               return (
