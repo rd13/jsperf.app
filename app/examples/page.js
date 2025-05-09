@@ -84,6 +84,6 @@ export default async function Latest() {
 }
 
 export const metadata = {
-  title: 'jsPerf - Example Online Javascript Performance Benchmarks',
-  description: 'Browse the latest online javascript performance benchmarks',
+  title: 'jsPerf - Example Benchmarks',
+  description: 'Browse example online javascript performance benchmarks',
 }
