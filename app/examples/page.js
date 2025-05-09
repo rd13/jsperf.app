@@ -8,15 +8,17 @@ import { highlightSanitizedMarkdown } from '@/utils/hljs'
 export const revalidate = 60 * 60 // 1 hour
 
 const pageMapDev = [
-  { slug: 'kipuyi', revision: 14 },
+  { slug: 'torago', revision: 1 },
+  { slug: 'bosute', revision: 1 },
   { slug: 'zoqake', revision: 1 },
-  { slug: 'desihe', revision: 7 },
 ]
 
 const pageMapProd = [
-  { slug: 'negative-modulo', revision: 142 },
-  { slug: 'yiwuwi', revision: 1 },
-  { slug: 'desihe', revision: 7 },
+  { slug: 'negative-modulo', revision: 142 }, // prototype
+  { slug: 'yiwuwi', revision: 1 }, // embedded <script>
+  {}
+  // mobule import underscore flatten
+  // async example
 ]
 
 const getStaticProps = async () => {
