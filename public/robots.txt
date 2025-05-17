@@ -4,6 +4,3 @@ User-agent: *
 Disallow: /*/edit$
 Disallow: /*/preview$
 Disallow: /sandbox.html
-
-User-agent: SentryUptimeBot
-Disallow: /
