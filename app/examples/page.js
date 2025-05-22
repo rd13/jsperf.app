@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { pagesCollection, examplesCollection } from '@/app/lib/mongodb'
 import Layout from '@/components/Layout'
-import { datetimeLong } from '@/utils/Date'
 import { marked } from 'marked'
 import { highlightSanitizedMarkdown } from '@/utils/hljs'
 
