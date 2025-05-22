@@ -41,7 +41,7 @@ const getStaticProps = async () => {
     },
     {
       $project: {
-        title: 1, info: 1, slug: 1, revision: 1, published: 1, testsCount: { $size: "$tests" }
+        title: 1, info: 1, slug: 1, revision: 1
       }
     },
     {
@@ -67,7 +67,7 @@ export default async function Examples() {
           <h1 className="font-bold text-2xl my-3">Example Benchmarks</h1>
           <hr className="mb-2" />
           
-          {entries.map(({title, info, slug, revision, testsCount, published, revisionCount}, index) => {
+          {entries.map(({title, info, slug, revision}, index) => {
               return (
                 <article key={index} className="py-4">
                   <Link href={revision === 1 ? `/${slug}` : `/${slug}/${revision}`} className="font-bold">
