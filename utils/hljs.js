@@ -15,6 +15,18 @@ export const highlightSanitizedJS = js => {
   }).value)
 }
 
+export const highlightSanitizedMarkdown = html => {
+  const reScripts = new RegExp('(<pre><code[^>]*?>)([\\s\\S]*?)(</code></pre>)', 'gi')
+
+  return DOMPurify.sanitize(html.replace(reScripts, (match, open, contents, close) => {
+    const highlightedContents = hljs.highlight(contents, {
+      language: 'js', 
+      ignoreIllegals: true
+    }).value
+    return `${open}${highlightedContents}${close}`
+  }))
+}
+
 export const highlightSanitizedHTML = (html) => {
   const token = '@jsperfAppToken'
 

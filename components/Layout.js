@@ -2,6 +2,7 @@
 
 import 'highlight.js/styles/github.css'
 import '@/styles/globals.css'
+import '@/styles/markdown.css'
 
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { SessionProvider } from "next-auth/react"

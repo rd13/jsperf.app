@@ -19,7 +19,7 @@
     "highlight.js": "11.2.0",
     "isomorphic-dompurify": "0.15.0",
     "lodash": "^4.17.21",
-    "marked": "4.0.10",
+    "marked": "15.0.11",
     "mongodb": "6.2.0",
     "next": "14.2.21",
     "next-auth": "4.24.5",

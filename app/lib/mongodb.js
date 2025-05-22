@@ -31,6 +31,14 @@ export const pagesCollection = async function() {
   return db.collection(process.env.MONGODB_COLLECTION)
 }
 
+export const examplesCollection = async function() {
+  const client = await clientPromise
+
+  const db = client.db()
+
+  return db.collection(process.env.MONGODB_EXAMPLES_COLLECTION)
+}
+
 // Export a module-scoped MongoClient promise. By doing this in a
 // separate module, the client can be shared across functions.
 export default clientPromise
