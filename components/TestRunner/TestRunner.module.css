@@ -1,3 +1,7 @@
 .sandboxIframe {
-  display: none;
+  height: 1px;
+  width: 1px;
+  position: fixed;
+  bottom: 1px;
+  right: 1px;
 }
