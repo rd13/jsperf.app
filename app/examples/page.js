@@ -58,7 +58,7 @@ const getStaticProps = async () => {
   }
 }
 
-export default async function Latest() {
+export default async function Examples() {
   const { entries } = await getStaticProps()
 
   return (
