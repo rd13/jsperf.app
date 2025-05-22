@@ -25,7 +25,7 @@ export async function GET(
     },
     {
       '$sort': { revision: 1 }
-    }
+    },
     {
       '$group': {
         _id: "$slug",
