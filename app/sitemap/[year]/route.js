@@ -24,21 +24,14 @@ export async function GET(
       }
     },
     {
-      '$sort': {
-        'revision': 1
-      }
-    },
-    {
       '$group': {
         _id: "$slug",
-        document: {
-          "$last": "$$ROOT"
+        revision: {
+          '$max': '$revision'
+        },
+        published: {
+          $last: '$published'
         }
-      }
-    },
-    {
-      '$replaceRoot': {
-        newRoot: "$document"
       }
     },
     {
@@ -67,7 +60,7 @@ export async function GET(
 
   const xmlResponse = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    ${result.map(({slug, revision, published}) => {
+    ${result.map(({_id: slug, revision, published}) => {
       return `
         <url>
           <loc>https://jsperf.app/${slug}${revision === 1 ? '' : `/${revision}`}</loc>
