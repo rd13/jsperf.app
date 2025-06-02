@@ -4,3 +4,10 @@ User-agent: *
 Disallow: /*/edit$
 Disallow: /*/preview$
 Disallow: /sandbox.html
+
+User-agent: SentryUptimeBot
+User-agent: BLEXBot
+User-agent: DataForSeoBot
+User-agent: AhrefsBot
+User-agent: ClaudeBot
+Disallow: /
