@@ -148,7 +148,8 @@ export default function Tests(props) {
           src="/sandbox.html"
           ref={sandboxRef} 
           sandbox="allow-scripts"
-          style={{height: "1px", width: "1px"}}></iframe>
+          className={styles.sandboxIframe}>
+        </iframe>
       </div>
       <table id="test-table" className="w-full border-collapse">
         <caption className="bg-gray-200 font-bold text-md text-gray-800">Testing in <UserAgent /></caption>
