@@ -1,6 +1,6 @@
 "use client"
 
-import { signOut, useSession } from "next-auth/react"
+import { signOut, useSession } from "@/app/lib/auth-client"
 import styles from './Footer.module.css'
 import Link from 'next/link'
 
