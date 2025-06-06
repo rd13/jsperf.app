@@ -8,3 +8,9 @@ export function getRanked(benchmarks) {
     return a.mean + a.moe > b.mean + b.moe ? 1 : -1
   })
 }
+
+export function getRankedByHz(benchmarks) {
+  return benchmarks.filter(bench => bench.cycles && Number.isFinite(bench.hz) && !bench.error).sort((a, b) => {
+    return a.hz < b.hz ? 1 : -1
+  })
+}
