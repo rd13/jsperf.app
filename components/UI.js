@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import lodash from 'lodash'
 import PostMessageBroker from '@/utils/postMessageBroker'
-import { getRanked } from '@/utils/Array'
+import { getRanked, getRankedByHz } from '@/utils/Array'
 
 import '@/app/lib/benchmark.mjs' // mjs to avoid webpack parser
 
@@ -88,7 +88,7 @@ export default function UI(props) {
       })
 
       ui.on('complete', () => {
-        const ranked = getRanked(uiBenchmarks)
+        const ranked = getRankedByHz(uiBenchmarks)
         const fastest = ranked[0]
         const slowest = [...ranked].pop()
 
