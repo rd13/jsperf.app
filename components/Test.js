@@ -24,7 +24,7 @@ export default function Test(props) {
       </td>
       <td className="code px-2 border border-slate-300">
         <pre className="w-full whitespace-pre-wrap break-words">
-          <code dangerouslySetInnerHTML={
+          <code className="language-javascript" dangerouslySetInnerHTML={
             {__html: highlightSanitizedJS(code)}} />
         </pre>
       </td>
