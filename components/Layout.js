@@ -5,7 +5,6 @@ import '@/styles/globals.css'
 import '@/styles/markdown.css'
 
 import { GoogleAnalytics } from '@next/third-parties/google'
-// import { SessionProvider } from "next-auth/react"
 import Script from 'next/script'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
