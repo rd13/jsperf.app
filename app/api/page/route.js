@@ -1,6 +1,5 @@
 import { pagesCollection } from '@/app/lib/mongodb'
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/app/lib/auth"
+import { auth } from "@/app/lib/auth"
 import { shortcode } from "@/utils/Url"
 
 /**
@@ -49,7 +48,9 @@ const generateSlugId = async (attempts = 10) => {
  */
 export async function POST(req, res) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth.api.getSession({
+        headers: req.headers
+    })
 
     const pages = await pagesCollection()
 
@@ -82,8 +83,8 @@ export async function POST(req, res) {
     payload.published = new Date()
 
     // Set the github user ID if authenticated
-    if (session?.user?.id) {
-      payload.githubID = session.user.id
+    if (session?.user?.profile?.id) {
+      payload.githubID = session.user.profile.id.toString()
     }
 
     // Will throw an error if schema validation fails
@@ -115,7 +116,9 @@ export async function POST(req, res) {
  */
 export async function PUT(req, res) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth.api.getSession({
+        headers: req.headers
+    })
 
     const pages = await pagesCollection()
 
@@ -146,8 +149,8 @@ export async function PUT(req, res) {
     // Only the original creator of this page can update it
     let allowedToEdit = false
 
-    if (page.githubID && session?.user?.id) {
-      if (page.githubID === session?.user?.id) {
+    if (page.githubID && session?.user?.profile?.id) {
+      if (page.githubID === session?.user?.profile?.id) {
         allowedToEdit = true
       }
     }
@@ -166,8 +169,8 @@ export async function PUT(req, res) {
     delete payload.revision
     delete payload.githubID
 
-    if (session?.user?.id) {
-      payload.githubID = session?.user?.id
+    if (session?.user?.profile?.id) {
+      payload.githubID = session?.user?.profile?.id.toString()
     }
 
     const result = await pages.updateOne({
