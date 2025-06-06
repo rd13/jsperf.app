@@ -49,7 +49,7 @@ export default function Header(props) {
           {
           session &&
           <div>
-            <a href={`/u/${session?.user?.id}`} className="no-underline text-black flex items-center inline-block text-sm px-4 py-2 hover:text-blue-500 hover:bg-white mt-4 lg:mt-0">
+            <a href={`/u/${session?.user?.profile?.id}`} className="no-underline text-black flex items-center inline-block text-sm px-4 py-2 hover:text-blue-500 hover:bg-white mt-4 lg:mt-0">
               <span>{ login }</span>
             </a>
           </div>
