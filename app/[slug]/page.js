@@ -75,46 +75,47 @@ export default async function Slug({ params }) {
   return (
     <>
       <Layout>
-        <hgroup>
-          <h1 className="text-2xl py-6 font-bold">{title}<span className="text-gray-400 text-base">{`${revision > 1 ? ` (v${revision})` : ''}`}</span></h1>
-        </hgroup>
-        <section>
-          <Meta pageData={pageData} />
-        </section>
-        <hr className="my-5" />
-        {info &&
+        <div itemScope itemType="http://schema.org/SoftwareSourceCode">
+          <hgroup>
+            <h1 itemProp="name" className="text-2xl py-6 font-bold">{title}<span className="text-gray-400 text-base">{`${revision > 1 ? ` (v${revision})` : ''}`}</span></h1>
+          </hgroup>
           <section>
-            <Info info={info} />
+            <Meta pageData={pageData} />
           </section>
-        }
-        {initHTML &&
+          <hr className="my-5" />
+          {info &&
+            <section>
+              <Info info={info} />
+            </section>
+          }
+          {initHTML &&
+            <section>
+              <PrepCode prepCode={initHTML} />
+            </section>
+          }
+          {setup &&
+            <section>
+              <Setup setup={setup} />
+              <SoftwareSourceCode 
+                name={`${title} Javascript Benchmark Setup Script`} 
+                text={setup} 
+                version={revision}
+              />
+            </section>
+          }
+          {teardown &&
+            <section>
+              <Teardown teardown={teardown} />
+            </section>
+          }
           <section>
-            <PrepCode prepCode={initHTML} />
+            <TestRunner id={_id} tests={tests} initHTML={initHTML} setup={setup} teardown={teardown} />
           </section>
-        }
-        {setup &&
+          <hr className="my-5" />
           <section>
-            <Setup setup={setup} />
-            <SoftwareSourceCode 
-              name={`${title} Javascript Benchmark Setup`} 
-              text={setup} 
-              description={info}
-              version={revision}
-            />
+            <Revisions revisions={revisions} slug={slug} revision={revision || 1} />
           </section>
-        }
-        {teardown &&
-          <section>
-            <Teardown teardown={teardown} />
-          </section>
-        }
-        <section>
-          <TestRunner id={_id} tests={tests} initHTML={initHTML} setup={setup} teardown={teardown} />
-        </section>
-        <hr className="my-5" />
-        <section>
-          <Revisions revisions={revisions} slug={slug} revision={revision || 1} />
-        </section>
+        </div>
       </Layout>
     </>
   )

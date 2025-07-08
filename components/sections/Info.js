@@ -6,7 +6,7 @@ export default function Info(props) {
   return (
     <>
       <h2 className="font-bold my-5">Description</h2>
-      <div className="markdown" dangerouslySetInnerHTML={{__html: highlightSanitizedMarkdown(marked(info))}}></div>
+      <div itemProp="description" className="markdown" dangerouslySetInnerHTML={{__html: highlightSanitizedMarkdown(marked(info))}}></div>
     </>
   )
 }
