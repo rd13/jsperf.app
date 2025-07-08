@@ -1,24 +1,22 @@
-"use client"
+export function SoftwareSourceCode({ name, description, text, programmingLanguage = "JavaScript", version }) {
 
-export default function StructuredData() {
-  const isBot = /(?:[bB]ot|BOT|Chrome)s?\b/.test(global.navigator.userAgent)
   const data = {
-        "@context": "https://schema.org",
-        "@type": "SoftwareSourceCode",
-        "name": "JavaScript Greeting Function",
-        "description": "A simple JavaScript function to greet a user by name.",
-        "programmingLanguage": "JavaScript",
-        "codeSampleType": "Snippet", // Or "Full Solution", "Script", "Template"
-        "text": "function greet(name) { console.log(`Hello, ${name}!`); }"
-      }
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "codeSampleType": "Snippet", 
+    programmingLanguage,
+    name,
+    description,
+    text,
+    version
+  }
 
-  return isBot ? (
+  return (
       <script 
         type="application/ld+json" 
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(data),
+          __html: JSON.stringify(data)
         }}
       />
-  ) : null
-
+  )
 }

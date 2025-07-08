@@ -11,7 +11,7 @@ import Info from '@/components/sections/Info'
 import Setup from '@/components/sections/Setup'
 import Teardown from '@/components/sections/Teardown'
 import PrepCode from '@/components/sections/PrepCode'
-import StructuredData from '@/components/StructuredData'
+import { SoftwareSourceCode } from '@/components/StructuredData'
 
 export const revalidate = 60 * 60 * 24 // 1 day
 
@@ -95,6 +95,12 @@ export default async function Slug({ params }) {
         {setup &&
           <section>
             <Setup setup={setup} />
+            <SoftwareSourceCode 
+              name={`${title} Javascript Benchmark Setup`} 
+              text={setup} 
+              description={info}
+              version={revision}
+            />
           </section>
         }
         {teardown &&
@@ -109,7 +115,6 @@ export default async function Slug({ params }) {
         <section>
           <Revisions revisions={revisions} slug={slug} revision={revision || 1} />
         </section>
-        <StructuredData />
       </Layout>
     </>
   )
