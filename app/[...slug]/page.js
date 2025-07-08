@@ -11,6 +11,7 @@ import Info from '@/components/sections/Info'
 import Setup from '@/components/sections/Setup'
 import Teardown from '@/components/sections/Teardown'
 import PrepCode from '@/components/sections/PrepCode'
+import { SoftwareSourceCode } from '@/components/StructuredData'
 
 export const revalidate = 60 * 60 * 24 // 1 day
 
@@ -18,7 +19,7 @@ const getPageData = cache(async (slug, revision) => {
   const pages = await pagesCollection()
 
   const pageData = await pages.findOne({
-    slug, revision
+    slug, revision: parseInt(revision) || 1
   })
 
   const revisions = await pages.find({
@@ -36,8 +37,7 @@ const getPageData = cache(async (slug, revision) => {
 })
 
 export async function generateMetadata({ params }) {
-  const { slug } = params
-  const revision = 1
+  const [ slug, revision ] = params.slug
 
   const { pageData } = await getPageData(slug, revision)
 
@@ -53,8 +53,14 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Slug({ params }) {
-  const { slug } = params
-  const revision = 1
+  const [ slug, revision ] = params.slug
+
+  /**
+   * Redirect revision 1 so we don't have a duplicate URL
+   */
+  if (revision === '1') {
+    redirect(`/${slug}`)
+  }
 
   const { pageData, revisions } = await getPageData(slug, revision)
 
@@ -74,40 +80,53 @@ export default async function Slug({ params }) {
   return (
     <>
       <Layout>
-        <hgroup>
-          <h1 className="text-2xl py-6 font-bold">{title}<span className="text-gray-400 text-base">{`${revision > 1 ? ` (v${revision})` : ''}`}</span></h1>
-        </hgroup>
-        <section>
-          <Meta pageData={pageData} />
-        </section>
-        <hr className="my-5" />
-        {info &&
+        <div itemScope itemType="http://schema.org/SoftwareSourceCode">
+          <hgroup>
+            <h1 itemProp="name" className="text-2xl py-6 font-bold">{title}<span className="text-gray-400 text-base">{`${revision > 1 ? ` (v${revision})` : ''}`}</span></h1>
+          </hgroup>
           <section>
-            <Info info={info} />
+            <Meta pageData={pageData} />
           </section>
-        }
-        {initHTML &&
+          <hr className="my-5" />
+          {info &&
+            <section>
+              <Info info={info} />
+            </section>
+          }
+          {initHTML &&
+            <section>
+              <PrepCode prepCode={initHTML} />
+              <SoftwareSourceCode 
+                name={`${title} Javascript Benchmark HTML Setup`} 
+                text={setup} 
+                programmingLanguage="HTML"
+                version={revision}
+              />
+            </section>
+          }
+          {setup &&
+            <section>
+              <Setup setup={setup} />
+              <SoftwareSourceCode 
+                name={`${title} Javascript Benchmark Setup Script`} 
+                text={setup} 
+                version={revision}
+              />
+            </section>
+          }
+          {teardown &&
+            <section>
+              <Teardown teardown={teardown} />
+            </section>
+          }
           <section>
-            <PrepCode prepCode={initHTML} />
+            <TestRunner id={_id} tests={tests} initHTML={initHTML} setup={setup} teardown={teardown} />
           </section>
-        }
-        {setup &&
+          <hr className="my-5" />
           <section>
-            <Setup setup={setup} />
+            <Revisions revisions={revisions} slug={slug} revision={revision || 1} />
           </section>
-        }
-        {teardown &&
-          <section>
-            <Teardown teardown={teardown} />
-          </section>
-        }
-        <section>
-          <TestRunner id={_id} tests={tests} initHTML={initHTML} setup={setup} teardown={teardown} />
-        </section>
-        <hr className="my-5" />
-        <section>
-          <Revisions revisions={revisions} slug={slug} revision={revision || 1} />
-        </section>
+        </div>
       </Layout>
     </>
   )

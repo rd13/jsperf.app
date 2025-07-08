@@ -1,4 +1,5 @@
 import { highlightSanitizedJS } from '@/utils/hljs'
+import { SoftwareSourceCode } from '@/components/StructuredData'
 
 export default function Test(props) {
   const {benchStatus, test: {title, code, error, status, hz, rme, fastest, slowest, percent}} = props
@@ -27,6 +28,10 @@ export default function Test(props) {
           <code className="language-javascript" dangerouslySetInnerHTML={
             {__html: highlightSanitizedJS(code)}} />
         </pre>
+        <SoftwareSourceCode 
+          name={title} 
+          text={code} 
+        />
       </td>
       <td className={`${(status === 'finished' && fastest) ? 'bg-jsp-green' : ''} ${(status === 'finished' && slowest) ? 'bg-jsp-pink' : ''} ${(status === 'error') ? 'font-bold bg-jsp-pink text-red-600' : ''} text-center w-[100px] p-2 border border-slate-300`}>{'ready' === benchStatus ? result.default : result[status]}</td>
     </tr>
