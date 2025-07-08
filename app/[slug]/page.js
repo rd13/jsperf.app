@@ -91,6 +91,12 @@ export default async function Slug({ params }) {
           {initHTML &&
             <section>
               <PrepCode prepCode={initHTML} />
+              <SoftwareSourceCode 
+                name={`${title} Javascript Benchmark HTML Setup`} 
+                text={setup} 
+                programmingLanguage="HTML"
+                version={revision}
+              />
             </section>
           }
           {setup &&
