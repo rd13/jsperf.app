@@ -30,7 +30,7 @@
     "ua-parser-js": "0.7.33"
   },
   "engines": {
-    "node": "18"
+    "node": "22.x"
   },
   "devDependencies": {
     "@types/react": "18.2.74",
