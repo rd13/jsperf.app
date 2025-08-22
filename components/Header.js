@@ -1,13 +1,15 @@
 "use client"
 
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signIn, useSession } from "@/app/lib/auth-client"
 import { useState, useEffect } from 'react'
 import GitHubIcon from './GitHubIcon'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export default function Header(props) {
   const { data: session, status } = useSession()
   const { navState: navStateInitial } = props
+  const pathname = usePathname()
 
   const [navState, setNavState] = useState({ "about": false, ...navStateInitial});
 
@@ -15,6 +17,13 @@ export default function Header(props) {
     navState[id] = !navState[id]
     setNavState({...navState}); 
    };
+
+  const signInGithubUser = () => {
+    signIn.social({
+      provider: "github",
+      callbackURL: pathname
+    })
+  }
 
   const { login } = session?.user?.profile || {}
 
@@ -40,7 +49,7 @@ export default function Header(props) {
           </div>
           { !session &&
           <div>
-            <button className="flex items-center inline-block text-sm px-4 py-2 hover:fill-blue-500 hover:text-blue-500 lg:mt-0" onClick={() => signIn("github")}>
+            <button className="flex items-center inline-block text-sm px-4 py-2 hover:fill-blue-500 hover:text-blue-500 lg:mt-0" onClick={signInGithubUser}>
               <span>Sign In</span>
               <GitHubIcon fill="#000000" width={16} height={16} className="ml-2 fill-inherit" />
             </button>
@@ -49,7 +58,7 @@ export default function Header(props) {
           {
           session &&
           <div>
-            <a href={`/u/${session?.user?.id}`} className="no-underline text-black flex items-center inline-block text-sm px-4 py-2 hover:text-blue-500 hover:bg-white mt-4 lg:mt-0">
+            <a href={`/u/${session?.user?.profile?.id}`} className="no-underline text-black flex items-center inline-block text-sm px-4 py-2 hover:text-blue-500 hover:bg-white mt-4 lg:mt-0">
               <span>{ login }</span>
             </a>
           </div>

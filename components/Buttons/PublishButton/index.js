@@ -4,7 +4,7 @@ import buttonStyles from '@/styles/buttons.module.css'
 import styles from './PublishButton.module.css'
 import { useRouter } from 'next/navigation'
 import UUID from '../../UUID'
-import { useSession } from "next-auth/react"
+import { useSession } from "@/app/lib/auth-client"
 
 export default function PublishButton({ slug, revision, uuid, githubID }) {
   const { data: session, status } = useSession()
@@ -14,8 +14,8 @@ export default function PublishButton({ slug, revision, uuid, githubID }) {
 
   let canEdit = false
 
-  if (githubID && session?.user?.id) {
-    if (session?.user?.id === githubID) {
+  if (githubID && session?.user?.profile?.id) {
+    if (session?.user?.profile?.id === githubID) {
       canEdit = true
     }
   } 
