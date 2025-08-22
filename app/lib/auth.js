@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { betterAuthDBClient } from "@/app/lib/mongodb"; // your mongodb client
+import { betterAuthDBClient } from "@/app/lib/mongodb";
+
 export const auth = betterAuth({
   database: mongodbAdapter(betterAuthDBClient.db()),
   socialProviders: { 
